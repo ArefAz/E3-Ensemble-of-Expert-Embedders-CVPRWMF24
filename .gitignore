@@ -1,0 +1,8 @@
+*.ckpt
+events*
+checkpoints
+notebooks/
+logs/
+*.pyc
+**__pycache__**
+
