@@ -1,4 +1,3 @@
-import random
 import lightning.pytorch as pl
 import torch
 from torchmetrics.classification import *
@@ -6,7 +5,7 @@ from torchmetrics.classification import *
 from data_pipes import Pipe
 from .mislnet import MISLNet
 from utils.model_utils import get_optimizer_dict
-from torchvision.models import resnet50
+from torchvision.models import resnet50, ResNet50_Weights
 
 
 class ExpertClassifier(pl.LightningModule):
@@ -24,8 +23,12 @@ class ExpertClassifier(pl.LightningModule):
         self.model_configs = model_configs
         self.train_configs = train_configs
         self.task = model_configs["expert_task"]
-        # self.classifier = MISLNet(num_classes=2)
-        self.classifier = resnet50(num_classes=2)
+        if self.model_configs["classifier"] == "mislnet":
+            self.classifier = MISLNet(num_classes=2)
+        elif self.model_configs["classifier"] == "resnet50":
+            self.classifier = resnet50(num_classes=2, pretrained=False)
+        else:
+            raise ValueError(f"Unknown classifier {self.model_configs['classifier']}")
         self.loss = torch.nn.BCEWithLogitsLoss()
         self.acc = Accuracy("binary")
         self.v_acc = Accuracy("binary")
