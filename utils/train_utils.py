@@ -116,6 +116,8 @@ def get_exp_name(configs):
     if configs["Model"]["fine_tune"]:
         exp_name += "ft_"
     exp_name += f"{configs['Model']['model_type']}_"
+    if configs["Model"]["model_type"] == "expert":
+        exp_name += f"{configs['Model']['classifier']}_"
     for dataset in configs["Data"]["datasets"]:
         exp_name += f"{dataset}_"
 
