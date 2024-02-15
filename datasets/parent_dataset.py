@@ -41,7 +41,7 @@ class ParentDataset(Dataset):
             print(f"Error loading {self.file_paths[index]}")
             return self.__getitem__(random.randint(0, len(self.file_paths) - 1))
         if img.shape[1] < self.patch_size or img.shape[2] < self.patch_size:
-            print("Image too small:", self.file_paths[index], "skipping...")
+            print("Image too small:", self.file_paths[index], img.shape, "skipping...")
             return self.__getitem__(random.randint(0, len(self.file_paths) - 1))
         img = self.crop(img)
         if img.shape[0] == 1:
@@ -51,4 +51,4 @@ class ParentDataset(Dataset):
         if quality != 100:
             img = io.decode_jpeg(io.encode_jpeg(img, quality=quality))
         img = img.float() / 255
-        return img, self.label
+        return img, self.label, self.file_paths[index]
