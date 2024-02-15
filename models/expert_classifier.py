@@ -37,6 +37,7 @@ class ExpertClassifier(pl.LightningModule):
         self.auc = MulticlassAUROC(num_classes=2)
         self.prec = Precision(task="binary")
         self.recall = Recall(task="binary")
+        self.f1 = F1Score(task="binary")
         self.conf_mat = ConfusionMatrix("binary")
         self.conf_mat_accumalator = torch.zeros(2, 2).int()
         if self.task == "manipulation" or self.task == "src_test_with_manipulation":
@@ -68,6 +69,7 @@ class ExpertClassifier(pl.LightningModule):
         self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True)
         self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True)
         self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("f1", self.f1, on_step=False, on_epoch=True, prog_bar=True)
 
     def infer(self, batch, is_valid=False, is_test=False):
         img, src_label = batch
@@ -113,6 +115,7 @@ class ExpertClassifier(pl.LightningModule):
             self.auc.update(probs, label)
             self.prec.update(preds, label)
             self.recall.update(preds, label)
+            self.f1.update(preds, label)
         return loss
 
     def configure_optimizers(self):
