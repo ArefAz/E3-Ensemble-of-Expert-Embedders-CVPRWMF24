@@ -23,8 +23,6 @@ def run_test(configs):
     results_jpeg = {}
 
     for quality in configs["Data"]["test_jpeg_qualities"]:
-        # if configs["Model"]["model_type"] in ["analytics", "expert"]:
-        #     model.reset()
         model, model_version = get_model(configs, is_test=True)
         configs["Data"]["jpeg_quality"] = quality
         logger = TensorBoardLogger("logs", name=exp_name, version=model_version)
@@ -43,7 +41,7 @@ def run_test(configs):
             model=model,
             dataloaders=test_dataloader,
         )
-        if configs["Model"]["model_type"] in ["analytics", "expert"]:
+        if configs["Model"]["model_type"] in ["analytics", "expert", "moe"]:
             print()
             pretty_print_mat(
                 model.get_conf_mat(),

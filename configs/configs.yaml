@@ -2,7 +2,7 @@ General:
   seed: 0
   num_devices: -1
   check_val_every_n_epoch: 1 # number of epochs between validation check, needs to be empty (None) for using #batches
-  val_check_interval: 1.0 # number of training batches between each validation check
+  val_check_interval: # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
   fast_dev_run: False
@@ -12,25 +12,23 @@ General:
 
 
 Model:
-  model_type: expert # could be either 'analytics' or 'expert' or 'jpeg'
+  model_type: expert # could be either 'analytics' or 'expert' or 'jpeg' or 'moe'
   classifier: resnet50 # 'mislnet' or 'resnet50'
-  expert_ckpt: logs/expert_midb_stylegan_stylegan2_stylegan3_progan_projected_gan_src_q99/version_2/checkpoints/epoch=17-step=27594-v_loss=0.0627-v_acc=0.9775.ckpt
-  fine_tune: False # if True, the model is fine-tuned from a checkpoint
+  expert_ckpt: logs/expert_resnet50_db-real_db-gan_src_q99/version_4/checkpoints/epoch=59-step=219420-v_loss=0.1618-v_acc=0.9475.ckpt
+  analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
+  moe_ckpt: logs/moe_dn-real_du-gan_dn-sd_q99/version_3/checkpoints/epoch=09-step=470-v_loss=0.3578-v_acc=0.9033.ckpt
+  expert_n_features: 2048
+  fine_tune: True # if True, the model is fine-tuned from a checkpoint
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
-    logs/expert_midb_stylegan_src_q99/version_1/checkpoints/epoch=19-step=30800-v_loss=0.0009-v_acc=0.9999.ckpt
+    logs/expert_resnet50_db-real_db-gan_src_q99/version_3/checkpoints/epoch=10-step=20625-v_loss=0.1274-v_acc=0.9504.ckpt,
+    logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
-    logs/expert_midb_stylegan2_src_q99/version_0/checkpoints/epoch=16-step=26214-v_loss=0.0110-v_acc=0.9964.ckpt,
-    logs/expert_midb_stylegan3_src_q99/version_0/checkpoints/epoch=15-step=24656-v_loss=0.0110-v_acc=0.9969.ckpt
-    
+    logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
   ] # list of paths to manipulation classifier checkpoints to be used for analytics model
-  analytics_ckpt: logs/expert_easy-real_stylegan_stylegan2_stylegan3_progan_projected_gan_src_q99/version_8/checkpoints/epoch=09-step=24380-v_loss=0.0005-v_acc=0.9998.ckpt
-  # analytics_ckpt: logs/analytics_midb_dm_jpeg_q60-70-80-90-99/version_88/checkpoints/epoch=312-step=5000-v_loss=0.0805-v_acc=0.9711-last.ckpt
-  # expert_ckpt: logs/expert_midb_dm_src_q99/version_0/checkpoints/epoch=05-step=17868-v_loss=0.0068-v_acc=0.9983.ckpt
   jpeg_ckpt: logs/jpeg_midb_q50-100/version_0/checkpoints/epoch=96-step=213885-v_loss=2.5862-v_rmse=0.0000-v_mae=1.7335.ckpt
-  expert_n_features: 200
   analytics_manipulations: [
     'jpeg'
   ] # list of manipulation names: 'unsharpmask', 'upsample', 'medianblur', 'bilateralblur' only used with analytics model
@@ -41,41 +39,29 @@ Model:
 
 Data:
   datasets: [
-    'midb',
-    'stylegan',
-    'stylegan2',
-    'stylegan3',
-    'progan',
-    'projected_gan',
-  ] # list of dataset names: 'coco', 'dm', 'gan', 'midb'
+    'dn-real',
+    'dn-sd',
+    # 'db-sd'
+  ]
   num_src_classes: 2
   train_txt_paths: [
-    datasets/dataset_file_paths/midb/train.txt,
-    datasets/dataset_file_paths/stylegan/train.txt,
-    datasets/dataset_file_paths/stylegan2/train.txt,
-    datasets/dataset_file_paths/stylegan3/train.txt,
-    datasets/dataset_file_paths/progan/train.txt,
-    datasets/dataset_file_paths/projected_gan/train.txt,
+    datasets/dataset_file_paths/dn-real/train.txt,
+    datasets/dataset_file_paths/dn-sd/train.txt,
+    # datasets/dataset_file_paths/db-sd/train.txt,
   ]
   val_txt_paths: [
-    datasets/dataset_file_paths/midb/val.txt,
-    datasets/dataset_file_paths/stylegan/val.txt,
-    datasets/dataset_file_paths/stylegan2/val.txt,
-    datasets/dataset_file_paths/stylegan3/val.txt,
-    datasets/dataset_file_paths/progan/val.txt,
-    datasets/dataset_file_paths/projected_gan/val.txt,
+    datasets/dataset_file_paths/dn-real/val.txt,
+    datasets/dataset_file_paths/dn-sd/val.txt,
+    # datasets/dataset_file_paths/db-sd/val.txt,
   ]
   test_txt_paths: [
-    datasets/dataset_file_paths/midb/test.txt,
-    datasets/dataset_file_paths/stylegan/test.txt,
-    datasets/dataset_file_paths/stylegan2/test.txt,
-    datasets/dataset_file_paths/stylegan3/test.txt,
-    datasets/dataset_file_paths/progan/test.txt,
-    datasets/dataset_file_paths/projected_gan/test.txt,
+    datasets/dataset_file_paths/dn-real/test.txt,
+    datasets/dataset_file_paths/dn-sd/test.txt,
+    # datasets/dataset_file_paths/db-sd/test.txt,
   ]
-  train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", ""]
-  val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", ""]
-  test_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/test.hdf5, "", "", "", "", ""]
+  train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
+  val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
+  test_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/test.hdf5, "", "", "", "", "", "", ""]
   jpeg_quality: [99] # only used for training, could be either an int or a list of ints
   test_jpeg_qualities: [99] # only used for testing with different jpeg qualities, should be a list of ints
   randomize_jpeg_quality: False # if True, jpeg_quality is ignored and it's set to list(np.arange(70, 100, 1))
@@ -83,21 +69,25 @@ Data:
   prefetch_factor: 3
 
 Train:
-  epochs: 20
+  epochs: -1
   max_steps: -1
   early_stopping: False
+  loss_weights: [2.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 5.0e-5
+  lr: 1.0e-5
   src_loss_coeff: 1.0
-  manipulation_loss_coeff: 1.0
+  manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
   scheduler: step # cosine, step
   lr_decay_rate: 0.9 # only used with step scheduler
-  lr_step_size: 1 # only used with step scheduler
+  lr_step_size: 31 # only used with step scheduler
   min_lr: 1.0e-5 # only used with cosine scheduler
   optimizer: AdamW # Adam, AdamW, SGD
   momentum: 0.9 # only used with SGD optimizer
   train_dataset_hard_limit_num:
+  # train_dataset_limit_per_class:  # class refers to either synthetic or real, synthetic is equally 
+  # val_dataset_limit_per_class:  # disributed among the generators
+  # test_dataset_limit_per_class: 
   train_dataset_limit: 1.0
   val_dataset_limit: 1.0
   test_dataset_limit: 1.0

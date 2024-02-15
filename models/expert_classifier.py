@@ -23,16 +23,18 @@ class ExpertClassifier(pl.LightningModule):
         self.model_configs = model_configs
         self.train_configs = train_configs
         self.task = model_configs["expert_task"]
+        if "classifier" not in model_configs:
+            model_configs["classifier"] = "mislnet"
         if self.model_configs["classifier"] == "mislnet":
             self.classifier = MISLNet(num_classes=2)
         elif self.model_configs["classifier"] == "resnet50":
-            self.classifier = resnet50(num_classes=2, pretrained=False)
+            self.classifier = resnet50(num_classes=2)
         else:
             raise ValueError(f"Unknown classifier {self.model_configs['classifier']}")
         self.loss = torch.nn.BCEWithLogitsLoss()
         self.acc = Accuracy("binary")
         self.v_acc = Accuracy("binary")
-        self.f1 = F1Score(task="binary")
+        self.auc = MulticlassAUROC(num_classes=2)
         self.prec = Precision(task="binary")
         self.recall = Recall(task="binary")
         self.conf_mat = ConfusionMatrix("binary")
@@ -63,7 +65,7 @@ class ExpertClassifier(pl.LightningModule):
     def test_step(self, batch, batch_idx, dataloader_idx=0):
         loss = self.infer(batch, is_test=True)
         self.log("acc", self.acc, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("f1", self.f1, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True)
         self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True)
         self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True)
 
@@ -92,21 +94,23 @@ class ExpertClassifier(pl.LightningModule):
             raise ValueError(f"Unknown task {self.task}")
         logits = self(img)
         loss = self.loss(logits, label)
+        org_label = label
         label = label.argmax(dim=1)
         preds = logits.argmax(dim=1)
+        probs = torch.nn.functional.softmax(logits, dim=1)
         self.acc.update(preds, label)
         if is_valid:
             self.v_acc.update(preds, label)
         if is_test:
             if self.conf_mat_accumalator.device != self.device:
                 self.conf_mat_accumalator = self.conf_mat_accumalator.to(self.device)
-                self.f1 = self.f1.to(self.device)
+                self.auc = self.auc.to(self.device)
                 self.prec = self.prec.to(self.device)
                 self.recall = self.recall.to(self.device)
             self.conf_mat_accumalator += self.conf_mat(
                 preds, label
             ).int()
-            self.f1.update(preds, label)
+            self.auc.update(probs, label)
             self.prec.update(preds, label)
             self.recall.update(preds, label)
         return loss

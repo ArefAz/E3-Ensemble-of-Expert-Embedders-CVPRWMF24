@@ -47,13 +47,15 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     val_datasets = []
     test_datasets = []
 
+    num_generators = len(data_config["datasets"]) - 1 # -1 for real dataset
+
     for i, dataset_name in enumerate(data_config["datasets"]):
         assert (
             dataset_name in data_config["train_txt_paths"][i]
         ), "Dataset name mismatch"
         assert dataset_name in data_config["val_txt_paths"][i], "Dataset name mismatch"
         assert dataset_name in data_config["test_txt_paths"][i], "Dataset name mismatch"
-        if dataset_name in ["coco", "midb", "easy-real"]:
+        if dataset_name in ["coco", "midb", "easy-real", "db-real", "dn-real"]:
             label = 0
         elif dataset_name in [
             "dm",
@@ -66,6 +68,10 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             "easy-progan",
             "tam_trans",
             "stable_diffusion",
+            "db-gan",
+            'db-sd',
+            "du-gan",
+            "dn-sd",
         ]:
             label = 1
         else:
@@ -110,10 +116,39 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             txt_file_path=data_config["test_txt_paths"][i],
             hdf5_file_path=data_config["test_hdf5_paths"][i],
         )
-        if dataset_name == "midb":
-            train_dataset = Subset(train_dataset, range(0, len(train_dataset) // 50))
-            val_dataset = Subset(val_dataset, range(0, len(val_dataset) // 50))
-            test_dataset = Subset(test_dataset, range(0, len(test_dataset) // 50))
+        # if label == 0:
+        #     if train_config["train_dataset_limit_per_class"]:
+        #         train_dataset = Subset(train_dataset, range(0, train_config["train_dataset_limit_per_class"]))
+        #     if train_config["val_dataset_limit_per_class"]:
+        #         val_dataset = Subset(val_dataset, range(0, train_config["val_dataset_limit_per_class"]))
+        #     if train_config["test_dataset_limit_per_class"]:
+        #         test_dataset = Subset(test_dataset, range(0, train_config["test_dataset_limit_per_class"]))
+        # else:
+        #     if train_config["train_dataset_limit_per_class"]:
+        #         train_dataset, _ = random_split(
+        #             train_dataset,
+        #             [
+        #                 train_config["train_dataset_limit_per_class"] // num_generators,
+        #                 len(train_dataset) - train_config["train_dataset_limit_per_class"] // num_generators,
+        #             ],
+        #         )
+        #     if train_config["val_dataset_limit_per_class"]:
+        #         val_dataset, _ = random_split(
+        #             val_dataset,
+        #             [
+        #                 train_config["val_dataset_limit_per_class"] // num_generators,
+        #                 len(val_dataset) - train_config["val_dataset_limit_per_class"] // num_generators,
+        #             ],
+        #         )
+        #     if train_config["test_dataset_limit_per_class"]:
+        #         test_dataset, _ = random_split(
+        #             test_dataset,
+        #             [
+        #                 train_config["test_dataset_limit_per_class"] // num_generators,
+        #                 len(test_dataset) - train_config["test_dataset_limit_per_class"] // num_generators,
+        #             ],
+        #         )
+
         print("len(train_dataset):", len(train_dataset))
         print("len(val_dataset):", len(val_dataset))
         print("len(test_dataset):", len(test_dataset))

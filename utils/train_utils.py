@@ -2,7 +2,7 @@ import os
 import torch
 from typing import Union
 from lightning.pytorch.loggers import TensorBoardLogger
-from models import ExpertClassifier, AnalyticsModel, JpegEstimator
+from models import ExpertClassifier, AnalyticsModel, JpegEstimator, MixtureOfExperts
 from lightning.pytorch.callbacks import (
     Callback,
     LearningRateMonitor,
@@ -57,6 +57,8 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         model_class = ExpertClassifier
     elif model_configs["model_type"] == "analytics":
         model_class = AnalyticsModel
+    elif model_configs["model_type"] == "moe":
+        model_class = MixtureOfExperts
     elif model_configs["model_type"] == "jpeg":
         model_class = JpegEstimator
     else:
@@ -66,6 +68,8 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         ckpt_path = model_configs["expert_ckpt"]
     elif model_configs["model_type"] == "analytics":
         ckpt_path = model_configs["analytics_ckpt"]
+    elif model_configs["model_type"] == "moe":
+        ckpt_path = model_configs["moe_ckpt"]
     elif model_configs["model_type"] == "jpeg":
         ckpt_path = model_configs["jpeg_ckpt"]
     else:
@@ -99,12 +103,14 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
                     train_configs=train_configs,
                     data_configs=data_configs,
                 )
+                print("model loaded from checkpoint", ckpt_path)
                 print("Overriding configs...")
             else:
                 model = model_class.load_from_checkpoint(ckpt_path)
-            model.classifier.output = torch.nn.Linear(
-                model.classifier.output.in_features, 2
-            )
+            if model_configs["classifier"] == "mislnet":
+                model.classifier.output = torch.nn.Linear(
+                    model.classifier.output.in_features, 2
+                )
         else:
             model = model_class(model_configs, train_configs, data_configs)
             

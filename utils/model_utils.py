@@ -1,6 +1,9 @@
 import torch
 from typing import Tuple
 from data_pipes import Pipe
+from torchvision.models import ResNet
+
+
 
 
 def get_pipes(data_configs: dict) -> torch.nn.ModuleList:
@@ -17,11 +20,29 @@ def get_pipes(data_configs: dict) -> torch.nn.ModuleList:
     return module_list
     
 
+def get_experts(model_configs: dict) -> torch.nn.ModuleList:
+    from models import ExpertClassifier
+    expert_detectors = torch.nn.ModuleList(
+        [
+            ExpertClassifier.load_from_checkpoint(
+                checkpoint_path=model_configs["src_ckpts"][i]
+            ).eval()
+            for i in range(len(model_configs["src_ckpts"]))
+        ]
+    )
+    for detector in expert_detectors:
+        if isinstance(detector.classifier, ResNet):
+            detector.classifier.fc = torch.nn.Identity()
+        else:
+            detector.classifier.output = torch.nn.Identity()
+        detector.freeze()
+    return expert_detectors
+
 def get_detectors(model_configs: dict) -> Tuple[torch.nn.ModuleList, torch.nn.ModuleList]:
     """
     for now we assume all detectors are of the same type (ExpertClassifier)
     """
-    from models import ExpertClassifier, JpegEstimator
+    from models import ExpertClassifier, JpegEstimator, MISLNet
     src_detector_list = torch.nn.ModuleList(
         [
             ExpertClassifier.load_from_checkpoint(
@@ -41,11 +62,16 @@ def get_detectors(model_configs: dict) -> Tuple[torch.nn.ModuleList, torch.nn.Mo
             manipulation_detector_list.append(
                 ExpertClassifier.load_from_checkpoint(checkpoint_path=ckpt).eval()
             )
-    for detector in src_detector_list:
+    # for detector in src_detector_list:
+    #     detector.freeze()
+    #     if isinstance(detector.classifier, ResNet):
+    #         detector.classifier.fc = torch.nn.Identity()
+    for detector in src_detector_list + manipulation_detector_list:
+        if isinstance(detector.classifier, ResNet):
+            detector.classifier.fc = torch.nn.Identity()
+        elif isinstance(detector.classifier, MISLNet):
+            detector.classifier.output = torch.nn.Identity()
         detector.freeze()
-    for detector in manipulation_detector_list:
-        detector.freeze()
-
     return src_detector_list, manipulation_detector_list
 
 
