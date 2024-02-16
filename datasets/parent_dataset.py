@@ -51,4 +51,4 @@ class ParentDataset(Dataset):
         if quality != 100:
             img = io.decode_jpeg(io.encode_jpeg(img, quality=quality))
         img = img.float() / 255
-        return img, self.label, self.file_paths[index]
+        return img, self.label
