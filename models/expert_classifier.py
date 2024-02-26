@@ -5,7 +5,7 @@ from torchmetrics.classification import *
 from data_pipes import Pipe
 from .mislnet import MISLNet
 from utils.model_utils import get_optimizer_dict
-from torchvision.models import resnet50, ResNet50_Weights
+from torchvision.models import resnet50, resnet18
 
 
 class ExpertClassifier(pl.LightningModule):

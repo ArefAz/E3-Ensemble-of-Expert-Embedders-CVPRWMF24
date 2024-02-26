@@ -1,6 +1,6 @@
 from datasets import *
-from torch.utils.data import ConcatDataset, DataLoader, random_split, Subset
-
+from torch.utils.data import ConcatDataset, DataLoader, Subset
+import torch
 
 def get_dataloaders(model_config: dict, data_config: dict, train_config: dict):
     train_dataset, val_dataset, test_dataset = get_datasets(
@@ -33,6 +33,11 @@ def get_dataloaders(model_config: dict, data_config: dict, train_config: dict):
         pin_memory=True,
         persistent_workers=True,
     )
+    # save the dataloaders in a pickle file
+    # import pickle
+    # with open("dataloaders.pkl", "wb") as f:
+    #     pickle.dump([train_dataloader, val_dataloader, test_dataloader], f)
+    # exit()
     return train_dataloader, val_dataloader, test_dataloader
 
 
@@ -46,8 +51,6 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     train_datasets = []
     val_datasets = []
     test_datasets = []
-
-    num_generators = len(data_config["datasets"]) - 1 # -1 for real dataset
 
     for i, dataset_name in enumerate(data_config["datasets"]):
         assert (
@@ -63,6 +66,8 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             "stylegan",
             "stylegan2",
             "stylegan3",
+            "stargan",
+            "biggan",
             "projected_gan",
             'progan',
             "easy-progan",
@@ -116,39 +121,6 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             txt_file_path=data_config["test_txt_paths"][i],
             hdf5_file_path=data_config["test_hdf5_paths"][i],
         )
-        # if label == 0:
-        #     if train_config["train_dataset_limit_per_class"]:
-        #         train_dataset = Subset(train_dataset, range(0, train_config["train_dataset_limit_per_class"]))
-        #     if train_config["val_dataset_limit_per_class"]:
-        #         val_dataset = Subset(val_dataset, range(0, train_config["val_dataset_limit_per_class"]))
-        #     if train_config["test_dataset_limit_per_class"]:
-        #         test_dataset = Subset(test_dataset, range(0, train_config["test_dataset_limit_per_class"]))
-        # else:
-        #     if train_config["train_dataset_limit_per_class"]:
-        #         train_dataset, _ = random_split(
-        #             train_dataset,
-        #             [
-        #                 train_config["train_dataset_limit_per_class"] // num_generators,
-        #                 len(train_dataset) - train_config["train_dataset_limit_per_class"] // num_generators,
-        #             ],
-        #         )
-        #     if train_config["val_dataset_limit_per_class"]:
-        #         val_dataset, _ = random_split(
-        #             val_dataset,
-        #             [
-        #                 train_config["val_dataset_limit_per_class"] // num_generators,
-        #                 len(val_dataset) - train_config["val_dataset_limit_per_class"] // num_generators,
-        #             ],
-        #         )
-        #     if train_config["test_dataset_limit_per_class"]:
-        #         test_dataset, _ = random_split(
-        #             test_dataset,
-        #             [
-        #                 train_config["test_dataset_limit_per_class"] // num_generators,
-        #                 len(test_dataset) - train_config["test_dataset_limit_per_class"] // num_generators,
-        #             ],
-        #         )
-
         print("len(train_dataset):", len(train_dataset))
         print("len(val_dataset):", len(val_dataset))
         print("len(test_dataset):", len(test_dataset))
@@ -160,13 +132,11 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     val_dataset = ConcatDataset(val_datasets)
     test_dataset = ConcatDataset(test_datasets)
     if train_config["train_dataset_hard_limit_num"]:
-        train_dataset, _ = random_split(
-            train_dataset,
-            [
-                train_config["train_dataset_hard_limit_num"],
-                len(train_dataset) - train_config["train_dataset_hard_limit_num"],
-            ],
-        )
+        indices = torch.randperm(len(train_dataset))[: train_config["train_dataset_hard_limit_num"]]
+        train_dataset = Subset(train_dataset, indices)
+    if train_config["val_dataset_hard_limit_num"]:
+        indices = torch.randperm(len(val_dataset))[: train_config["val_dataset_hard_limit_num"]]
+        val_dataset = Subset(val_dataset, indices)
 
     print("Train dataset size:", len(train_dataset))
     print("Val dataset size:", len(val_dataset))

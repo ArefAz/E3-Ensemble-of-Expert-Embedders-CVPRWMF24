@@ -1652,7 +1652,6 @@
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000395801.jpg
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000186873.jpg
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000489339.jpg
-/media/nas2/Datasets/COCO/dataset/images/val2017/000000298251.jpg
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000047121.jpg
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000249129.jpg
 /media/nas2/Datasets/COCO/dataset/images/val2017/000000025386.jpg

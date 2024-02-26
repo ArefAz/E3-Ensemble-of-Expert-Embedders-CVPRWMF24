@@ -5,14 +5,14 @@ General:
   val_check_interval: # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
-  fast_dev_run: False
+  fast_dev_run: True
   profiling: False
   inference_mode: True
   version:  # could be either a string or None, in which case the version is automatically generated
 
 
 Model:
-  model_type: moe # could be either 'analytics' or 'expert' or 'jpeg' or 'moe'
+  model_type: expert # could be either 'analytics' or 'expert' or 'jpeg' or 'moe'
   classifier: resnet50 # 'mislnet' or 'resnet50'
   expert_ckpt: logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_1/checkpoints/epoch=129-step=4160-v_loss=0.2097-v_acc=0.9325.ckpt
   analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
@@ -41,23 +41,23 @@ Data:
   datasets: [
     'db-real',
     'db-sd',
-    'db-gan'
+    # 'dn-sd'
   ]
   num_src_classes: 2
   train_txt_paths: [
     datasets/dataset_file_paths/db-real/train.txt,
     datasets/dataset_file_paths/db-sd/train.txt,
-    datasets/dataset_file_paths/db-gan/train.txt,
+    # datasets/dataset_file_paths/dn-sd/train.txt,
   ]
   val_txt_paths: [
     datasets/dataset_file_paths/db-real/val.txt,
     datasets/dataset_file_paths/db-sd/val.txt,
-    datasets/dataset_file_paths/db-gan/val.txt,
+    # datasets/dataset_file_paths/dn-sd/val.txt,
   ]
   test_txt_paths: [
     datasets/dataset_file_paths/db-real/test.txt,
     datasets/dataset_file_paths/db-sd/test.txt,
-    datasets/dataset_file_paths/db-gan/test.txt,
+    # datasets/dataset_file_paths/dn-sd/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -74,7 +74,7 @@ Train:
   early_stopping: False
   loss_weights: [2.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 1.0e-5
+  lr: 1.0e-6
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
@@ -85,6 +85,7 @@ Train:
   optimizer: AdamW # Adam, AdamW, SGD
   momentum: 0.9 # only used with SGD optimizer
   train_dataset_hard_limit_num:
+  val_dataset_hard_limit_num:
   # train_dataset_limit_per_class:  # class refers to either synthetic or real, synthetic is equally 
   # val_dataset_limit_per_class:  # disributed among the generators
   # test_dataset_limit_per_class: 
