@@ -50,8 +50,10 @@ def run_test(configs):
             )
             print()
 
+    if model_version is None:
+        model_version = ""
     save_filename = (
-        os.path.join(*logger.log_dir.split("/")[:-1], model_version) + "/results.pkl"
+        os.path.join(os.path.join(*logger.log_dir.split("/")[:-1], model_version), "results.pkl")
     )
     with open(save_filename, "wb") as f:
         pickle.dump(results, f)

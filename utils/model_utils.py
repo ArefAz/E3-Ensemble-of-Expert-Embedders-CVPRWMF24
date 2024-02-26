@@ -20,7 +20,7 @@ def get_pipes(data_configs: dict) -> torch.nn.ModuleList:
     return module_list
     
 
-def get_experts(model_configs: dict) -> torch.nn.ModuleList:
+def get_experts(model_configs: dict, trim=True) -> torch.nn.ModuleList:
     from models import ExpertClassifier
     expert_detectors = torch.nn.ModuleList(
         [
@@ -30,12 +30,16 @@ def get_experts(model_configs: dict) -> torch.nn.ModuleList:
             for i in range(len(model_configs["src_ckpts"]))
         ]
     )
-    for detector in expert_detectors:
-        if isinstance(detector.classifier, ResNet):
-            detector.classifier.fc = torch.nn.Identity()
-        else:
-            detector.classifier.output = torch.nn.Identity()
-        detector.freeze()
+    if trim:
+        for detector in expert_detectors:
+            if isinstance(detector.classifier, ResNet):
+                detector.classifier.fc = torch.nn.Identity()
+            else:
+                detector.classifier.output = torch.nn.Identity()
+            detector.freeze()
+    else:
+        for detector in expert_detectors:
+            detector.freeze()
     return expert_detectors
 
 def get_detectors(model_configs: dict) -> Tuple[torch.nn.ModuleList, torch.nn.ModuleList]:
