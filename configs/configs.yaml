@@ -12,9 +12,9 @@ General:
 
 
 Model:
-  model_type: expert # could be either 'analytics' or 'expert' or 'jpeg' or 'moe'
-  classifier: resnet50 # 'mislnet' or 'resnet50'
-  expert_ckpt: logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_1/checkpoints/epoch=129-step=4160-v_loss=0.2097-v_acc=0.9325.ckpt
+  model_type: fusion # could be either 'analytics' or 'expert' or 'jpeg' or 'moe' or 'fusion'
+  classifier: mislnet # 'mislnet' or 'resnet50'
+  expert_ckpt: logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt
   analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
   moe_ckpt: logs/moe_dn-real_dn-sd_du-gan_q99/version_0/checkpoints/epoch=29-step=1410-v_loss=0.2938-v_acc=0.9200.ckpt
   expert_n_features: 2048
@@ -22,42 +22,39 @@ Model:
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
-    logs/expert_resnet50_db-real_db-gan_src_q99/version_4/checkpoints/epoch=59-step=219420-v_loss=0.1618-v_acc=0.9475.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_1/checkpoints/epoch=129-step=4160-v_loss=0.2097-v_acc=0.9325.ckpt
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd_src_q99/version_2/checkpoints/epoch=201-step=6464-v_loss=0.0704-v_acc=0.9675.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
     logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
   ] # list of paths to manipulation classifier checkpoints to be used for analytics model
+  fusion_ckpt: 
   jpeg_ckpt: logs/jpeg_midb_q50-100/version_0/checkpoints/epoch=96-step=213885-v_loss=2.5862-v_rmse=0.0000-v_mae=1.7335.ckpt
-  analytics_manipulations: [
-    'jpeg'
-  ] # list of manipulation names: 'unsharpmask', 'upsample', 'medianblur', 'bilateralblur' only used with analytics model
-  expert_manipulation: [
-    'medianblur',
-  ] # only used with expert model
+  analytics_manipulations: ['jpeg'] # list of manipulation names: 'unsharpmask', 'upsample', 'medianblur', 'bilateralblur' only used with analytics model
+  expert_manipulation: ['medianblur'] # only used with expert model
   patch_size: 256
 
 Data:
   datasets: [
     'db-real',
-    'db-sd',
-    # 'dn-sd'
+    'db-gan',
+    'db-sd'
   ]
   num_src_classes: 2
   train_txt_paths: [
     datasets/dataset_file_paths/db-real/train.txt,
+    datasets/dataset_file_paths/db-gan/train.txt,
     datasets/dataset_file_paths/db-sd/train.txt,
-    # datasets/dataset_file_paths/dn-sd/train.txt,
   ]
   val_txt_paths: [
     datasets/dataset_file_paths/db-real/val.txt,
+    datasets/dataset_file_paths/db-gan/val.txt,
     datasets/dataset_file_paths/db-sd/val.txt,
-    # datasets/dataset_file_paths/dn-sd/val.txt,
   ]
   test_txt_paths: [
     datasets/dataset_file_paths/db-real/test.txt,
+    datasets/dataset_file_paths/db-gan/test.txt,
     datasets/dataset_file_paths/db-sd/test.txt,
-    # datasets/dataset_file_paths/dn-sd/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -70,7 +67,7 @@ Data:
 
 Train:
   epochs: -1
-  max_steps: -1
+  max_steps: 10000
   early_stopping: False
   loss_weights: [2.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64

@@ -6,3 +6,4 @@ logs/
 *.pyc
 **__pycache__**
 nohup.out
+configs/configs.yaml
