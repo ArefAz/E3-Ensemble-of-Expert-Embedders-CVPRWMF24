@@ -23,8 +23,6 @@ class ParentDataset(Dataset):
         self.label = torch.nn.functional.one_hot(
             torch.tensor(label), num_classes=num_classes
         ).float()
-        self.label = torch.tensor(label).float()
-        self.label = label
         if isinstance(self.quality, int):
             self.quality = [self.quality]
         if center_crop:
