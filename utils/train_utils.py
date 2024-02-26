@@ -2,7 +2,7 @@ import os
 import torch
 from typing import Union
 from lightning.pytorch.loggers import TensorBoardLogger
-from models import ExpertClassifier, AnalyticsModel, JpegEstimator, MixtureOfExperts
+from models import *
 from lightning.pytorch.callbacks import (
     Callback,
     LearningRateMonitor,
@@ -61,6 +61,8 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         model_class = MixtureOfExperts
     elif model_configs["model_type"] == "jpeg":
         model_class = JpegEstimator
+    elif model_configs["model_type"] == "fusion":
+        model_class = FusionClassifier
     else:
         raise ValueError(f"Unknown model type {model_configs['model_type']}")
 
@@ -72,11 +74,18 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         ckpt_path = model_configs["moe_ckpt"]
     elif model_configs["model_type"] == "jpeg":
         ckpt_path = model_configs["jpeg_ckpt"]
+    elif model_configs["model_type"] == "fusion":
+        ckpt_path = model_configs["fusion_ckpt"]
     else:
         raise ValueError(f"Unknown model type {model_configs['model_type']}")
+    if model_class == ExpertClassifier:
+        assert model_configs["classifier"] in model_configs["expert_ckpt"], \
+        f"Invalide classifier {model_configs['classifier']} for expert model {model_configs['expert_ckpt']}"
     if is_test:
         try:
-            if model_configs["override_configs"]:
+            if model_class == FusionClassifier:
+                model = model_class(model_configs, train_configs, data_configs)
+            elif model_configs["override_configs"]:
                 model = model_class.load_from_checkpoint(
                     ckpt_path,
                     model_configs=model_configs,
@@ -91,7 +100,10 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
                 f"Error loading model from checkpoint {ckpt_path} possibly due to model and checkpoint mismatch."
             )
         print(f"Loaded model from checkpoint {ckpt_path}")
-        version = ckpt_path.split("/")[2]
+        try:
+            version = ckpt_path.split("/")[2]
+        except:
+            version = None
         return model, version
     else:
         if model_configs["fine_tune"] and model_configs["model_type"] == "expert":
