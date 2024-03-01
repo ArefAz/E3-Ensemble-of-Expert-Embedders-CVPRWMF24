@@ -64,6 +64,7 @@ class MixtureOfExperts(pl.LightningModule):
         lr = self.optimizers().param_groups[0]["lr"]
         self.log("lr", lr, on_step=True, on_epoch=False, prog_bar=True)
         self.log("t_loss", loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("acc", self.acc, on_step=False, on_epoch=True, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):

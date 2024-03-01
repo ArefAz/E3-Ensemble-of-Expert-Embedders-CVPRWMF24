@@ -58,7 +58,7 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
         ), "Dataset name mismatch"
         assert dataset_name in data_config["val_txt_paths"][i], "Dataset name mismatch"
         assert dataset_name in data_config["test_txt_paths"][i], "Dataset name mismatch"
-        if dataset_name in ["coco", "midb", "easy-real", "db-real", "dn-real"]:
+        if dataset_name in ["coco", "midb", "easy-real", "db-real", "dn-real", "dn-real-500"]:
             label = 0
         elif dataset_name in [
             "dm",
@@ -76,7 +76,13 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             "db-gan",
             'db-sd',
             "du-gan",
+            "dn-gan-500",
             "dn-sd",
+            "dn-sd-500",
+            "dn-tt",
+            "dn-eg3d",
+            "dn-glide",
+            "dn-dalle2"
         ]:
             label = 1
         else:
@@ -121,6 +127,16 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             txt_file_path=data_config["test_txt_paths"][i],
             hdf5_file_path=data_config["test_hdf5_paths"][i],
         )
+        if train_config["train_dataset_limit_per_class"] and "real" not in dataset_name:
+            indices = torch.randperm(len(train_dataset))[: train_config["train_dataset_limit_per_class"]]
+            train_dataset = Subset(train_dataset, indices)
+        if train_config["val_dataset_limit_per_class"] and "real" not in dataset_name:
+            indices = torch.randperm(len(val_dataset))[: train_config["val_dataset_limit_per_class"]]
+            val_dataset = Subset(val_dataset, indices)
+        if train_config["test_dataset_limit_per_class"] and "real" not in dataset_name:
+            indices = torch.randperm(len(test_dataset))[: train_config["test_dataset_limit_per_class"]]
+            test_dataset = Subset(test_dataset, indices)
+        
         print("len(train_dataset):", len(train_dataset))
         print("len(val_dataset):", len(val_dataset))
         print("len(test_dataset):", len(test_dataset))
@@ -137,6 +153,9 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     if train_config["val_dataset_hard_limit_num"]:
         indices = torch.randperm(len(val_dataset))[: train_config["val_dataset_hard_limit_num"]]
         val_dataset = Subset(val_dataset, indices)
+    if train_config["test_dataset_hard_limit_num"]:
+        indices = torch.randperm(len(test_dataset))[: train_config["test_dataset_hard_limit_num"]]
+        test_dataset = Subset(test_dataset, indices)
 
     print("Train dataset size:", len(train_dataset))
     print("Val dataset size:", len(val_dataset))

@@ -5,25 +5,30 @@ General:
   val_check_interval: # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
-  fast_dev_run: True
+  fast_dev_run: False
   profiling: False
   inference_mode: True
   version:  # could be either a string or None, in which case the version is automatically generated
 
 
 Model:
-  model_type: fusion # could be either 'analytics' or 'expert' or 'jpeg' or 'moe' or 'fusion'
+  model_type: moe # could be either 'analytics' or 'expert' or 'jpeg' or 'moe' or 'fusion'
   classifier: mislnet # 'mislnet' or 'resnet50'
   expert_ckpt: logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt
   analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
-  moe_ckpt: logs/moe_dn-real_dn-sd_du-gan_q99/version_0/checkpoints/epoch=29-step=1410-v_loss=0.2938-v_acc=0.9200.ckpt
-  expert_n_features: 2048
+  moe_ckpt: logs/ft_moe_dn-real-500_dn-tt_dn-eg3d_dn-dalle2_dn-sd-500_dn-gan-500_q99/version_3/checkpoints/epoch=149-step=2400-v_loss=0.2317-v_acc=0.9510-last.ckpt
+  expert_n_features: 200
+  fusion_rule: 'max' # could be either 'avg' or 'max'
   fine_tune: False # if True, the model is fine-tuned from a checkpoint
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
     logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
-    logs/ft_expert_mislnet_dn-real_dn-sd_src_q99/version_2/checkpoints/epoch=201-step=6464-v_loss=0.0704-v_acc=0.9675.ckpt
+    logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0223-v_acc=0.9910-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2033-v_acc=0.9340-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1576-v_acc=0.9540-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2253-v_acc=0.9280-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-500_dn-glide_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1026-v_acc=0.9740-last.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
     logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
@@ -36,25 +41,37 @@ Model:
 
 Data:
   datasets: [
-    'db-real',
-    'db-gan',
-    'db-sd'
+    'dn-real-500',
+    'dn-glide',
+    'dn-eg3d',
+    'dn-dalle2',
+    'dn-sd-500',
+    'dn-gan-500',
   ]
   num_src_classes: 2
   train_txt_paths: [
-    datasets/dataset_file_paths/db-real/train.txt,
-    datasets/dataset_file_paths/db-gan/train.txt,
-    datasets/dataset_file_paths/db-sd/train.txt,
+    datasets/dataset_file_paths/dn-real-500/train.txt,
+    datasets/dataset_file_paths/dn-glide/train.txt,
+    datasets/dataset_file_paths/dn-eg3d/train.txt,
+    datasets/dataset_file_paths/dn-dalle2/train.txt,
+    datasets/dataset_file_paths/dn-sd-500/train.txt,
+    datasets/dataset_file_paths/dn-gan-500/train.txt,
   ]
   val_txt_paths: [
-    datasets/dataset_file_paths/db-real/val.txt,
-    datasets/dataset_file_paths/db-gan/val.txt,
-    datasets/dataset_file_paths/db-sd/val.txt,
+    datasets/dataset_file_paths/dn-real-500/test.txt,
+    datasets/dataset_file_paths/dn-glide/test.txt,
+    datasets/dataset_file_paths/dn-eg3d/test.txt,
+    datasets/dataset_file_paths/dn-dalle2/test.txt,
+    datasets/dataset_file_paths/dn-sd-500/test.txt,
+    datasets/dataset_file_paths/dn-gan-500/test.txt,
   ]
   test_txt_paths: [
-    datasets/dataset_file_paths/db-real/test.txt,
-    datasets/dataset_file_paths/db-gan/test.txt,
-    datasets/dataset_file_paths/db-sd/test.txt,
+    datasets/dataset_file_paths/dn-real-500/test.txt,
+    datasets/dataset_file_paths/dn-glide/test.txt,
+    datasets/dataset_file_paths/dn-eg3d/test.txt,
+    datasets/dataset_file_paths/dn-dalle2/test.txt,
+    datasets/dataset_file_paths/dn-sd-500/test.txt,
+    datasets/dataset_file_paths/dn-gan-500/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -67,11 +84,11 @@ Data:
 
 Train:
   epochs: -1
-  max_steps: 10000
+  max_steps: 2400
   early_stopping: False
   loss_weights: [2.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 1.0e-6
+  lr: 1.0e-5
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
@@ -83,9 +100,10 @@ Train:
   momentum: 0.9 # only used with SGD optimizer
   train_dataset_hard_limit_num:
   val_dataset_hard_limit_num:
-  # train_dataset_limit_per_class:  # class refers to either synthetic or real, synthetic is equally 
-  # val_dataset_limit_per_class:  # disributed among the generators
-  # test_dataset_limit_per_class: 
+  test_dataset_hard_limit_num:
+  train_dataset_limit_per_class: 100 # class refers to either synthetic or real, synthetic is equally 
+  val_dataset_limit_per_class:  # disributed among the generators
+  test_dataset_limit_per_class: 100
   train_dataset_limit: 1.0
   val_dataset_limit: 1.0
   test_dataset_limit: 1.0
