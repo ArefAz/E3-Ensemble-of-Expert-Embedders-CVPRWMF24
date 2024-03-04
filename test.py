@@ -58,6 +58,9 @@ def run_test(configs):
     with open(save_filename, "wb") as f:
         pickle.dump(results, f)
     print(f"Saved results to {save_filename}")
+    configs["is_test"] = False
+
+    return results[quality][0]
 
 
 if __name__ == "__main__":

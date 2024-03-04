@@ -55,7 +55,7 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     for i, dataset_name in enumerate(data_config["datasets"]):
         assert (
             dataset_name in data_config["train_txt_paths"][i]
-        ), "Dataset name mismatch"
+        ), f"Dataset name mismatch: {dataset_name} not in {data_config['train_txt_paths'][i]}"
         assert dataset_name in data_config["val_txt_paths"][i], "Dataset name mismatch"
         assert dataset_name in data_config["test_txt_paths"][i], "Dataset name mismatch"
         if dataset_name in ["coco", "midb", "easy-real", "db-real", "dn-real", "dn-real-500"]:

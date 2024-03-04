@@ -1,7 +1,7 @@
 General:
   seed: 0
   num_devices: -1
-  check_val_every_n_epoch: 150 # number of epochs between validation check, needs to be empty (None) for using #batches
+  check_val_every_n_epoch: 1 # number of epochs between validation check, needs to be empty (None) for using #batches
   val_check_interval: # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
@@ -23,11 +23,11 @@ Model:
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
-    logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1243-v_acc=0.9560-last.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3877-v_acc=0.8630-last.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0127-v_acc=0.9950.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0837-v_acc=0.9740-last.ckpt
+    # logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1243-v_acc=0.9560-last.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3877-v_acc=0.8630-last.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0127-v_acc=0.9950.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0837-v_acc=0.9740-last.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
     logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
@@ -40,37 +40,13 @@ Model:
 
 Data:
   datasets: [
-    'dn-real-500',
-    'dn-gan-500',
-    # 'dn-tt',
-    # 'dn-sd-500',
-    # 'dn-eg3d',
-    # 'dn-dalle2',
   ]
   num_src_classes: 2
   train_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/train.txt,
-    datasets/dataset_file_paths/dn-gan-500/train.txt,
-    # datasets/dataset_file_paths/dn-tt/train.txt,
-    # datasets/dataset_file_paths/dn-sd-500/train.txt,
-    # datasets/dataset_file_paths/dn-eg3d/train.txt,
-    # datasets/dataset_file_paths/dn-dalle2/train.txt,
   ]
   val_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/test.txt,
-    datasets/dataset_file_paths/dn-gan-500/test.txt,
-    # datasets/dataset_file_paths/dn-tt/test.txt,
-    # datasets/dataset_file_paths/dn-sd-500/test.txt,
-    # datasets/dataset_file_paths/dn-eg3d/test.txt,
-    # datasets/dataset_file_paths/dn-dalle2/test.txt,
   ]
   test_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/test.txt,
-    datasets/dataset_file_paths/dn-gan-500/test.txt,
-    # datasets/dataset_file_paths/dn-tt/test.txt,
-    # datasets/dataset_file_paths/dn-sd-500/test.txt,
-    # datasets/dataset_file_paths/dn-eg3d/test.txt,
-    # datasets/dataset_file_paths/dn-dalle2/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -82,7 +58,7 @@ Data:
   prefetch_factor: 3
 
 Train:
-  epochs: 150
+  epochs: 1
   max_steps: -1
   early_stopping: False
   loss_weights: [1.0, 1.0] # only used with mixture model loss to deal with class imbalance
