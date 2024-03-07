@@ -50,7 +50,6 @@ class ParentDataset(Dataset):
         if img.shape[1] < self.patch_size or img.shape[2] < self.patch_size:
             # print("Image too small:", self.file_paths[index], img.shape, "skipping...")
             # return self.__getitem__(random.randint(0, len(self.file_paths) - 1))
-            print(f"Resized image {self.file_paths[index]} from {img.shape} to {self.patch_size}")
             img = self.resize(img)
         img = self.crop(img)
         if img.shape[0] == 1:
