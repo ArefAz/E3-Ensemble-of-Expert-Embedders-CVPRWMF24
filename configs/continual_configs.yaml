@@ -1,20 +1,52 @@
-General:
-  seed: 0
-  num_devices: -1
-  check_val_every_n_epoch: 150 # number of epochs between validation check, needs to be empty (None) for using #batches
-  val_check_interval: # number of training batches between each validation check
-
 Model:
-  model_type: # either moe or fusion
-  classifier: mislnet # 'mislnet' or 'resnet50'
-  fusion_rule:
-  baseline_ckpt: logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt # path to the baseline model checkpoint
+  model_type: transformer # either moe or fusion or transformer
+  load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
+  ft_ckpt_paths: [
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
+    logs/ft_expert_mislnet_dn-real-2k_dn-glide-dif_src_q99/version_28/checkpoints/epoch=49-step=3150-v_loss=0.0360-v_acc=0.9875-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-2k_dn-mj_src_q99/version_24/checkpoints/epoch=49-step=3150-v_loss=0.1265-v_acc=0.9600-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-2k_dn-dalle-mini_src_q99/version_17/checkpoints/epoch=49-step=3150-v_loss=0.0380-v_acc=0.9875-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-2k_dn-sd14_src_q99/version_13/checkpoints/epoch=49-step=3150-v_loss=0.5604-v_acc=0.8075-last.ckpt,
+    logs/ft_expert_mislnet_dn-real-2k_dn-sd21_src_q99/version_10/checkpoints/epoch=49-step=3150-v_loss=0.1802-v_acc=0.9275-last.ckpt
+  ]
+  # ft_ckpt_paths: [
+  #   logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
+  #   logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_72/checkpoints/epoch=149-step=2400-v_loss=0.0553-v_acc=0.9830-last.ckpt,
+  #   logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_23/checkpoints/epoch=149-step=2400-v_loss=0.4651-v_acc=0.8370-last.ckpt,
+  #   logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_19/checkpoints/epoch=149-step=2400-v_loss=0.0841-v_acc=0.9730-last.ckpt,
+  #   logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_18/checkpoints/epoch=149-step=2400-v_loss=0.0365-v_acc=0.9890-last.ckpt
+  # ]
 
 Data:
-  real_dataset_name: dn-real-500 # name of the real dataset
+  real_dataset_name: dn-real-2k # name of the real dataset
   synthetic_dataset_names: [
-    dn-tt,
-    dn-sd-500,
+    dn-gan-2k,
+    dn-gansformer-2k,
+    dn-glide-2k,
+    dn-mj-2k,
+    dn-vqdiff-2k,
+    dn-dallemini-2k,
+    dn-sd14-2k,
+    dn-tt-2k,
+    dn-sd21-2k,
+    dn-ddf-2k,
   ] # list of tasks to be used for continual learning
+  # real_dataset_name: dn-real-500 # name of the real dataset
+  # synthetic_dataset_names: [
+  #   dn-gan-500,
+  #   dn-tt,
+  #   dn-sd-500,
+  #   dn-dalle2,
+  #   dn-eg3d,
+  # ] # list of tasks to be used for continual learning
   memory_size: 1000 # number of samples to be stored in the memory
   fixed_memory: True # if True, the memory size is fixed
+
+Train:
+  epochs: 50
+  batch_size: 64
+  lr: 5.0e-5
+  distill: False # if True, the distillation loss is used
+
+General:
+  check_val_every_n_epoch: 10

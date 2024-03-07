@@ -15,8 +15,8 @@ def run_test(configs):
 
     print(f"Running the tests for experiment: {exp_name}")
     model, model_version = get_model(configs, is_test=True)
-    print("with model version:", model_version)
-    print("with quality_list:", configs["Data"]["test_jpeg_qualities"])
+    # print("with model version:", model_version)
+    # print("with quality_list:", configs["Data"]["test_jpeg_qualities"])
 
     results = {}
     results_concatenated = {}
@@ -33,7 +33,7 @@ def run_test(configs):
             inference_mode=configs["General"]["inference_mode"],
             limit_test_batches=configs["Train"]["test_dataset_limit"],
         )
-        print(f"Quality: {configs['Data']['jpeg_quality']}")
+        # print(f"Quality: {configs['Data']['jpeg_quality']}")
         _, _, test_dataloader = get_dataloaders(
             configs["Model"], configs["Data"], configs["Train"]
         )
@@ -42,13 +42,11 @@ def run_test(configs):
             dataloaders=test_dataloader,
         )
         if configs["Model"]["model_type"] in ["analytics", "expert", "moe"]:
-            print()
             pretty_print_mat(
                 model.get_conf_mat(),
                 column_labels=["Real", "Synth"],
                 row_labels=["Real", "Synth"],
             )
-            print()
 
     if model_version is None:
         model_version = ""

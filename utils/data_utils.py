@@ -2,9 +2,12 @@ from datasets import *
 from torch.utils.data import ConcatDataset, DataLoader, Subset
 import torch
 
-def get_dataloaders(model_config: dict, data_config: dict, train_config: dict):
+
+def get_dataloaders(
+    model_config: dict, data_config: dict, train_config: dict, save_format=False
+):
     train_dataset, val_dataset, test_dataset = get_datasets(
-        model_config, data_config, train_config
+        model_config, data_config, train_config, save_format=save_format
     )
     train_dataloader = DataLoader(
         train_dataset,
@@ -33,15 +36,12 @@ def get_dataloaders(model_config: dict, data_config: dict, train_config: dict):
         pin_memory=True,
         persistent_workers=True,
     )
-    # save the dataloaders in a pickle file
-    # import pickle
-    # with open("dataloaders.pkl", "wb") as f:
-    #     pickle.dump([train_dataloader, val_dataloader, test_dataloader], f)
-    # exit()
     return train_dataloader, val_dataloader, test_dataloader
 
 
-def get_datasets(model_config: dict, data_config: dict, train_config: dict):
+def get_datasets(
+    model_config: dict, data_config: dict, train_config: dict, save_format=False
+):
     assert (
         len(data_config["datasets"])
         == len(data_config["train_txt_paths"])
@@ -58,31 +58,67 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
         ), f"Dataset name mismatch: {dataset_name} not in {data_config['train_txt_paths'][i]}"
         assert dataset_name in data_config["val_txt_paths"][i], "Dataset name mismatch"
         assert dataset_name in data_config["test_txt_paths"][i], "Dataset name mismatch"
-        if dataset_name in ["coco", "midb", "easy-real", "db-real", "dn-real", "dn-real-500"]:
+        if (
+            dataset_name
+            in [
+                "coco",
+                "midb",
+                "easy-real",
+                "db-real",
+                "dn-real",
+                "dn-real-500",
+                "db-real-coco-lsun",
+                "dn-real-coco-lsun-2k",
+            ]
+            or "real" in dataset_name
+        ):
             label = 0
         elif dataset_name in [
             "dm",
             "gan",
+            "db-final-gan",
             "stylegan",
             "stylegan2",
             "stylegan3",
             "stargan",
             "biggan",
             "projected_gan",
-            'progan',
+            "progan",
             "easy-progan",
             "tam_trans",
             "stable_diffusion",
             "db-gan",
-            'db-sd',
+            "db-sd",
             "du-gan",
             "dn-gan-500",
+            "dn-gan-250",
+            "dn-gan-2k",
             "dn-sd",
             "dn-sd-500",
+            "dn-sd-250",
             "dn-tt",
+            "dn-tt-2k",
+            "dn-tt-250",
+            "dn-gansformer-2k",
+            "dn-dallemini-2k",
+            "dn-vqdiff-2k",
+            "dn-ddf-2k",
             "dn-eg3d",
+            "dn-eg3d-250",
             "dn-glide",
-            "dn-dalle2"
+            "dn-glide-2k",
+            "dn-glide-250",
+            "dn-dalle2",
+            "dn-dalle2-250",
+            "dn-glide-dif",
+            "dn-mj",
+            "dn-mj-2k",
+            "dn-sd14",
+            "dn-sd14-2k",
+            "dn-sd21",
+            "dn-sd21-2k",
+            "dn-dalle-mini",
+            "dn-final-gan-2k",
         ]:
             label = 1
         else:
@@ -108,6 +144,7 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             center_crop=False,
             txt_file_path=data_config["train_txt_paths"][i],
             hdf5_file_path=data_config["train_hdf5_paths"][i],
+            save_format=save_format,
         )
         val_dataset = dataset_class(
             quality=data_config["jpeg_quality"],
@@ -117,6 +154,7 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             center_crop=True,
             txt_file_path=data_config["val_txt_paths"][i],
             hdf5_file_path=data_config["val_hdf5_paths"][i],
+            save_format=save_format,
         )
         test_dataset = dataset_class(
             quality=data_config["jpeg_quality"],
@@ -126,19 +164,36 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
             center_crop=True,
             txt_file_path=data_config["test_txt_paths"][i],
             hdf5_file_path=data_config["test_hdf5_paths"][i],
+            save_format=save_format,
         )
         if train_config["train_dataset_limit_per_class"] and "real" not in dataset_name:
-            indices = torch.randperm(len(train_dataset))[: train_config["train_dataset_limit_per_class"]]
-            train_dataset = Subset(train_dataset, indices)
+            train_dataset = Subset(
+                train_dataset,
+                torch.arange(train_config["train_dataset_limit_per_class"]),
+            )
         if train_config["val_dataset_limit_per_class"] and "real" not in dataset_name:
-            indices = torch.randperm(len(val_dataset))[: train_config["val_dataset_limit_per_class"]]
-            val_dataset = Subset(val_dataset, indices)
+            val_dataset = Subset(
+                val_dataset, torch.arange(train_config["val_dataset_limit_per_class"])
+            )
         if train_config["test_dataset_limit_per_class"] and "real" not in dataset_name:
-            indices = torch.randperm(len(test_dataset))[: train_config["test_dataset_limit_per_class"]]
-            test_dataset = Subset(test_dataset, indices)
-        
-        print("len(train_dataset):", len(train_dataset))
-        print("len(val_dataset):", len(val_dataset))
+            test_dataset = Subset(
+                test_dataset, torch.arange(train_config["test_dataset_limit_per_class"])
+            )
+        if train_config["train_dataset_limit_real"] and "real" in dataset_name:
+            train_dataset = Subset(
+                train_dataset, torch.arange(train_config["train_dataset_limit_real"])
+            )
+        if train_config["val_dataset_limit_real"] and "real" in dataset_name:
+            val_dataset = Subset(
+                val_dataset, torch.arange(train_config["val_dataset_limit_real"])
+            )
+        if train_config["test_dataset_limit_real"] and "real" in dataset_name:
+            test_dataset = Subset(
+                test_dataset, torch.arange(train_config["test_dataset_limit_real"])
+            )
+
+        print("len(train_dataset):", len(train_dataset), end=", ")
+        print("len(val_dataset):", len(val_dataset), end=", ")
         print("len(test_dataset):", len(test_dataset))
         train_datasets.append(train_dataset)
         val_datasets.append(val_dataset)
@@ -148,16 +203,22 @@ def get_datasets(model_config: dict, data_config: dict, train_config: dict):
     val_dataset = ConcatDataset(val_datasets)
     test_dataset = ConcatDataset(test_datasets)
     if train_config["train_dataset_hard_limit_num"]:
-        indices = torch.randperm(len(train_dataset))[: train_config["train_dataset_hard_limit_num"]]
+        indices = torch.randperm(len(train_dataset))[
+            : train_config["train_dataset_hard_limit_num"]
+        ]
         train_dataset = Subset(train_dataset, indices)
     if train_config["val_dataset_hard_limit_num"]:
-        indices = torch.randperm(len(val_dataset))[: train_config["val_dataset_hard_limit_num"]]
+        indices = torch.randperm(len(val_dataset))[
+            : train_config["val_dataset_hard_limit_num"]
+        ]
         val_dataset = Subset(val_dataset, indices)
     if train_config["test_dataset_hard_limit_num"]:
-        indices = torch.randperm(len(test_dataset))[: train_config["test_dataset_hard_limit_num"]]
+        indices = torch.randperm(len(test_dataset))[
+            : train_config["test_dataset_hard_limit_num"]
+        ]
         test_dataset = Subset(test_dataset, indices)
 
-    print("Train dataset size:", len(train_dataset))
-    print("Val dataset size:", len(val_dataset))
+    print("Train dataset size:", len(train_dataset), end=", ")
+    print("Val dataset size:", len(val_dataset), end=", ")
     print("Test dataset size:", len(test_dataset))
     return train_dataset, val_dataset, test_dataset

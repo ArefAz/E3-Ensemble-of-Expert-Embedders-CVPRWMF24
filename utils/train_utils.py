@@ -59,6 +59,8 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         model_class = AnalyticsModel
     elif model_configs["model_type"] == "moe":
         model_class = MixtureOfExperts
+    elif model_configs["model_type"] == "transformer":
+        model_class = MixtureTransformer
     elif model_configs["model_type"] == "jpeg":
         model_class = JpegEstimator
     elif model_configs["model_type"] == "fusion":
@@ -76,6 +78,8 @@ def get_model(configs, is_test: bool) -> Union[torch.nn.Module, str]:
         ckpt_path = model_configs["jpeg_ckpt"]
     elif model_configs["model_type"] == "fusion":
         ckpt_path = model_configs["fusion_ckpt"]
+    elif model_configs["model_type"] == "transformer":
+        ckpt_path = model_configs["transformer_ckpt"]
     else:
         raise ValueError(f"Unknown model type {model_configs['model_type']}")
     if model_class == ExpertClassifier:

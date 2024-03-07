@@ -1,7 +1,7 @@
 def dataset_name_to_paths(dataset_name):
     train_txt_path = f"datasets/dataset_file_paths/{dataset_name}/train.txt"
     val_txt_path = f"datasets/dataset_file_paths/{dataset_name}/val.txt"
-    test_txt_path = f"datasets/dataset_file_paths/{dataset_name}/test.txt"
+    test_txt_path = f"datasets/dataset_file_paths/{dataset_name}/val.txt"
     return train_txt_path, val_txt_path, test_txt_path
 
 def fill_configs_with_datasets(configs, dataset_names, real_name):
@@ -21,7 +21,3 @@ def fill_configs_with_datasets(configs, dataset_names, real_name):
     configs["Data"]["test_txt_paths"] = test_txt_paths
     configs["Data"]["datasets"] = configs_datasets
     return configs
-
-def task_name_to_dataloader(task_name):
-    assert task_name in ['gan', 'tt', 'sd', 'eg3d', 'glide', 'dalle2']
-    

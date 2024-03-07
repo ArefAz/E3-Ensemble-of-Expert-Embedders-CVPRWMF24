@@ -1,1 +1,1 @@
-from .configs import configs_dict as configs, configs_ft, continual_configs
+from .configs import configs_dict as configs, ft_configs, continual_configs

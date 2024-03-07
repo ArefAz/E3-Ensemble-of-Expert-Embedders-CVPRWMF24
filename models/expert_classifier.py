@@ -34,6 +34,7 @@ class ExpertClassifier(pl.LightningModule):
         self.loss = torch.nn.BCEWithLogitsLoss()
         self.acc = Accuracy("binary")
         self.v_acc = Accuracy("binary")
+        self.test_acc = Accuracy("binary")
         self.auc = MulticlassAUROC(num_classes=2)
         self.prec = Precision(task="binary")
         self.recall = Recall(task="binary")
@@ -55,7 +56,7 @@ class ExpertClassifier(pl.LightningModule):
         lr = self.optimizers().param_groups[0]["lr"]
         self.log("lr", lr, on_step=True, on_epoch=False, prog_bar=True)
         self.log("t_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
-        self.log("t_acc", self.acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("t_acc", self.acc, on_step=True, on_epoch=True, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -65,7 +66,7 @@ class ExpertClassifier(pl.LightningModule):
 
     def test_step(self, batch, batch_idx, dataloader_idx=0):
         loss = self.infer(batch, is_test=True)
-        self.log("acc", self.acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
         self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True)
         self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True)
         self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True)
@@ -75,23 +76,23 @@ class ExpertClassifier(pl.LightningModule):
         img, src_label = batch
         if self.task == "src":
             label = src_label
-        elif self.task == "manipulation":
-            label0 = torch.nn.functional.one_hot(torch.tensor(0), num_classes=2).float()
-            label0 = label0.repeat(img.shape[0] // 2, 1)
-            label1 = torch.nn.functional.one_hot(torch.tensor(1), num_classes=2).float()
-            label1 = label1.repeat(img.shape[0] - img.shape[0] // 2, 1)
-            label = torch.cat([label0, label1], dim=0)
-            label = label.to(self.device)
-            img[: img.shape[0] // 2] = self.pipe(img[: img.shape[0] // 2])
-            indices = torch.randperm(img.shape[0])
-            img = img[indices]
-            label = label[indices]
-        elif self.task == "src_test_with_manipulation":
-            img[: img.shape[0] // 2] = self.pipe(img[: img.shape[0] // 2])
-            label = src_label
-            indices = torch.randperm(img.shape[0])
-            img = img[indices]
-            label = label[indices]
+        # elif self.task == "manipulation":
+        #     label0 = torch.nn.functional.one_hot(torch.tensor(0), num_classes=2).float()
+        #     label0 = label0.repeat(img.shape[0] // 2, 1)
+        #     label1 = torch.nn.functional.one_hot(torch.tensor(1), num_classes=2).float()
+        #     label1 = label1.repeat(img.shape[0] - img.shape[0] // 2, 1)
+        #     label = torch.cat([label0, label1], dim=0)
+        #     label = label.to(self.device)
+        #     img[: img.shape[0] // 2] = self.pipe(img[: img.shape[0] // 2])
+        #     indices = torch.randperm(img.shape[0])
+        #     img = img[indices]
+        #     label = label[indices]
+        # elif self.task == "src_test_with_manipulation":
+        #     img[: img.shape[0] // 2] = self.pipe(img[: img.shape[0] // 2])
+        #     label = src_label
+        #     indices = torch.randperm(img.shape[0])
+        #     img = img[indices]
+        #     label = label[indices]
         else:
             raise ValueError(f"Unknown task {self.task}")
         logits = self(img)
@@ -104,6 +105,7 @@ class ExpertClassifier(pl.LightningModule):
         if is_valid:
             self.v_acc.update(preds, label)
         if is_test:
+            self.test_acc.update(preds, label)
             if self.conf_mat_accumalator.device != self.device:
                 self.conf_mat_accumalator = self.conf_mat_accumalator.to(self.device)
                 self.auc = self.auc.to(self.device)

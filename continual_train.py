@@ -48,7 +48,7 @@ if __name__ == "__main__":
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
             ft_configs["Model"]["model_type"] = cl_configs["Model"]["model_type"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"] * 100
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"] * 5
             ft_configs["Model"]["fine_tune"] = False
             ft_configs["Model"]["src_ckpts"].append(last_expert_path)
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
             if cl_configs["Data"]["fixed_memory"]:
                 ft_configs["Train"]["train_dataset_limit_per_class"] = (
-                    cl_configs["Data"]["memory_size"] // 2 // i
+                    cl_configs["Data"]["memory_size"] // 2 // (i + 1)
                 )
                 ft_configs["Train"]["train_dataset_limit_real"] = (
                     cl_configs["Data"]["memory_size"] // 2
@@ -74,23 +74,20 @@ if __name__ == "__main__":
             print(
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
+            ft_configs["Model"]["teacher_ckpt"] = ft_configs["Model"]["moe_ckpt"]
+            ft_configs["Train"]["distill"] = cl_configs["Train"]["distill"] if i > 1 else False
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = None
             ft_configs["Train"]["train_dataset_limit_real"] = None
             ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
-            ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
+            ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict["last_model_path"]
+            ft_configs["Model"]["transformer_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
-            
-            # ft_configs["Model"]["teacher_ckpt"] = model_checkpoint_state_dict[
-            #     "last_model_path"
-            # ]
-            # ft_configs["Model"]["transformer_ckpt"] = model_checkpoint_state_dict[
-            #     "last_model_path"
-            # ]
 
-        for dataset in cl_configs["Data"]["synthetic_dataset_names"]:
+        # for dataset in cl_configs["Data"]["synthetic_dataset_names"]:
+        for dataset in seen_datasets:
             print(f"Testing MOE for dataset: {dataset}...")
             ft_configs = fill_configs_with_datasets(
                 ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]

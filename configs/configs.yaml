@@ -1,8 +1,8 @@
 General:
   seed: 0
   num_devices: -1
-  check_val_every_n_epoch: 150 # number of epochs between validation check, needs to be empty (None) for using #batches
-  val_check_interval: # number of training batches between each validation check
+  check_val_every_n_epoch: # number of epochs between validation check, needs to be empty (None) for using #batches
+  val_check_interval: 1000 # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
   fast_dev_run: False
@@ -14,20 +14,21 @@ General:
 Model:
   model_type: expert # could be either 'analytics' or 'expert' or 'jpeg' or 'moe' or 'fusion'
   classifier: mislnet # 'mislnet' or 'resnet50'
-  expert_ckpt: logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.0647-v_acc=0.9780-last.ckpt
+  expert_ckpt: logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt
   analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
   moe_ckpt: logs/moe_dn-real-500_dn-gan-500_dn-tt_dn-sd-500_dn-eg3d_dn-dalle2_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1274-v_acc=0.9522-last.ckpt
   expert_n_features: 200
   fusion_rule: 'max' # could be either 'avg' or 'max'
-  fine_tune: True # if True, the model is fine-tuned from a checkpoint
+  fine_tune: False # if True, the model is fine-tuned from a checkpoint
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
     logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1243-v_acc=0.9560-last.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3877-v_acc=0.8630-last.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0127-v_acc=0.9950.ckpt,
-    logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0837-v_acc=0.9740-last.ckpt
+    logs/ft_expert_mislnet_dn-real-2k_dn-dalle-mini_src_q99/version_3/checkpoints/epoch=49-step=3150-v_loss=0.0383-v_acc=0.9862-last.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1243-v_acc=0.9560-last.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3877-v_acc=0.8630-last.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0127-v_acc=0.9950.ckpt,
+    # logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0837-v_acc=0.9740-last.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
     logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
@@ -40,37 +41,21 @@ Model:
 
 Data:
   datasets: [
-    'dn-real-500',
-    'dn-gan-500',
-    # 'dn-tt',
-    # 'dn-sd-500',
-    # 'dn-eg3d',
-    # 'dn-dalle2',
+    'db-real-coco-lsun',
+    'db-final-gan',
   ]
   num_src_classes: 2
   train_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/train.txt,
-    datasets/dataset_file_paths/dn-gan-500/train.txt,
-    # datasets/dataset_file_paths/dn-tt/train.txt,
-    # datasets/dataset_file_paths/dn-sd-500/train.txt,
-    # datasets/dataset_file_paths/dn-eg3d/train.txt,
-    # datasets/dataset_file_paths/dn-dalle2/train.txt,
+    datasets/dataset_file_paths/db-real-coco-lsun/train.txt,
+    datasets/dataset_file_paths/db-final-gan/train.txt,
   ]
   val_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/test.txt,
-    datasets/dataset_file_paths/dn-gan-500/test.txt,
-    # datasets/dataset_file_paths/dn-tt/test.txt,
-    # datasets/dataset_file_paths/dn-sd-500/test.txt,
-    # datasets/dataset_file_paths/dn-eg3d/test.txt,
-    # datasets/dataset_file_paths/dn-dalle2/test.txt,
+    datasets/dataset_file_paths/db-real-coco-lsun/val.txt,
+    datasets/dataset_file_paths/db-final-gan/val.txt,
   ]
   test_txt_paths: [
-    datasets/dataset_file_paths/dn-real-500/test.txt,
-    datasets/dataset_file_paths/dn-gan-500/test.txt,
-    # datasets/dataset_file_paths/dn-tt/test.txt,
-    # datasets/dataset_file_paths/dn-sd-500/test.txt,
-    # datasets/dataset_file_paths/dn-eg3d/test.txt,
-    # datasets/dataset_file_paths/dn-dalle2/test.txt,
+    datasets/dataset_file_paths/db-real-coco-lsun/test.txt,
+    datasets/dataset_file_paths/db-final-gan/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -78,22 +63,22 @@ Data:
   jpeg_quality: [99] # only used for training, could be either an int or a list of ints
   test_jpeg_qualities: [99] # only used for testing with different jpeg qualities, should be a list of ints
   randomize_jpeg_quality: False # if True, jpeg_quality is ignored and it's set to list(np.arange(70, 100, 1))
-  num_workers: 10
+  num_workers: 16
   prefetch_factor: 3
 
 Train:
-  epochs: 150
+  epochs: 100
   max_steps: -1
   early_stopping: False
   loss_weights: [1.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 1.0e-5
+  lr: 1.0e-6
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
   scheduler: step # cosine, step
   lr_decay_rate: 0.9 # only used with step scheduler
-  lr_step_size: 30 # only used with step scheduler
+  lr_step_size: 5 # only used with step scheduler
   min_lr: 1.0e-5 # only used with cosine scheduler
   optimizer: AdamW # Adam, AdamW, SGD
   momentum: 0.9 # only used with SGD optimizer
@@ -103,6 +88,9 @@ Train:
   train_dataset_limit_per_class: # class refers to either synthetic or real, synthetic is equally 
   val_dataset_limit_per_class: # disributed among the generators
   test_dataset_limit_per_class:
+  train_dataset_limit_real:
+  val_dataset_limit_real:
+  test_dataset_limit_real:
   train_dataset_limit: 1.0
   val_dataset_limit: 1.0
   test_dataset_limit: 1.0
