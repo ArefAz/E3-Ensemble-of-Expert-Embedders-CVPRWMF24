@@ -5,7 +5,7 @@ from torchmetrics.classification import *
 from data_pipes import Pipe
 from .mislnet import MISLNet
 from utils.model_utils import get_optimizer_dict
-from torchvision.models import resnet50, resnet18
+from torchvision.models import resnet50, resnet18, densenet121, mobilenet_v3_small
 
 
 class ExpertClassifier(pl.LightningModule):
@@ -29,6 +29,12 @@ class ExpertClassifier(pl.LightningModule):
             self.classifier = MISLNet(num_classes=2)
         elif self.model_configs["classifier"] == "resnet50":
             self.classifier = resnet50(num_classes=2)
+        elif self.model_configs["classifier"] == "resnet18":
+            self.classifier = resnet18(num_classes=2)
+        elif self.model_configs["classifier"] == "densenet":
+            self.classifier = densenet121(num_classes=2)
+        elif self.model_configs["classifier"] == "mobilenet":
+            self.classifier = mobilenet_v3_small(num_classes=2)
         else:
             raise ValueError(f"Unknown classifier {self.model_configs['classifier']}")
         self.loss = torch.nn.BCEWithLogitsLoss()
