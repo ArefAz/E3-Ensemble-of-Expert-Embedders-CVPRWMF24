@@ -2,7 +2,7 @@ General:
   seed: 0
   num_devices: -1
   check_val_every_n_epoch: 1 # number of epochs between validation check, needs to be empty (None) for using #batches
-  val_check_interval: 0.1 # number of training batches between each validation check
+  val_check_interval: 0.2 # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
   fast_dev_run: False
@@ -72,12 +72,12 @@ Train:
   early_stopping: False
   loss_weights: [1.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 1.0e-6
+  lr: 2.0e-6
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
   scheduler: step # cosine, step
-  lr_decay_rate: 0.9 # only used with step scheduler
+  lr_decay_rate: 0.95 # only used with step scheduler
   lr_step_size: 5 # only used with step scheduler
   min_lr: 1.0e-5 # only used with cosine scheduler
   optimizer: AdamW # Adam, AdamW, SGD
