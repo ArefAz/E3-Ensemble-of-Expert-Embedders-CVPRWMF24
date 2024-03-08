@@ -1,4 +1,4 @@
-import os
+import sys
 import numpy as np
 import torch
 from torchvision.io import read_image
@@ -29,8 +29,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 # This implementation deals with domain incremental learning in 2 classes setting
-class iCaRLModel:
-	def __init__(self, model_state_dict, neural_network='resnet50', total_memory=2000 , n_class=2, feature_size=200):
+class MTMCiCaRLModel:
+	def __init__(self, model_state_dict, neural_network='mislnet', total_memory=2000 , n_class=2, feature_size=200):
 		'''
 		memory_per_task:	  Defaults to 1000 per class
 		model_state_dict:	 This is the state dict of pretrained model
@@ -42,34 +42,13 @@ class iCaRLModel:
 		self.feature_size = feature_size
 		self.exemplar_sets = {} # Dictionary to store exemplars for each class
 		self.compute_exemplar_means = True
-		self.n_class = 2
+		self.n_class = n_class
 		self.total_memory = total_memory
 
 		# self.memory_per_task = total_memory/self.n_class
 
-
-		if neural_network=='resnet50':
-			self.classifier = resnet50(weights=None)
-			
-			self.classifier.fc = nn.Linear(self.classifier.fc.in_features, 2)
-			self.classifier.load_state_dict(model_state_dict)
-
-			# Storing the last layer, will need this when updating representation 
-			####################################################################
-			self.last_layer = nn.Linear(self.classifier.fc.in_features, 2)
-			self.last_layer.weight.data.copy_(self.classifier.fc.weight.data)
-			self.last_layer.bias.data.copy_(self.classifier.fc.bias.data)
-			####################################################################
-			
-			self.feature_extractor = self.classifier
-			self.feature_extractor.fc = nn.Identity()
-
-			# Transfer feature extractor to cuda
-			self.feature_extractor.to(device)
-			self.feature_extractor.eval()
-			
 		if neural_network=='mislnet':
-			self.classifier = MISLNet(num_classes=2)
+			self.classifier = MISLNet(num_classes=n_class)
 			self.classifier.load_state_dict(model_state_dict)
 
 			# Storing the last layer, will need this when updating representation 
@@ -82,8 +61,16 @@ class iCaRLModel:
 			self.feature_extractor.to(device)
 			self.feature_extractor.eval()
 
+
+			# A parallel binary detector will be trained on MTMC
+			self.binary_detector = MISLNet(num_classes=n_class)
+			self.binary_detector.load_state_dict(model_state_dict)
+			# Transfer feature extractor to cuda
+			self.binary_detector.to(device)
+			self.binary_detector.eval()
+
 		else:
-			raise NotImplementedError("Currently only resnet50 and MISLNet is supported.")
+			raise NotImplementedError("Currently only MISLNet is supported.")
 
 		
 	def reduce_exemplar_sets(self):
@@ -198,25 +185,15 @@ class iCaRLModel:
 	
 	def classify(self, image_batch):
 		image_batch = image_batch.to(device)
-		
 		with torch.no_grad():
-			if self.compute_exemplar_means:
-				self.calculate_mean_exemplars()
-
-			batch_feature = self.feature_extractor(image_batch)
-			batch_feature = F.normalize(batch_feature, p=2, dim=1)
-
-			batch_expanded = batch_feature.unsqueeze(1)  # Shape becomes [batch_size, 1, feature_size]
-			mean_exemplar_set_expanded = self.mean_exemplar_set.unsqueeze(0) # Shape becomes [1, classes, feature_size]
+			batch_predictions = self.binary_detector(image_batch)
+			# Classify 0 as 0, anything else is synthetic so should be 1
+			# batch_predictions = torch.where(batch_predictions == 0, torch.tensor(0), torch.tensor(1))
+			argmax_indices = torch.argmax(batch_predictions, dim=1)  # Shape: batch_size
+			binary_predictions = (argmax_indices != 0).detach().cpu().int()
 			
-			distances = torch.norm(batch_expanded - mean_exemplar_set_expanded, p=1, dim=2).detach().cpu()  # Shape becomes [32, num_classes]
-			
-			distances_std = (distances - distances.mean()) / distances.std()
-			pseudo_probabilities = F.softmax(-distances_std, dim=1).detach().cpu().numpy()
-			# Find the index of the closest reference  for each element in the batch
-			closest_indices = distances.argmin(dim=1)
-
-			return closest_indices, pseudo_probabilities
+			pseudo_probabilities = F.softmax(batch_predictions, dim=1).detach().cpu().numpy()
+			return binary_predictions, pseudo_probabilities
 
 
 	def expanded_network(self):
@@ -246,7 +223,7 @@ class iCaRLModel:
 		return new_layer
 
 	
-	def update_representation(self, new_dataset, num_epochs = 50, new_class=1, learning_rate=1e-5, temperature=2, distil_gamma = 0.5):
+	def update_representation(self, new_dataset, num_epochs = 50, new_class=1, learning_rate=1e-5, temperature=2, distil_gamma = 0.5, lambda_param=0.5):
 		''' 
 		Combine new data with exemplars from memory
 		new_dataset:	   dataset with new data
@@ -315,11 +292,15 @@ class iCaRLModel:
 		# Now, train the model to update representation of classifier 
 
 		# Define optimizers and loss functions here
-		optimizer = optim.SGD(self.feature_extractor.parameters(), lr=learning_rate, weight_decay=0.00001)
+		optimizer_icarl = optim.SGD(self.feature_extractor.parameters(), lr=learning_rate, weight_decay=0.00001)
+		optimizer_mtmc = optim.SGD(self.binary_detector.parameters(), lr=learning_rate, weight_decay=0.00001)
+
 		classification_loss = nn.CrossEntropyLoss()
-		distillation_loss = nn.BCELoss()
-		
+		# distillation_loss = nn.BCELoss()
+		# bce_with_logits_loss = nn.BCEWithLogitsLoss()
+
 		self.feature_extractor.train()
+		self.binary_detector.train()
 
 		best_train_loss = 1e5
 		
@@ -327,9 +308,13 @@ class iCaRLModel:
 		for epoch in range(num_epochs):
 			with tqdm(combined_dataloader, desc=f'Epoch {epoch + 1}/{num_epochs}', unit='batch') as pbar:
 				for i, (indices, images, labels) in enumerate(pbar):
+					#######################################################################################
 					images = images.to(device)
 					labels = labels.to(device)
-					optimizer.zero_grad()
+					optimizer_icarl.zero_grad()
+					optimizer_mtmc.zero_grad()
+
+					#######################################################################################
 					g = self.feature_extractor(images)
 					
 					# Classification loss
@@ -339,24 +324,46 @@ class iCaRLModel:
 					g = F.sigmoid(g)
 					q_i = q[indices]
 					
-					dist_loss = distillation_loss(g, q_i)
-					# dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
+					# dist_loss = distillation_loss(g, q_i)
+					dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
 					
-					loss = cl_loss + dist_loss
-					# loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
+					# loss = cl_loss + dist_loss
+					icarl_loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
 
-					loss.backward()
-					optimizer.step()
+					icarl_loss.backward(retain_graph=True)
+					optimizer_icarl.step()
 
-					if loss.item()<best_train_loss:
+					#######################################################################################
+					# The following steps is for MTMC model learning in parallel
+					# Get BCE. Logits for 0 is still binary class 0 but logits for other generators are 1
+					binary_labels = torch.tensor((labels != 0).type(torch.LongTensor)).to(device)
+					class_logits = self.binary_detector(images)  # Binary class logits
+					
+					# dR = class_logits[:,0].unsqueeze(1)
+					# dG = class_logits[:,1].unsqueeze(1)
+					# print(class_logits, labels, binary_labels)
+					bl_loss = classification_loss(class_logits, binary_labels)
+
+					if torch.isnan(bl_loss).any():
+						print("Loss is NaN. Inspecting dG and binary_labels...")
+						print("class_logits:", class_logits)
+						print("Binary Labels:", binary_labels)
+						sys.exit("Stopping training due to NaN loss.")
+
+					# Loss is combination of icarl and bce loss
+					mtmc_loss = icarl_loss.item() + lambda_param * bl_loss
+					mtmc_loss.backward()
+					optimizer_mtmc.step()
+
+					if mtmc_loss.item()<best_train_loss:
 						best_train_epoch = epoch
-						best_train_loss = loss.item()
-						best_loss_model_dump_name = f'best_feature_extractor_icarl_{learning_rate}.pt'
+						best_train_loss = mtmc_loss.item()
+						best_loss_model_dump_name = f'best_mtmc_{learning_rate}.pt'
 						torch.save(self.feature_extractor, best_loss_model_dump_name)
 					
-					pbar.set_postfix(loss=loss.item(), cl_loss=cl_loss.item(), dist_loss=dist_loss.item())
-				
-				
+					pbar.set_postfix(icarl_loss=icarl_loss.item(), mtmc_loss=mtmc_loss.item(), bl_loss=bl_loss.item())
+
+					#######################################################################################
 		
 		########################################################
 		# First, load the saved performing model on training data
@@ -383,6 +390,8 @@ class iCaRLModel:
 
 		# # Transfer feature extractor to eval mode
 		self.feature_extractor.eval()
+		self.binary_detector.eval()
+
 		
 		# Set this flag to True, since exemplar mean needs to be recalculated
 		self.compute_exemplar_means = True

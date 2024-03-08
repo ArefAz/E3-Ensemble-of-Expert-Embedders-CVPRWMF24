@@ -54,18 +54,18 @@ class CustomDataset(Dataset):
 			image = Image.open(img_path)  # Assuming these are paths to images
 
 			if image.size[0]<256 or image.size[1]<256:
-				resize_transform = transforms.Resize(256)
+				resize_transform = transforms.Resize(256, antialias=True)
 				image = resize_transform(image)
 			
 			if image.mode=='L':
 				image = image.convert('RGB')
 
 
-			# Apply JPEG compression
-			buffer = io.BytesIO()
-			image.save(buffer, format='JPEG', quality=99)
-			buffer.seek(0)
-			image = Image.open(buffer)
+			# # Apply JPEG compression
+			# buffer = io.BytesIO()
+			# image.save(buffer, format='JPEG', quality=99)
+			# buffer.seek(0)
+			# image = Image.open(buffer)
 				
 			if self.transform:
 				image = self.transform(image)
