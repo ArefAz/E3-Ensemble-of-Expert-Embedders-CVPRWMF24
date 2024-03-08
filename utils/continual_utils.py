@@ -1,7 +1,7 @@
 def dataset_name_to_paths(dataset_name):
-    train_txt_path = f"datasets/dataset_file_paths/{dataset_name}/train.txt"
-    val_txt_path = f"datasets/dataset_file_paths/{dataset_name}/val.txt"
-    test_txt_path = f"datasets/dataset_file_paths/{dataset_name}/val.txt"
+    train_txt_path = f"datasets/final_dataset_paths/{dataset_name}/train.txt"
+    val_txt_path = f"datasets/final_dataset_paths/{dataset_name}/val.txt"
+    test_txt_path = f"datasets/final_dataset_paths/{dataset_name}/val.txt"
     return train_txt_path, val_txt_path, test_txt_path
 
 def fill_configs_with_datasets(configs, dataset_names, real_name):

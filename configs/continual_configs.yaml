@@ -2,7 +2,7 @@ Model:
   model_type: transformer # either moe or fusion or transformer
   load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
   ft_ckpt_paths: [
-    logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
+    logs/expert_mislnet_db-real-coco-lsun_db-final-gan_src_q99/version_7/checkpoints/epoch=14-step=46000-v_loss=0.1991-v_acc=0.9180.ckpt,
     logs/ft_expert_mislnet_dn-real-2k_dn-glide-dif_src_q99/version_28/checkpoints/epoch=49-step=3150-v_loss=0.0360-v_acc=0.9875-last.ckpt,
     logs/ft_expert_mislnet_dn-real-2k_dn-mj_src_q99/version_24/checkpoints/epoch=49-step=3150-v_loss=0.1265-v_acc=0.9600-last.ckpt,
     logs/ft_expert_mislnet_dn-real-2k_dn-dalle-mini_src_q99/version_17/checkpoints/epoch=49-step=3150-v_loss=0.0380-v_acc=0.9875-last.ckpt,
@@ -18,7 +18,7 @@ Model:
   # ]
 
 Data:
-  real_dataset_name: dn-real-2k # name of the real dataset
+  real_dataset_name: dn-real-coco-lsun-2k # name of the real dataset
   synthetic_dataset_names: [
     dn-gan-2k,
     dn-gansformer-2k,
@@ -29,7 +29,8 @@ Data:
     dn-sd14-2k,
     dn-tt-2k,
     dn-sd21-2k,
-    dn-ddf-2k,
+    dn-cips-2k
+    # dn-ddf-2k,
   ] # list of tasks to be used for continual learning
   # real_dataset_name: dn-real-500 # name of the real dataset
   # synthetic_dataset_names: [

@@ -119,6 +119,7 @@ def get_datasets(
             "dn-sd21-2k",
             "dn-dalle-mini",
             "dn-final-gan-2k",
+            "dn-cips-2k",
         ]:
             label = 1
         else:

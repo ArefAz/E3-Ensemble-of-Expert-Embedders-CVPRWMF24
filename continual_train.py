@@ -25,10 +25,12 @@ if __name__ == "__main__":
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         ft_configs["Model"]["fine_tune"] = True
         ft_configs["Model"]["model_type"] = "expert"
-        ft_configs["Train"]["distill"] = cl_configs["Train"]["distill"] if i > 1 else False
+        ft_configs["Train"]["distill"] = (
+            cl_configs["Train"]["distill"] if i > 1 else False
+        )
         acc_matrix.append([])
         auc_matrix.append([])
-        
+
         if i > 0:
             seen_datasets.append(dataset)
             ft_configs = fill_configs_with_datasets(
@@ -75,19 +77,23 @@ if __name__ == "__main__":
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
             ft_configs["Model"]["teacher_ckpt"] = ft_configs["Model"]["moe_ckpt"]
-            ft_configs["Train"]["distill"] = cl_configs["Train"]["distill"] if i > 1 else False
+            ft_configs["Train"]["distill"] = (
+                cl_configs["Train"]["distill"] if i > 1 else False
+            )
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = None
             ft_configs["Train"]["train_dataset_limit_real"] = None
             ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
-            ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict["last_model_path"]
+            ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
+                "last_model_path"
+            ]
             ft_configs["Model"]["transformer_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
 
-        # for dataset in cl_configs["Data"]["synthetic_dataset_names"]:
-        for dataset in seen_datasets:
+        for dataset in cl_configs["Data"]["synthetic_dataset_names"]:
+            # for dataset in seen_datasets:
             print(f"Testing MOE for dataset: {dataset}...")
             ft_configs = fill_configs_with_datasets(
                 ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
@@ -105,9 +111,9 @@ if __name__ == "__main__":
             print(row)
         print("ACC Averages:")
         for j, acc_row in enumerate(acc_matrix):
-            avg = sum(acc_row[:j + 1]) / len(acc_row[:j + 1])
+            avg = sum(acc_row[: j + 1]) / len(acc_row[: j + 1])
             print(f"{round(avg, 4)}")
         print("AUC Averages:")
         for j, auc_row in enumerate(auc_matrix):
-            avg = sum(auc_row[:j + 1]) / len(auc_row[:j + 1])
+            avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
             print(f"{round(avg, 4)}")
