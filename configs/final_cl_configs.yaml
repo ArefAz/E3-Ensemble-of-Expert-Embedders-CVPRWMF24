@@ -2,11 +2,12 @@ Model:
   model_type: transformer # either moe or fusion or transformer
   load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
   ft_ckpt_paths: [
-    logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=72-step=135750-v_loss=0.0747-v_acc=0.9722.ckpt,
+    # logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=94-step=178125-v_loss=0.0664-v_acc=0.9762-copy.ckpt,
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt
 ]
 
 Data:
-  real_dataset_name: dn-real-coco-lsun-2k # name of the real dataset
+  real_dataset_name: dn-real # name of the real dataset
   synthetic_dataset_names: [
     dn-gan,
     dn-sd14,
@@ -28,7 +29,6 @@ Data:
     dn-sd1,
     dn-ddg,
     dn-ddpm,
-    # dn-ddf-2k,
   ]
   memory_size: 1000 # number of samples to be stored in the memory
   fixed_memory: True # if True, the memory size is fixed
@@ -40,4 +40,4 @@ Train:
   distill: False # if True, the distillation loss is used
 
 General:
-  check_val_every_n_epoch: 10
+  check_val_every_n_epoch: 30

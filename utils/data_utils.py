@@ -66,6 +66,7 @@ def get_datasets(
                 "easy-real",
                 "db-real",
                 "dn-real",
+                "dn-joint-real",
                 "dn-real-500",
                 "db-real-coco-lsun",
                 "dn-real-coco-lsun-2k",
@@ -120,6 +121,27 @@ def get_datasets(
             "dn-dalle-mini",
             "dn-final-gan-2k",
             "dn-cips-2k",
+            "dn-gan",
+            "dn-sd14",
+            "dn-glide",
+            "dn-mj",
+            "dn-dallemini",
+            "dn-tt",
+            "dn-sd21",
+            "dn-cips",
+            "dn-biggan",
+            "dn-vqdiff",
+            "dn-diffgan",
+            "dn-sg3",
+            "dn-gansformer",
+            "dn-dalle2",
+            "dn-ld",
+            "dn-eg3d",
+            "dn-projgan",
+            "dn-sd1",
+            "dn-ddg",
+            "dn-ddpm",
+            "dn-joint-synth",
         ]:
             label = 1
         else:
@@ -144,7 +166,7 @@ def get_datasets(
             num_classes=data_config["num_src_classes"],
             center_crop=False,
             txt_file_path=data_config["train_txt_paths"][i],
-            hdf5_file_path=data_config["train_hdf5_paths"][i],
+            # hdf5_file_path=data_config["train_hdf5_paths"][i],
             save_format=save_format,
         )
         val_dataset = dataset_class(
@@ -154,7 +176,7 @@ def get_datasets(
             num_classes=data_config["num_src_classes"],
             center_crop=True,
             txt_file_path=data_config["val_txt_paths"][i],
-            hdf5_file_path=data_config["val_hdf5_paths"][i],
+            # hdf5_file_path=data_config["val_hdf5_paths"][i],
             save_format=save_format,
         )
         test_dataset = dataset_class(
@@ -164,7 +186,7 @@ def get_datasets(
             num_classes=data_config["num_src_classes"],
             center_crop=True,
             txt_file_path=data_config["test_txt_paths"][i],
-            hdf5_file_path=data_config["test_hdf5_paths"][i],
+            # hdf5_file_path=data_config["test_hdf5_paths"][i],
             save_format=save_format,
         )
         if train_config["train_dataset_limit_per_class"] and "real" not in dataset_name:
