@@ -3,6 +3,9 @@ from test import run_test as test
 from configs import ft_configs, continual_configs as cl_configs
 from utils.continual_utils import fill_configs_with_datasets
 
+import pickle
+import numpy as np
+
 
 if __name__ == "__main__":
     ft_configs["Model"]["expert_ckpt"] = cl_configs["Model"]["ft_ckpt_paths"][0]
@@ -104,16 +107,21 @@ if __name__ == "__main__":
             auc_matrix[i].append(round(results["auc"], 4))
 
         print("ACC Matrix:")
-        for row in acc_matrix:
-            print(row)
+        for j, row in enumerate(acc_matrix):
+            print(f"{j}: {row}")
         print("AUC Matrix:")
-        for row in auc_matrix:
-            print(row)
+        for j, row in enumerate(auc_matrix):
+            print(f"{j}: {row}")
         print("ACC Averages:")
         for j, acc_row in enumerate(acc_matrix):
             avg = sum(acc_row[: j + 1]) / len(acc_row[: j + 1])
-            print(f"{round(avg, 4)}")
+            print(f"{j}: {round(avg, 4)}")
         print("AUC Averages:")
         for j, auc_row in enumerate(auc_matrix):
             avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
-            print(f"{round(avg, 4)}")
+            print(f"{j}: {round(avg, 4)}")
+
+        acc_matrix = np.array(acc_matrix)
+        auc_matrix = np.array(auc_matrix)
+        np.savetxt(f'acc_matrix.csv', np.array(acc_matrix), delimiter=',')
+        np.savetxt(f'auc_matrix.csv', np.array(auc_matrix), delimiter=',')
