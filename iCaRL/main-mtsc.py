@@ -41,7 +41,7 @@ transform = transforms.Compose([
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET ###############################
 
 # Checkpoint
-lightning_checkpoint_path = '/media/nas2/Aref/share/continual_learning/models/mislnet/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt'
+lightning_checkpoint_path = '/media/nas2/Aref/share/continual_learning/models/mislnet/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt'
 
 checkpoint = torch.load(lightning_checkpoint_path)
 model_state_dict = checkpoint['state_dict']

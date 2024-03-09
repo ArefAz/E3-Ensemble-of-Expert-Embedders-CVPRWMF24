@@ -5,14 +5,11 @@ from tqdm import tqdm
 from iCaRLModel import iCaRLModel
 
 import os
-import numpy as np
+import csv
 import torch
-from torchvision.io import read_image
-import torch
-import torchvision.transforms as transforms
-from torchvision.models import resnet18,resnet50
 
 from HelperFunctions import *
+from FileLists import *
 
 # Had to add this because I was having 'runtime error: too many open files'
 torch.multiprocessing.set_sharing_strategy('file_system')
@@ -20,19 +17,17 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################## HYPERPARAMETERS #####################################
-num_epochs = 1
+num_epochs = 150
 lr = 1e-5
 ####################################################################################
 
-transform = transforms.Compose([
-		transforms.RandomCrop(256),
-		transforms.ToTensor(),
-])
+# transform = transforms.Compose([
+# 		transforms.RandomCrop(256),
+# 		transforms.ToTensor(),
+# ])
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 
 # Checkpoint
-lightning_checkpoint_path = '/media/nas2/Aref/share/continual_learning/models/mislnet/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt'
-
 checkpoint = torch.load(lightning_checkpoint_path)
 model_state_dict = checkpoint['state_dict']
 model_state_dict = {key.replace('classifier.', '', 1): value for key, value in model_state_dict.items()}
@@ -40,24 +35,20 @@ model_state_dict = {key.replace('classifier.', '', 1): value for key, value in m
 # Instantiate iCaRLModel
 icarl = iCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
 
-real_exemplars = 'exemplar-set-real-mislnet.pt'
-gan_exemplars = 'exemplar-set-gan-mislnet.pt'
-
 if os.path.exists(real_exemplars) and os.path.exists(gan_exemplars):
 	# If already computed, you can just load the exemplars and assign it to the icarl class
-	exemplar_real = torch.load('exemplar-set-real-mislnet.pt')
-	exemplar_gan = torch.load('exemplar-set-gan-mislnet.pt')
-
+	exemplar_real = torch.load(real_exemplars)
+	exemplar_gan = torch.load(gan_exemplars)
 
 else:
 	# This portion selects exemplar set from the entire training data. Datasize: 117K each real and gan
-	txt_real_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/db-real/train.txt']
-	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths, transform=transform)
+	txt_real_file_paths = [train_real_file_paths]
+	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths)
 	result = icarl.select_exemplars(train_dataset)
 	torch.save(result[0],real_exemplars)
 
-	txt_gan_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/db-gan/train.txt']
-	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths, transform=transform)
+	txt_gan_file_paths = [train_gan_file_paths]
+	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths)
 	result = icarl.select_exemplars(train_dataset)
 	torch.save(result[0],gan_exemplars)
 
@@ -73,40 +64,31 @@ with torch.no_grad():
 
 
 ##############################  INCREMENTALLY LEARN NEW GENERATORS  #################################
+final_result = 'Task,TrainedOn,TestedOn,Accuracy,ROC\n'
 
-generator_names = 	[ 'TT', 'SD', 'EG3D', 'DALLE2']
-test_sets = [ 'GAN', 'TT', 'SD', 'EG3D', 'DALLE2']
-
-generators_file_path = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-tt/'			# Task 2
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-sd-500/'				# Task 3
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-eg3d/'					# Task 4
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-dalle2/'				# Task 5
-			 ]
-
-test_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-gan-500/test.txt'		# Task 1
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-tt/test.txt'			# Task 2
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-sd-500/test.txt'		# Task 3
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-eg3d/test.txt'			# Task 4
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-dalle2/test.txt'		# Task 5
-			 ]
-
-final_result = 'Task\tTrainedOn\tTestedOn\tAccuracy\tROC\n'
-
-
-######################### TEST WITHOUT TRAINING ###############################
+accuracy_list, roc_auc_list = [], []
+######################### TEST WITHOUT TRAINING TASK 0 #########################
+accuracy_temp, roc_temp = [], []
 for j in range(len(test_file_paths)):
 
-		test_data_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-real-500/test.txt'] +\
-						[''] * j + [test_file_paths[j]] 				#+ back_add
+	test_data_paths = [test_file_paths_real] +\
+					[''] * j + [test_file_paths[j]] 				#+ back_add
 
-		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
-		
-		test_dataset = CustomDataset(txt_file_paths=test_data_paths, transform=transform)
-		accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
+	print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
+	
+	test_dataset = CustomDataset(txt_file_paths=test_data_paths)
+	accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
 
-		final_result+=f'0\tGAN\t{test_sets[j]}\t{accuracy}\t{roc_auc}\n'
+	final_result+=f'0,GAN,{test_sets[j]},{accuracy},{roc_auc}\n'
+	
+	accuracy_temp.append(accuracy)
+	roc_temp.append(roc_auc)
+
+accuracy_list.append(accuracy_temp)
+roc_auc_list.append(roc_temp)
 
 ###############################################################################
+
 
 for i in range(len(generators_file_path)):
 
@@ -115,7 +97,7 @@ for i in range(len(generators_file_path)):
 	# Adjust the number of empty strings to be one less than the desired output
 	train_file_paths = [''] * (i + 2) + [generators_file_path[i] + 'train.txt']
 
-	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths, transform=transform)
+	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths)
 
 	icarl.update_representation(new_train_dataset, num_epochs=num_epochs, learning_rate=lr)
 
@@ -123,7 +105,7 @@ for i in range(len(generators_file_path)):
 	######################### SELECT EXEMPLARS #################################
 	print("Selecting exemplars")
 	train_data_path = [generators_file_path[i] + 'train.txt']
-	new_train_dataset = CustomDataset(txt_file_paths=train_data_path, transform=transform)
+	new_train_dataset = CustomDataset(txt_file_paths=train_data_path)
 	new_exemplars = icarl.select_exemplars(new_train_dataset)
 
 	icarl.assign_exemplars(new_exemplars[0], i+2, append=False)
@@ -132,20 +114,36 @@ for i in range(len(generators_file_path)):
 
 	######################### TEST REAL VS CURRENT GENERATOR ####################
 
-
+	accuracy_temp, roc_temp = [], []
 	for j in range(len(test_file_paths)):
 
-		test_data_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-real-500/test.txt'] +\
+		test_data_paths = [test_file_paths_real] +\
 						[''] * j + [test_file_paths[j]] 				#+ back_add
 
 		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 		
-		test_dataset = CustomDataset(txt_file_paths=test_data_paths, transform=transform)
+		test_dataset = CustomDataset(txt_file_paths=test_data_paths)
 		accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
+		accuracy_temp.append(accuracy)
+		roc_temp.append(roc_auc)
+		final_result+=f'{i+1},{generator_names[i]},{test_sets[j]},{accuracy},{roc_auc}\n'
 
-		final_result+=f'{i+1}\t{generator_names[i]}\t{test_sets[j]}\t{accuracy}\t{roc_auc}\n'
-
+	accuracy_list.append(accuracy_temp)
+	roc_auc_list.append(roc_temp)
 
 	print(final_result)
+print(accuracy_list, roc_auc_list)
 
-print(final_result)
+# Specify the filename
+accuracy_csv, aucroc_csv = 'iCaRLResultsAccuracy.csv', 'iCaRLResultsROCAUC.csv'
+
+# Writing to the csv file
+with open(accuracy_csv, mode='w', newline='') as file:
+	writer = csv.writer(file)
+	writer.writerows(accuracy_list)
+
+with open(aucroc_csv, mode='w', newline='') as file:
+	writer = csv.writer(file)
+	writer.writerows(aucroc_csv)
+
+print(f'Data written to {accuracy_csv} and {aucroc_csv}.')

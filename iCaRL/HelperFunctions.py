@@ -27,4 +27,4 @@ def classification_report_auroc(dataset_t, model):
 
 	# For AUC-ROC, convert to binary classifier
 	binary_truth = [1 if x != 0 else 0 for x in truth]
-	return accuracy_score(truth, result), roc_auc_score(binary_truth, prediction_score)
+	return round(accuracy_score(truth, result),4), round(roc_auc_score(binary_truth, prediction_score),4)

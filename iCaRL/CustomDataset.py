@@ -3,10 +3,13 @@ from torch.utils.data import Dataset
 from PIL import Image
 import numpy as np
 from torchvision import transforms
-import io
+# import io
+from torchvision import io
+import random
+from torchvision.transforms import RandomCrop
 
 class CustomDataset(Dataset):
-	def __init__(self, txt_file_paths=None, transform=None, images_np=None, labels_np=None):
+	def __init__(self, txt_file_paths=None, transform=None, images_np=None, labels_np=None, patch_size=256):
 		"""
 		Initialize the dataset with either a list of .txt files containing image paths or numpy arrays of images and labels.
 		
@@ -21,9 +24,10 @@ class CustomDataset(Dataset):
 		self.labels_np = labels_np
 		self.image_paths = []
 		self.labels = []
+		self.patch_size = patch_size
+		self.crop = RandomCrop(patch_size)
 		
 		if txt_file_paths is not None:
-
 			# Load image paths and labels from .txt files
 			for label, txt_path in enumerate(txt_file_paths):
 				if txt_path=="":
@@ -49,26 +53,28 @@ class CustomDataset(Dataset):
 
 		else:
 			# Load image and label from the list populated from .txt files
-			img_path = self.image_paths[idx]
 			label = self.labels[idx]
-			image = Image.open(img_path)  # Assuming these are paths to images
+			try:
+				image = io.read_image(self.image_paths[idx])
+			except:
+				print(f"Error loading {self.image_paths[idx]}")
+				return self.__getitem__(random.randint(0, len(self.image_paths) - 1))
 
-			if image.size[0]<256 or image.size[1]<256:
-				resize_transform = transforms.Resize(256, antialias=True)
+			if image.shape[1]<self.patch_size or image.shape[2]<self.patch_size:
+				resize_transform = transforms.Resize(self.patch_size, antialias=True)
 				image = resize_transform(image)
 			
-			if image.mode=='L':
-				image = image.convert('RGB')
+			if image.shape[0] == 1:
+				image = image.repeat(3, 1, 1)
 
+			# Apply JPEG compression
+			image = io.decode_jpeg(io.encode_jpeg(image, quality=99))
+			
+			# Convert image to 0-1 range
+			image = image.float() / 255
 
-			# # Apply JPEG compression
-			# buffer = io.BytesIO()
-			# image.save(buffer, format='JPEG', quality=99)
-			# buffer.seek(0)
-			# image = Image.open(buffer)
-				
-			if self.transform:
-				image = self.transform(image)
+			# Random crop if the size of image is bigger than patch_size
+			image = self.crop(image)
 				
 		return idx, image, label
 		
