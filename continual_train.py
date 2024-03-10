@@ -10,6 +10,7 @@ import numpy as np
 if __name__ == "__main__":
     ft_configs["Model"]["expert_ckpt"] = cl_configs["Model"]["ft_ckpt_paths"][0]
     ft_configs["Model"]["src_ckpts"].append(cl_configs["Model"]["ft_ckpt_paths"][0])
+    ft_configs["Model"]["classifier"] = cl_configs["Model"]["backbone"]
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
@@ -121,7 +122,7 @@ if __name__ == "__main__":
             avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
             print(f"{j}: {round(avg, 4)}")
 
-        acc_matrix = np.array(acc_matrix)
-        auc_matrix = np.array(auc_matrix)
-        np.savetxt(f'acc_matrix.csv', np.array(acc_matrix), delimiter=',')
-        np.savetxt(f'auc_matrix.csv', np.array(auc_matrix), delimiter=',')
+    acc_matrix = np.array(acc_matrix)
+    auc_matrix = np.array(auc_matrix)
+    np.savetxt(f'acc_matrix.csv', np.round(acc_matrix, 4), delimiter=',')
+    np.savetxt(f'auc_matrix.csv', np.round(auc_matrix, 4), delimiter=',')
