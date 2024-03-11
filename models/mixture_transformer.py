@@ -25,7 +25,7 @@ class MixtureTransformer(pl.LightningModule):
             embed_dim=n_features,
             output_chans=n_features,
             depth=20,
-            num_heads=10,
+            num_heads=8,
         )
 
         self.loss = torch.nn.BCEWithLogitsLoss(
