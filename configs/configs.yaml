@@ -67,18 +67,18 @@ Data:
   prefetch_factor: 3
 
 Train:
-  epochs: 100
+  epochs: -1
   max_steps: -1
   early_stopping: False
   loss_weights: [1.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 1.0e-4
+  lr: 5.0e-4
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
   scheduler: step # cosine, step
-  lr_decay_rate: 0.85 # only used with step scheduler
-  lr_step_size: 1 # only used with step scheduler
+  lr_decay_rate: 0.9 # only used with step scheduler
+  lr_step_size: 2 # only used with step scheduler
   min_lr: 1.0e-5 # only used with cosine scheduler
   optimizer: AdamW # Adam, AdamW, SGD
   momentum: 0.9 # only used with SGD optimizer

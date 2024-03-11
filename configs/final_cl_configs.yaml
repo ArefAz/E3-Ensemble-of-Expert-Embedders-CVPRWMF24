@@ -2,9 +2,10 @@ Model:
   model_type: transformer # either moe or fusion or transformer
   load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
   ft_ckpt_paths: [
-    # logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=94-step=178125-v_loss=0.0664-v_acc=0.9762-copy.ckpt,
     logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt
+    # logs/expert_resnet50_db-real_db-gan_src_q99/version_1/checkpoints/epoch=50-step=94500-v_loss=0.3354-v_acc=0.8587.ckpt
   ]
+  backbone: mislnet # either resnet50 or mislnet
 Data:
   real_dataset_name: dn-real # name of the real dataset
   synthetic_dataset_names: [
