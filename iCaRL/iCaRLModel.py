@@ -123,7 +123,7 @@ class iCaRLModel:
 			features_list = []
 			
 			# Use DataLoader for batch processing to speed up feature extraction
-			dataloader = DataLoader(class_dataset, batch_size=32, num_workers=4, shuffle=False, pin_memory=True if device == 'cuda' else False)
+			dataloader = DataLoader(class_dataset, batch_size=32, num_workers=2, shuffle=False, pin_memory=True if device == 'cuda' else False)
 			
 			for _, images, _ in tqdm(dataloader, desc="Processing"):
 				images = images.to(device)
@@ -283,7 +283,7 @@ class iCaRLModel:
 		exemplar_dataset = ExemplarDataset(self.exemplar_sets)  # This creates dataset from dictionary exemplar_sets
 		combined_dataset = ConcatDataset([new_dataset, exemplar_dataset]) # Combines the new_dataset and exemplar dataset
 
-		combined_dataloader = DataLoader(combined_dataset, batch_size=32, num_workers=4, shuffle=True, pin_memory=True if device == 'cuda' else False)
+		combined_dataloader = DataLoader(combined_dataset, batch_size=32, num_workers=2, shuffle=True, pin_memory=True if device == 'cuda' else False)
 		
 		########################################################
 		# First, get ouput logits for all combined dataset. Store them for distillation loss.

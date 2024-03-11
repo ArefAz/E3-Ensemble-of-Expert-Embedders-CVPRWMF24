@@ -1,8 +1,8 @@
 import torch
 import os
 from CustomDataset import CustomDataset
-from tqdm import tqdm
-from iCaRLModel import iCaRLModel
+from MTMCiCaRLModel import MTMCiCaRLModel
+
 
 import os
 import csv
@@ -24,10 +24,6 @@ num_epochs = 150
 lr = 1e-5
 ####################################################################################
 
-# transform = transforms.Compose([
-# 		transforms.RandomCrop(256),
-# 		transforms.ToTensor(),
-# ])
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 
 # Checkpoint
@@ -35,11 +31,11 @@ checkpoint = torch.load(lightning_checkpoint_path)
 model_state_dict = checkpoint['state_dict']
 model_state_dict = {key.replace('classifier.', '', 1): value for key, value in model_state_dict.items()}
 
-# Instantiate iCaRLModel
-icarl = iCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
+# Instantiate Model
+mtmc_model = MTMCiCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
 
 if os.path.exists(real_exemplars) and os.path.exists(gan_exemplars):
-	# If already computed, you can just load the exemplars and assign it to the icarl class
+	# If already computed, you can just load the exemplars and assign it to the mtmc_icarl class
 	exemplar_real = torch.load(real_exemplars)
 	exemplar_gan = torch.load(gan_exemplars)
 
@@ -47,23 +43,23 @@ else:
 	# This portion selects exemplar set from the entire training data. Datasize: 117K each real and gan
 	txt_real_file_paths = [train_real_file_paths]
 	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths)
-	result = icarl.select_exemplars(train_dataset)
+	result = mtmc_model.select_exemplars(train_dataset)
 	torch.save(result[0],real_exemplars)
 
 	txt_gan_file_paths = [train_gan_file_paths]
 	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths)
-	result = icarl.select_exemplars(train_dataset)
+	result = mtmc_model.select_exemplars(train_dataset)
 	torch.save(result[0],gan_exemplars)
 
 
-icarl.assign_exemplars(exemplar_real,0)
-icarl.assign_exemplars(exemplar_gan,1)
+mtmc_model.assign_exemplars(exemplar_real,0)
+mtmc_model.assign_exemplars(exemplar_gan,1)
 
 #####################################################################################################
 
 # Calculate mean of exemplars for classification
 with torch.no_grad():
-	icarl.calculate_mean_exemplars()
+	mtmc_model.calculate_mean_exemplars()
 
 
 ##############################  INCREMENTALLY LEARN NEW GENERATORS  #################################
@@ -73,14 +69,13 @@ accuracy_list, roc_auc_list = [], []
 ######################### TEST WITHOUT TRAINING TASK 0 #########################
 accuracy_temp, roc_temp = [], []
 for j in range(len(test_file_paths)):
-
 	test_data_paths = [test_file_paths_real] +\
-					[''] * j + [test_file_paths[j]] 				#+ back_add
+					[test_file_paths[j]] 				#+ back_add
 
 	print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 	
 	test_dataset = CustomDataset(txt_file_paths=test_data_paths)
-	accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
+	accuracy, roc_auc = classification_report_auroc(test_dataset, mtmc_model)
 
 	final_result+=f'0,GAN,{test_sets[j]},{accuracy},{roc_auc}\n'
 	
@@ -92,28 +87,38 @@ roc_auc_list.append(roc_temp)
 
 ###############################################################################
 
-
 for i in range(len(generators_file_path)):
+	################### INSTANTIATE MODEL EACH TIME ############################
+	mtmc_model = MTMCiCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
+	exemplar_real = torch.load(real_exemplars)
+	exemplar_gan = torch.load(gan_exemplars)
+	mtmc_model.assign_exemplars(exemplar_real,0)
+	mtmc_model.assign_exemplars(exemplar_gan,1)
+
+	# Calculate mean of exemplars for classification
+	with torch.no_grad():
+		mtmc_model.calculate_mean_exemplars()
+
 
 	######################### UPDATE THE NETWORK ###############################
 	print(f'Updating network with data in {generators_file_path[i]}')
 	# Adjust the number of empty strings to be one less than the desired output
-	train_file_paths = [''] * (i + 2) + [generators_file_path[i] + 'train.txt']
+	train_file_paths = ['',''] + [generators_file_path[i] + 'train.txt']
 
 	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths)
 
-	icarl.update_representation(new_train_dataset, num_epochs=num_epochs, learning_rate=lr)
+	mtmc_model.update_representation(new_train_dataset, num_epochs=num_epochs, learning_rate=lr)
 
 
 	######################### SELECT EXEMPLARS #################################
 	print("Selecting exemplars")
 	train_data_path = [generators_file_path[i] + 'train.txt']
 	new_train_dataset = CustomDataset(txt_file_paths=train_data_path)
-	new_exemplars = icarl.select_exemplars(new_train_dataset)
+	new_exemplars = mtmc_model.select_exemplars(new_train_dataset)
 
-	icarl.assign_exemplars(new_exemplars[0], i+2, append=False)
+	mtmc_model.assign_exemplars(new_exemplars[0], 2, append=False)
 
-	icarl.reduce_exemplar_sets()
+	mtmc_model.reduce_exemplar_sets()
 
 	######################### TEST REAL VS CURRENT GENERATOR ####################
 
@@ -121,12 +126,12 @@ for i in range(len(generators_file_path)):
 	for j in range(len(test_file_paths)):
 
 		test_data_paths = [test_file_paths_real] +\
-						[''] * j + [test_file_paths[j]] 				#+ back_add
+						 [test_file_paths[j]] 
 
 		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 		
 		test_dataset = CustomDataset(txt_file_paths=test_data_paths)
-		accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
+		accuracy, roc_auc = classification_report_auroc(test_dataset, mtmc_model)
 		accuracy_temp.append(accuracy)
 		roc_temp.append(roc_auc)
 		final_result+=f'{i+1},{generator_names[i]},{test_sets[j]},{accuracy},{roc_auc}\n'
@@ -138,7 +143,7 @@ for i in range(len(generators_file_path)):
 print(accuracy_list, roc_auc_list)
 
 # Specify the filename
-accuracy_csv, aucroc_csv = 'iCaRLResultsAccuracy.csv', 'iCaRLResultsROCAUC.csv'
+accuracy_csv, aucroc_csv = 'RotatingMTMCResultsAccuracy.csv', 'RotatingMTMCResultsROCAUC.csv'
 
 # Writing to the csv file
 with open(accuracy_csv, mode='w', newline='') as file:
@@ -150,4 +155,5 @@ with open(aucroc_csv, mode='w', newline='') as file:
 	writer.writerows(roc_auc_list)
 
 print(f'Data written to {accuracy_csv} and {aucroc_csv}.')
-print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
+
+print("Script End Time =", datetime.now().strftime("%H:%M:%S"))

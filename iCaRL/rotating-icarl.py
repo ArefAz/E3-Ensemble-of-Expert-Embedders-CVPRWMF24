@@ -12,6 +12,7 @@ from HelperFunctions import *
 from FileLists import *
 from datetime import datetime
 
+
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
 
 # Had to add this because I was having 'runtime error: too many open files'
@@ -22,12 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ############################## HYPERPARAMETERS #####################################
 num_epochs = 150
 lr = 1e-5
-####################################################################################
 
-# transform = transforms.Compose([
-# 		transforms.RandomCrop(256),
-# 		transforms.ToTensor(),
-# ])
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 
 # Checkpoint
@@ -66,18 +62,19 @@ with torch.no_grad():
 	icarl.calculate_mean_exemplars()
 
 
-##############################  INCREMENTALLY LEARN NEW GENERATORS  #################################
 final_result = 'Task,TrainedOn,TestedOn,Accuracy,ROC\n'
 
 accuracy_list, roc_auc_list = [], []
+
 ######################### TEST WITHOUT TRAINING TASK 0 #########################
 accuracy_temp, roc_temp = [], []
-for j in range(len(test_file_paths)):
+for j in range(len(test_file_paths)):	
+	###########################################################################
 
-	test_data_paths = [test_file_paths_real] +\
-					[''] * j + [test_file_paths[j]] 				#+ back_add
-
-	print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
+	if j==0:
+		test_data_paths = [test_file_paths_real, test_file_paths[j]]
+	else:
+		test_data_paths = [test_file_paths_real,'', test_file_paths[j]] 
 	
 	test_dataset = CustomDataset(txt_file_paths=test_data_paths)
 	accuracy, roc_auc = classification_report_auroc(test_dataset, icarl)
@@ -95,10 +92,22 @@ roc_auc_list.append(roc_temp)
 
 for i in range(len(generators_file_path)):
 
+	################### INSTANTIATE iCaRL EACH TIME ############################
+	icarl = iCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
+
+	exemplar_real = torch.load(real_exemplars)
+	exemplar_gan = torch.load(gan_exemplars)
+	icarl.assign_exemplars(exemplar_real,0)
+	icarl.assign_exemplars(exemplar_gan,1)
+
+	# Calculate mean of exemplars for classification
+	with torch.no_grad():
+		icarl.calculate_mean_exemplars()
+
 	######################### UPDATE THE NETWORK ###############################
 	print(f'Updating network with data in {generators_file_path[i]}')
-	# Adjust the number of empty strings to be one less than the desired output
-	train_file_paths = [''] * (i + 2) + [generators_file_path[i] + 'train.txt']
+
+	train_file_paths = ['',''] + [generators_file_path[i] + 'train.txt']
 
 	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths)
 
@@ -111,7 +120,7 @@ for i in range(len(generators_file_path)):
 	new_train_dataset = CustomDataset(txt_file_paths=train_data_path)
 	new_exemplars = icarl.select_exemplars(new_train_dataset)
 
-	icarl.assign_exemplars(new_exemplars[0], i+2, append=False)
+	icarl.assign_exemplars(new_exemplars[0], 2, append=False)
 
 	icarl.reduce_exemplar_sets()
 
@@ -120,8 +129,10 @@ for i in range(len(generators_file_path)):
 	accuracy_temp, roc_temp = [], []
 	for j in range(len(test_file_paths)):
 
-		test_data_paths = [test_file_paths_real] +\
-						[''] * j + [test_file_paths[j]] 				#+ back_add
+		if j==0:
+			test_data_paths = [test_file_paths_real, test_file_paths[j]]
+		else:
+			test_data_paths = [test_file_paths_real,'', test_file_paths[j]] 
 
 		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 		
@@ -138,7 +149,7 @@ for i in range(len(generators_file_path)):
 print(accuracy_list, roc_auc_list)
 
 # Specify the filename
-accuracy_csv, aucroc_csv = 'iCaRLResultsAccuracy.csv', 'iCaRLResultsROCAUC.csv'
+accuracy_csv, aucroc_csv = 'RotatingiCaRLResultsAccuracy.csv', 'RotatingiCaRLResultsROCAUC.csv'
 
 # Writing to the csv file
 with open(accuracy_csv, mode='w', newline='') as file:
@@ -150,4 +161,4 @@ with open(aucroc_csv, mode='w', newline='') as file:
 	writer.writerows(roc_auc_list)
 
 print(f'Data written to {accuracy_csv} and {aucroc_csv}.')
-print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
+print("Script End Time =", datetime.now().strftime("%H:%M:%S"))

@@ -1,22 +1,18 @@
 import torch
 import os
 from CustomDataset import CustomDataset
-from sklearn.metrics import accuracy_score,f1_score, classification_report
-
-import os
-import torch
-from torchvision.io import read_image
-
-
-import torch
-import torch.nn.functional as F
-import torchvision.transforms as transforms
-from torchvision.models import resnet18,resnet50
-
-from mislnet import MISLNet
 from MTSCiCaRLModel import MTSCiCaRLModel
 
+
+import os
+import csv
+import torch
+
 from HelperFunctions import *
+from FileLists import *
+from datetime import datetime
+
+print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
 
 # Had to add this because I was having 'runtime error: too many open files'
 torch.multiprocessing.set_sharing_strategy('file_system')
@@ -33,81 +29,69 @@ temperature = 2
 
 ####################################################################################
 
-transform = transforms.Compose([
-		transforms.RandomCrop(256),
-		transforms.ToTensor(),
-])
+# transform = transforms.Compose([
+# 		transforms.RandomCrop(256),
+# 		transforms.ToTensor(),
+# ])
 
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET ###############################
 
 # Checkpoint
-lightning_checkpoint_path = '/media/nas2/Aref/share/continual_learning/models/mislnet/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt'
-
 checkpoint = torch.load(lightning_checkpoint_path)
 model_state_dict = checkpoint['state_dict']
 model_state_dict = {key.replace('classifier.', '', 1): value for key, value in model_state_dict.items()}
 
 # Instantiate MTSC method
-mtsc_icarl = MTSCiCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
-
-real_exemplars = '/home/manil/Continual-Learning-of-Synthetic-images/iCaRL/exemplar-set-real-mislnet.pt'
-gan_exemplars = '/home/manil/Continual-Learning-of-Synthetic-images/iCaRL/exemplar-set-gan-mislnet.pt'
+mtsc_model = MTSCiCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
 
 if os.path.exists(real_exemplars) and os.path.exists(gan_exemplars):
 	# If already computed, you can just load the exemplars and assign it to the mtsc_icarl class
 	exemplar_real = torch.load(real_exemplars)
 	exemplar_gan = torch.load(gan_exemplars)
 
-
 else:
 	# This portion selects exemplar set from the entire training data. Datasize: 117K each real and gan
-	txt_real_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/db-real/train.txt']
-	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths, transform=transform)
-	result = mtsc_icarl.select_exemplars(train_dataset)
+	txt_real_file_paths = [train_real_file_paths]
+	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths)
+	result = mtsc_model.select_exemplars(train_dataset)
 	torch.save(result[0],real_exemplars)
 
-	txt_gan_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/db-gan/train.txt']
-	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths, transform=transform)
-	result = mtsc_icarl.select_exemplars(train_dataset)
+	txt_gan_file_paths = [train_gan_file_paths]
+	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths)
+	result = mtsc_model.select_exemplars(train_dataset)
 	torch.save(result[0],gan_exemplars)
 
 
-mtsc_icarl.assign_exemplars(exemplar_real,0)
-mtsc_icarl.assign_exemplars(exemplar_gan,1)
+mtsc_model.assign_exemplars(exemplar_real,0)
+mtsc_model.assign_exemplars(exemplar_gan,1)
 
 #####################################################################################################
 
 
 ##############################  INCREMENTALLY LEARN NEW GENERATORS  #################################
+final_result = 'Task,TrainedOn,TestedOn,Accuracy,ROC\n'
 
-generator_names = 	[ 'TT'
-			, 'SD'
-			, 'EG3D'
-			, 'DALLE2'
-			]
+accuracy_list, roc_auc_list = [], []
+######################### TEST WITHOUT TRAINING TASK 0 #########################
+accuracy_temp, roc_temp = [], []
+for j in range(len(test_file_paths)):
+	test_data_paths = [test_file_paths_real] +\
+					[test_file_paths[j]] 				#+ back_add
 
-test_sets = [ 'GAN'
-			, 'TT'
-			, 'SD'
-			, 'EG3D'
-			, 'DALLE2'
-			]
+	print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
+	
+	test_dataset = CustomDataset(txt_file_paths=test_data_paths)
+	accuracy, roc_auc = classification_report_auroc(test_dataset, mtsc_model)
 
-generators_file_path = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-tt/'			# Task 2
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-sd-500/'				# Task 3
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-eg3d/'					# Task 4
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-dalle2/'				# Task 5
-			 ]
+	final_result+=f'0,GAN,{test_sets[j]},{accuracy},{roc_auc}\n'
+	
+	accuracy_temp.append(accuracy)
+	roc_temp.append(roc_auc)
 
-test_file_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-gan-500/test.txt'		# Task 1
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-tt/test.txt'			# Task 2
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-sd-500/test.txt'		# Task 3
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-eg3d/test.txt'			# Task 4
-			 , '/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-dalle2/test.txt'		# Task 5
-			 ]
+accuracy_list.append(accuracy_temp)
+roc_auc_list.append(roc_temp)
 
-classification_report_arr = []
-final_result = ''
+###############################################################################
 
 for i in range(len(generators_file_path)):
 
@@ -116,43 +100,56 @@ for i in range(len(generators_file_path)):
 	# Adjust the number of empty strings to be one less than the desired output
 	train_file_paths = [''] * (i + 2) + [generators_file_path[i] + 'train.txt']
 
-	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths, transform=transform)
+	new_train_dataset = CustomDataset(txt_file_paths=train_file_paths)
 
-	mtsc_icarl.update_representation(new_train_dataset, num_epochs=num_epochs, learning_rate=lr, temperature=temperature, distil_gamma = distil_gamma, lambda_param=lambda_param)
+	mtsc_model.update_representation(new_train_dataset, num_epochs=num_epochs, learning_rate=lr, temperature=temperature, distil_gamma = distil_gamma, lambda_param=lambda_param)
 
 
 	######################### SELECT EXEMPLARS #################################
 	print("Selecting exemplars")
 	train_data_path = [generators_file_path[i] + 'train.txt']
-	new_train_dataset = CustomDataset(txt_file_paths=train_data_path, transform=transform)
-	new_exemplars = mtsc_icarl.select_exemplars(new_train_dataset)
+	new_train_dataset = CustomDataset(txt_file_paths=train_data_path)
+	new_exemplars = mtsc_model.select_exemplars(new_train_dataset)
 
-	mtsc_icarl.assign_exemplars(new_exemplars[0], i+2, append=False)
+	mtsc_model.assign_exemplars(new_exemplars[0], i+2, append=False)
 
-	mtsc_icarl.reduce_exemplar_sets()
+	mtsc_model.reduce_exemplar_sets()
 
 	######################### TEST REAL VS CURRENT GENERATOR ####################
 
-	classification_report_temp_arr = []
+	accuracy_temp, roc_temp = [], []
+	for j in range(len(test_file_paths)):
 
-	for j in range(len(test_file_paths[:i+2])):
-
-		test_data_paths = ['/media/nas2/Aref/share/continual_learning/dataset_file_paths/dn-real-500/test.txt'] +\
-						 [test_file_paths[j]] 				#+ back_add
+		test_data_paths = [test_file_paths_real] + ['']*j +\
+						 [test_file_paths[j]] 
 
 		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
-		final_result+='\n'+ f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}:\n'
+		
+		test_dataset = CustomDataset(txt_file_paths=test_data_paths)
+		accuracy, roc_auc = classification_report_auroc(test_dataset, mtsc_model)
+		accuracy_temp.append(accuracy)
+		roc_temp.append(roc_auc)
+		final_result+=f'{i+1},{generator_names[i]},{test_sets[j]},{accuracy},{roc_auc}\n'
 
-		test_dataset = CustomDataset(txt_file_paths=test_data_paths, transform=transform)
-		accuracy_report, roc_auc = classification_report_auroc(test_dataset, model=mtsc_icarl)
-
-		print(accuracy_report, roc_auc)
-		final_result+=accuracy_report + '\nROC_AUC:' + str(roc_auc)
-
-		classification_report_temp_arr.append(accuracy_report)
-
-	classification_report_arr.append(classification_report_temp_arr)
-
-
+	accuracy_list.append(accuracy_temp)
+	roc_auc_list.append(roc_temp)
 
 	print(final_result)
+print(accuracy_list, roc_auc_list)
+
+# Specify the filename
+accuracy_csv, aucroc_csv = 'MTSCResultsAccuracy.csv', 'MTSCResultsROCAUC.csv'
+
+# Writing to the csv file
+with open(accuracy_csv, mode='w', newline='') as file:
+	writer = csv.writer(file)
+	writer.writerows(accuracy_list)
+
+with open(aucroc_csv, mode='w', newline='') as file:
+	writer = csv.writer(file)
+	writer.writerows(roc_auc_list)
+
+print(f'Data written to {accuracy_csv} and {aucroc_csv}.')
+print("Script End Time =", datetime.now().strftime("%H:%M:%S"))
+
+

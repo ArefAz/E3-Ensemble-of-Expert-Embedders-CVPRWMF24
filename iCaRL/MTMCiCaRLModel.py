@@ -110,7 +110,7 @@ class MTMCiCaRLModel:
 			features_list = []
 			
 			# Use DataLoader for batch processing to speed up feature extraction
-			dataloader = DataLoader(class_dataset, batch_size=32, num_workers=4, shuffle=False, pin_memory=True if device == 'cuda' else False)
+			dataloader = DataLoader(class_dataset, batch_size=32, num_workers=2, shuffle=False, pin_memory=True if device == 'cuda' else False)
 			
 			for _, images, _ in tqdm(dataloader, desc="Processing"):
 				images = images.to(device)
@@ -260,7 +260,7 @@ class MTMCiCaRLModel:
 		exemplar_dataset = ExemplarDataset(self.exemplar_sets)  # This creates dataset from dictionary exemplar_sets
 		combined_dataset = ConcatDataset([new_dataset, exemplar_dataset]) # Combines the new_dataset and exemplar dataset
 
-		combined_dataloader = DataLoader(combined_dataset, batch_size=32, num_workers=4, shuffle=True, pin_memory=True if device == 'cuda' else False)
+		combined_dataloader = DataLoader(combined_dataset, batch_size=32, num_workers=2, shuffle=True, pin_memory=True if device == 'cuda' else False)
 		
 		########################################################
 		# First, get ouput logits for all combined dataset. Store them for distillation loss.
@@ -305,65 +305,62 @@ class MTMCiCaRLModel:
 		best_train_loss = 1e5
 		
 		print("Training model with classification and distillation loss")
-		for epoch in range(num_epochs):
-			with tqdm(combined_dataloader, desc=f'Epoch {epoch + 1}/{num_epochs}', unit='batch') as pbar:
-				for i, (indices, images, labels) in enumerate(pbar):
-					#######################################################################################
-					images = images.to(device)
-					labels = labels.to(device)
-					optimizer_icarl.zero_grad()
-					optimizer_mtmc.zero_grad()
+		for epoch in tqdm(range(num_epochs)):
+			for i, (indices, images, labels) in enumerate(combined_dataloader):
+				#######################################################################################
+				images = images.to(device)
+				labels = labels.to(device)
+				optimizer_icarl.zero_grad()
+				optimizer_mtmc.zero_grad()
 
-					#######################################################################################
-					g = self.feature_extractor(images)
-					
-					# Classification loss
-					cl_loss = classification_loss(g, labels)
+				#######################################################################################
+				g = self.feature_extractor(images)
+				
+				# Classification loss
+				cl_loss = classification_loss(g, labels)
 
-					# Distillation loss
-					g = F.sigmoid(g)
-					q_i = q[indices]
-					
-					# dist_loss = distillation_loss(g, q_i)
-					dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
-					
-					# loss = cl_loss + dist_loss
-					icarl_loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
+				# Distillation loss
+				g = F.sigmoid(g)
+				q_i = q[indices]
+				
+				# dist_loss = distillation_loss(g, q_i)
+				dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
+				
+				# loss = cl_loss + dist_loss
+				icarl_loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
 
-					icarl_loss.backward(retain_graph=True)
-					optimizer_icarl.step()
+				icarl_loss.backward(retain_graph=True)
+				#######################################################################################
+				# The following steps is for MTMC model learning in parallel
+				# Get BCE. Logits for 0 is still binary class 0 but logits for other generators are 1
+				binary_labels = (labels != 0).type(torch.LongTensor).clone().detach().to(device)
+				# binary_labels = torch.tensor((labels != 0).type(torch.LongTensor)).to(device)
+				
+				class_logits = self.binary_detector(images)  # Binary class logits
+				bl_loss = classification_loss(class_logits, binary_labels)
 
-					#######################################################################################
-					# The following steps is for MTMC model learning in parallel
-					# Get BCE. Logits for 0 is still binary class 0 but logits for other generators are 1
-					binary_labels = torch.tensor((labels != 0).type(torch.LongTensor)).to(device)
-					class_logits = self.binary_detector(images)  # Binary class logits
-					
-					# dR = class_logits[:,0].unsqueeze(1)
-					# dG = class_logits[:,1].unsqueeze(1)
-					# print(class_logits, labels, binary_labels)
-					bl_loss = classification_loss(class_logits, binary_labels)
+				if torch.isnan(bl_loss).any():
+					print("Loss is NaN. Inspecting dG and binary_labels...")
+					print("class_logits:", class_logits)
+					print("Binary Labels:", binary_labels)
+					print("Bl Loss:", bl_loss.item())
+					print("iCaRL Loss:", icarl_loss.item())
+					sys.exit("Stopping training due to NaN loss.")
 
-					if torch.isnan(bl_loss).any():
-						print("Loss is NaN. Inspecting dG and binary_labels...")
-						print("class_logits:", class_logits)
-						print("Binary Labels:", binary_labels)
-						sys.exit("Stopping training due to NaN loss.")
+				# Loss is combination of icarl and bce loss
+				mtmc_loss = icarl_loss + lambda_param * bl_loss
+				mtmc_loss.backward()
 
-					# Loss is combination of icarl and bce loss
-					mtmc_loss = icarl_loss.item() + lambda_param * bl_loss
-					mtmc_loss.backward()
-					optimizer_mtmc.step()
-
-					if mtmc_loss.item()<best_train_loss:
-						best_train_epoch = epoch
-						best_train_loss = mtmc_loss.item()
-						best_loss_model_dump_name = f'best_mtmc_{learning_rate}.pt'
-						torch.save(self.feature_extractor, best_loss_model_dump_name)
-					
-					pbar.set_postfix(icarl_loss=icarl_loss.item(), mtmc_loss=mtmc_loss.item(), bl_loss=bl_loss.item())
-
-					#######################################################################################
+				optimizer_icarl.step()
+				optimizer_mtmc.step()
+				
+				if mtmc_loss.item()<best_train_loss:
+					best_train_epoch = epoch
+					best_train_loss = mtmc_loss.item()
+					best_loss_model_dump_name = f'best_mtmc_{learning_rate}.pt'
+					torch.save(self.feature_extractor, best_loss_model_dump_name)
+				
+				#######################################################################################
 		
 		########################################################
 		# First, load the saved performing model on training data
