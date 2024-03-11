@@ -26,7 +26,6 @@ def get_callbacks(configs):
     else:
         filename="{epoch:02d}-{step}-{v_loss:.4f}-{v_acc:.4f}"
     checkpoint_callback = ModelCheckpoint(
-        save_top_k=1,
         save_last=True,
         verbose=False,
         monitor="v_loss",
