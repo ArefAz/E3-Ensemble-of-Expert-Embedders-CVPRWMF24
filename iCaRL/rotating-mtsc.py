@@ -1,13 +1,13 @@
 import torch
 import os
-from iCaRL.lib.CustomDataset import CustomDataset
+from lib.CustomDataset import CustomDataset
 from MTSCiCaRLModel import MTSCiCaRLModel
 
 import os
 import csv
 import torch
 
-from iCaRL.lib.HelperFunctions import *
+from lib.HelperFunctions import *
 from lib.FileLists import *
 from datetime import datetime
 
@@ -65,7 +65,6 @@ mtsc_model.assign_exemplars(exemplar_real,0)
 mtsc_model.assign_exemplars(exemplar_gan,1)
 
 #####################################################################################################
-
 
 ##############################  INCREMENTALLY LEARN NEW GENERATORS  #################################
 final_result = 'Task,TrainedOn,TestedOn,Accuracy,ROC\n'

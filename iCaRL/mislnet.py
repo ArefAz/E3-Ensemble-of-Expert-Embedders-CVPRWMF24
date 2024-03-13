@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from pytorch_lightning import LightningModule
 from torchmetrics.classification import MulticlassAccuracy
 
+
 class ConvBlock(torch.nn.Module):
 	def __init__(
 		self,

@@ -9,7 +9,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, ConcatDataset
 from torchvision.models import resnet50
 from mislnet import MISLNet
-from CustomDataset import ExemplarDataset
+from lib.CustomDataset import ExemplarDataset
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -85,6 +85,18 @@ class MTMCiCaRLModel:
 			# Transfer feature extractor to cuda
 			self.binary_detector.to(device)
 			self.binary_detector.eval()
+			
+			############################### FREEZE EARLIER LAYERS #################################
+			for i, (name, param) in enumerate(self.feature_extractor.named_parameters()):
+				# Freezing almost 50% of the parameters. Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
+			
+			for i, (name, param) in enumerate(self.binary_detector.named_parameters()):
+				# Freezing almost 50% of the parameters. Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
+			########################################################################################
 
 		else:
 			raise NotImplementedError("Currently only MISLNet and resnet50 are supported.")

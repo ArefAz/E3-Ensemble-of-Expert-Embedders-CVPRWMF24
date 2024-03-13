@@ -2,11 +2,11 @@ lightning_checkpoint_path='/media/nas2/Aref/share/continual_learning/models/misl
 
 resnet50_lightning_checkpoint_path='/media/nas2/Aref/share/continual_learning/models/resnet50/epoch=25-step=12194-v_loss=0.1221-v_acc=0.9588.ckpt'
 
-real_exemplars_mislnet='exemplar-set-real-mislnet.pt'
-gan_exemplars_mislnet='exemplar-set-gan-mislnet.pt'
+real_exemplars_mislnet='checkpoints/exemplar-set-real-mislnet.pt'
+gan_exemplars_mislnet='checkpoints/exemplar-set-gan-mislnet.pt'
 
-real_exemplars_resnet50='exemplar-set-real-resnet50.pt'
-gan_exemplars_resnet50='exemplar-set-gan-resnet50.pt'
+real_exemplars_resnet50='checkpoints/exemplar-set-real-resnet50.pt'
+gan_exemplars_resnet50='checkpoints/exemplar-set-gan-resnet50.pt'
 
 train_real_file_paths='/media/nas2/Aref/share/continual_learning/final_dataset_paths/db-real/train.txt'
 train_gan_file_paths='/media/nas2/Aref/share/continual_learning/final_dataset_paths/db-gan/train.txt'

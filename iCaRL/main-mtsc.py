@@ -1,12 +1,12 @@
 import torch
 import os
-from iCaRL.lib.CustomDataset import CustomDataset
+from lib.CustomDataset import CustomDataset
 from MTSCiCaRLModel import MTSCiCaRLModel
 import os
 import csv
 import torch
 
-from iCaRL.lib.HelperFunctions import *
+from lib.HelperFunctions import *
 from lib.FileLists import *
 from datetime import datetime
 

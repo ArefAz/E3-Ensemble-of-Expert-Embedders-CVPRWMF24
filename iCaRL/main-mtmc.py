@@ -5,41 +5,50 @@ from MTMCiCaRLModel import MTMCiCaRLModel
 import os
 import csv
 import torch
-
 from lib.HelperFunctions import *
+
 from lib.FileLists import *
 from datetime import datetime
+import argparse
 
-# Had to add this because I was having 'runtime error: too many open files'
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
-
-torch.multiprocessing.set_sharing_strategy('file_system')
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################## HYPERPARAMETERS #####################################
 num_epochs = 150
 lr = 1e-5
-# Specify the filename
-accuracy_csv, aucroc_csv = 'MTMCResultsAccuracy.csv', 'MTMCResultsROCAUC.csv'
+
+# Had to add this because I was having 'runtime error: too many open files'
+torch.multiprocessing.set_sharing_strategy('file_system')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+############################## ARGPARSE SETUP ######################################
+parser = argparse.ArgumentParser(description="Process command line arguments.")
+# Add arguments
+parser.add_argument('--model', type=str, help="Model name", required=True)
+parser.add_argument('--checkpoint', type=str, help="Path to the checkpoint file", required=True)
+parser.add_argument('--feature_size', type=int, help="Feature size", required=True)
+# Parse the arguments
+args = parser.parse_args()
+print(f"Running Script for Model: {args.model} using checkpoint: {args.checkpoint} and feature size is \
+	  {args.feature_size}")
+# Specify the output filenames
+accuracy_csv, aucroc_csv = f'iCaRLResultsAccuracy_{args.model}.csv', f'iCaRLResultsROCAUC_{args.model}.csv'
 ####################################################################################
 
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 
 # Checkpoint
-checkpoint = torch.load(lightning_checkpoint_path)
+checkpoint = torch.load(args.checkpoint)
 model_state_dict = checkpoint['state_dict']
 model_state_dict = {key.replace('classifier.', '', 1): value for key, value in model_state_dict.items()}
 
 # Instantiate Model
-mtmc_model = MTMCiCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
+mtmc_model = MTMCiCaRLModel(model_state_dict, args.model, total_memory=1000, feature_size=args.feature_size)
 
-if os.path.exists(real_exemplars) and os.path.exists(gan_exemplars):
-	# If already computed, you can just load the exemplars and assign it to the mtmc_icarl class
-	exemplar_real = torch.load(real_exemplars)
-	exemplar_gan = torch.load(gan_exemplars)
+real_exemplars=f'checkpoints/exemplar-set-real-{args.model}.pt'
+gan_exemplars=f'checkpoints/exemplar-set-gan-{args.model}.pt'
 
-else:
+if not (os.path.exists(real_exemplars) and os.path.exists(gan_exemplars)):
 	# This portion selects exemplar set from the entire training data. Datasize: 117K each real and gan
 	txt_real_file_paths = [train_real_file_paths]
 	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths)
@@ -51,6 +60,9 @@ else:
 	result = mtmc_model.select_exemplars(train_dataset)
 	torch.save(result[0],gan_exemplars)
 
+# If already computed, you can just load the exemplars and assign it to the mtmc_icarl class
+exemplar_real = torch.load(real_exemplars)
+exemplar_gan = torch.load(gan_exemplars)
 
 mtmc_model.assign_exemplars(exemplar_real,0)
 mtmc_model.assign_exemplars(exemplar_gan,1)

@@ -8,7 +8,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, ConcatDataset
 
 from mislnet import MISLNet
-from CustomDataset import ExemplarDataset
+from lib.CustomDataset import ExemplarDataset
 import sys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -47,13 +47,18 @@ class iCaRLModel:
 			self.last_layer.weight.data.copy_(self.classifier.fc.weight.data)
 			self.last_layer.bias.data.copy_(self.classifier.fc.bias.data)
 			####################################################################
-			
+
 			self.feature_extractor = self.classifier
 			self.feature_extractor.fc = nn.Identity()
-
-			# Transfer feature extractor to cuda
 			self.feature_extractor.to(device)
+
+			for i, (name, param) in enumerate(self.feature_extractor.named_parameters()):
+				# Freezing almost 50% of the parameters. Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
+
 			self.feature_extractor.eval()
+
 			
 		elif neural_network=='mislnet':
 			self.classifier = MISLNet(num_classes=2)
