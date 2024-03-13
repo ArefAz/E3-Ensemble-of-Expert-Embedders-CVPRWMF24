@@ -1,27 +1,15 @@
 import sys
-import numpy as np
 import torch
-from torchvision.io import read_image
-from PIL import Image
 from tqdm import tqdm
-
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-import torchvision.transforms as transforms
-from torchvision.transforms import Compose, Resize, ToTensor
-from torch.utils.data import Dataset, DataLoader, Subset, ConcatDataset
-from pathlib import Path
-from torchvision.models import resnet18,resnet50
-import copy
-
+from torch.utils.data import DataLoader, ConcatDataset
+from torchvision.models import resnet50
 from mislnet import MISLNet
-
-from CustomDataset import CustomDataset, ExemplarDataset
-
+from CustomDataset import ExemplarDataset
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -40,6 +28,7 @@ class MTMCiCaRLModel:
 		
 		
 		self.feature_size = feature_size
+		self.neural_network = neural_network
 		self.exemplar_sets = {} # Dictionary to store exemplars for each class
 		self.compute_exemplar_means = True
 		self.n_class = n_class
@@ -51,9 +40,8 @@ class MTMCiCaRLModel:
 			self.classifier = MISLNet(num_classes=n_class)
 			self.classifier.load_state_dict(model_state_dict)
 
-			# Storing the last layer, will need this when updating representation 
+			# Storing the last layer, will need this when updating representation
 			self.last_layer = self.classifier.output
-			
 			self.feature_extractor = self.classifier
 			self.feature_extractor.output = nn.Identity()
 
@@ -61,16 +49,45 @@ class MTMCiCaRLModel:
 			self.feature_extractor.to(device)
 			self.feature_extractor.eval()
 
-
 			# A parallel binary detector will be trained on MTMC
 			self.binary_detector = MISLNet(num_classes=n_class)
 			self.binary_detector.load_state_dict(model_state_dict)
+
+			# Transfer feature extractor to cuda
+			self.binary_detector.to(device)
+			self.binary_detector.eval()
+		
+		elif neural_network=='resnet50':
+			self.classifier = resnet50(weights=None)
+			
+			self.classifier.fc = nn.Linear(self.classifier.fc.in_features, 2)
+			self.classifier.load_state_dict(model_state_dict)
+
+			# Storing the last layer, will need this when updating representation 
+			####################################################################
+			self.last_layer = nn.Linear(self.classifier.fc.in_features, 2)
+			self.last_layer.weight.data.copy_(self.classifier.fc.weight.data)
+			self.last_layer.bias.data.copy_(self.classifier.fc.bias.data)
+			####################################################################
+						
+			self.feature_extractor = self.classifier
+			self.feature_extractor.fc = nn.Identity()
+
+			# Transfer feature extractor to cuda
+			self.feature_extractor.to(device)
+			self.feature_extractor.eval()
+
+			# A parallel binary detector will be trained on MTMC
+			self.binary_detector = resnet50(weights=None)
+			self.binary_detector.fc = nn.Linear(self.binary_detector.fc.in_features, 2)
+			self.binary_detector.load_state_dict(model_state_dict)
+
 			# Transfer feature extractor to cuda
 			self.binary_detector.to(device)
 			self.binary_detector.eval()
 
 		else:
-			raise NotImplementedError("Currently only MISLNet is supported.")
+			raise NotImplementedError("Currently only MISLNet and resnet50 are supported.")
 
 		
 	def reduce_exemplar_sets(self):
@@ -206,10 +223,10 @@ class MTMCiCaRLModel:
 		
 		# Create a new layer with out_features increased by 1
 		new_out_features = self.n_class  # Increase the number of output features by 1
-		new_layer = nn.Linear(in_features=200, out_features=new_out_features)
+		new_layer = nn.Linear(in_features=self.feature_size, out_features=new_out_features)
 		
 		# Initialize the new layer weights and bias with existing values and add zeros for the new node
-		new_weights = torch.zeros((new_out_features, 200))
+		new_weights = torch.zeros((new_out_features, self.feature_size))
 		new_bias = torch.zeros((new_out_features))
 		
 		# Copy the existing weights and bias to the new weights and bias
@@ -266,9 +283,11 @@ class MTMCiCaRLModel:
 		# First, get ouput logits for all combined dataset. Store them for distillation loss.
 		self.n_class+=new_class
 
-		self.feature_extractor.output = self.expanded_network()
+		if self.neural_network=='mislnet':
+			self.feature_extractor.output = self.expanded_network()
+		else:
+			self.feature_extractor.fc = self.expanded_network()
 		
-
 		# print(self.feature_extractor)
 		
 		self.feature_extractor.to(device)
@@ -363,12 +382,11 @@ class MTMCiCaRLModel:
 				#######################################################################################
 		
 		########################################################
-		# First, load the saved performing model on training data
-		# print(f'Loading the best performing model: {best_loss_model_dump_name} trained on epoch: {best_train_epoch}')
-		# self.feature_extractor = torch.load(best_loss_model_dump_name)
-		
 		# Now set the classifer back to feature extractor, last layer would be identity
-		original_fc = self.feature_extractor.output
+		if self.neural_network=='mislnet':			
+			original_fc = self.feature_extractor.output
+		else:
+			original_fc = self.feature_extractor.fc
 
 		# Storing this last layer for future use
 		self.last_layer = nn.Linear(in_features=original_fc.in_features,
@@ -383,13 +401,15 @@ class MTMCiCaRLModel:
 		#########################################################
 
 		# Convert the final layer to be feature extractor, instead of classifier
-		self.feature_extractor.output = nn.Identity()
+		if self.neural_network=='mislnet':
+			self.feature_extractor.output = nn.Identity()
+		else:
+			self.feature_extractor.fc = nn.Identity()
 
-		# # Transfer feature extractor to eval mode
+		# Transfer feature extractor to eval mode
 		self.feature_extractor.eval()
 		self.binary_detector.eval()
 
-		
 		# Set this flag to True, since exemplar mean needs to be recalculated
 		self.compute_exemplar_means = True
 		

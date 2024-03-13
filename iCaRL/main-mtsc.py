@@ -1,15 +1,13 @@
 import torch
 import os
-from CustomDataset import CustomDataset
+from iCaRL.lib.CustomDataset import CustomDataset
 from MTSCiCaRLModel import MTSCiCaRLModel
-
-
 import os
 import csv
 import torch
 
-from HelperFunctions import *
-from FileLists import *
+from iCaRL.lib.HelperFunctions import *
+from lib.FileLists import *
 from datetime import datetime
 
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
@@ -21,10 +19,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################## HYPERPARAMETERS #####################################
 
-num_epochs = 150
+num_epochs = 50
 lr = 1e-5
 distil_gamma=0.5
-lambda_param = 0.5
+lambda_param = 0.1
 temperature = 2
 
 ####################################################################################

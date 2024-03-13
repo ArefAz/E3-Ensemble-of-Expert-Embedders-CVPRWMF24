@@ -1,15 +1,14 @@
 import torch
 import os
-from CustomDataset import CustomDataset
+from iCaRL.lib.CustomDataset import CustomDataset
 from MTMCiCaRLModel import MTMCiCaRLModel
-
 
 import os
 import csv
 import torch
 
-from HelperFunctions import *
-from FileLists import *
+from iCaRL.lib.HelperFunctions import *
+from lib.FileLists import *
 from datetime import datetime
 
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))

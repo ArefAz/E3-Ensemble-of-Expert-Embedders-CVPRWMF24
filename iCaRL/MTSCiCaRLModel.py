@@ -1,27 +1,15 @@
-import os
-import numpy as np
 import torch
-from torchvision.io import read_image
-from PIL import Image
 from tqdm import tqdm
-
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-import torchvision.transforms as transforms
-from torchvision.transforms import Compose, Resize, ToTensor
-from torch.utils.data import Dataset, DataLoader, Subset, ConcatDataset
-from pathlib import Path
-from torchvision.models import resnet18,resnet50
-import copy
+from torch.utils.data import DataLoader, ConcatDataset
 
 from mislnet import MISLNet
-
-from CustomDataset import CustomDataset, ExemplarDataset
-
+from CustomDataset import ExemplarDataset
+import sys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -39,7 +27,7 @@ class MTSCiCaRLModel:
 		self.feature_size = feature_size
 		self.exemplar_sets = {} # Dictionary to store exemplars for each class
 		self.compute_exemplar_means = True
-		self.n_class = 2
+		self.n_class = n_class
 		self.total_memory = total_memory
 
 		# self.memory_per_task = total_memory/self.n_class
@@ -49,8 +37,6 @@ class MTSCiCaRLModel:
 			self.classifier.load_state_dict(model_state_dict)
 			self.classifier.to(device)
 			self.classifier.eval()
-
-
 		else:
 			raise NotImplementedError("Currently MISLNet is supported on MTSC")
 
@@ -87,7 +73,6 @@ class MTSCiCaRLModel:
 		
 		selected_class = class_dataset[0][2]
 
-		# Assuming `original_model` is your model instance
 		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
 		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
 		# Make the last layer feature extractor
@@ -153,17 +138,81 @@ class MTSCiCaRLModel:
 			return exemplar_set, selected_image
 			
 
+	def calculate_mean_exemplars(self):
+
+		#####################################################################################
+		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
+		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
+		# Make the last layer feature extractor
+		feature_extractor.output = nn.Identity()
+		
+		feature_extractor.to(device) # Transfer feature extractor to cuda
+		feature_extractor.eval()
+		#####################################################################################
+
+		mean_exemplar_set = []
+		for key, images in self.exemplar_sets.items():
+			print(f"Calculating mean of exemplars for the class {key}")
+			running_feature_sum = torch.zeros((1, self.feature_size), device=device)
+
+			for image in images:
+				image = image.unsqueeze(0).to(device)
+				features = feature_extractor(image)
+				features = F.normalize(features, p=2, dim=1)  # L2 Normalize the features
+				running_feature_sum += features
+
+			mean_feature = running_feature_sum / len(images)
+			mean_feature = F.normalize(mean_feature, p=2, dim=1)
+			mean_exemplar_set.append(mean_feature)
+
+		print("Mean of exemplar sets calculated")
+		self.mean_exemplar_set = torch.cat(mean_exemplar_set, dim=0)
+		self.compute_exemplar_means = False
+
+
 	def classify(self, image_batch):
 		image_batch = image_batch.to(device)
+
+		#####################################################################################
+		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
+		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
+		# Make the last layer feature extractor
+		feature_extractor.output = nn.Identity()
+		
+		feature_extractor.to(device) # Transfer feature extractor to cuda
+		feature_extractor.eval()
+		#####################################################################################
+		
 		with torch.no_grad():
-			batch_predictions = self.classifier(image_batch)
-			# Classify 0 as 0, anything else is synthetic so should be 1
-			# batch_predictions = torch.where(batch_predictions == 0, torch.tensor(0), torch.tensor(1))
-			argmax_indices = torch.argmax(batch_predictions, dim=1)  # Shape: batch_size
-			binary_predictions = (argmax_indices != 0).detach().cpu().int()
+			if self.compute_exemplar_means:
+				self.calculate_mean_exemplars()
+
+			batch_feature = feature_extractor(image_batch)
+			batch_feature = F.normalize(batch_feature, p=2, dim=1)
+
+			batch_expanded = batch_feature.unsqueeze(1)  # Shape becomes [batch_size, 1, feature_size]
+			mean_exemplar_set_expanded = self.mean_exemplar_set.unsqueeze(0) # Shape becomes [1, classes, feature_size]
 			
-			pseudo_probabilities = F.softmax(batch_predictions, dim=1).detach().cpu().numpy()
-			return binary_predictions, pseudo_probabilities
+			distances = torch.norm(batch_expanded - mean_exemplar_set_expanded, p=2, dim=2).detach().cpu()  # Shape becomes [32, num_classes]
+			
+			distances_std = (distances - distances.mean()) / distances.std()
+			pseudo_probabilities = F.softmax(-distances_std, dim=1).detach().cpu().numpy()
+			# Find the index of the closest reference  for each element in the batch
+			closest_indices = distances.argmin(dim=1)
+
+			return closest_indices, pseudo_probabilities
+
+	# def classify(self, image_batch):
+	# 	image_batch = image_batch.to(device)
+	# 	with torch.no_grad():
+	# 		batch_predictions = self.classifier(image_batch)
+	# 		# Classify 0 as 0, anything else is synthetic so should be 1
+	# 		# batch_predictions = torch.where(batch_predictions == 0, torch.tensor(0), torch.tensor(1))
+	# 		argmax_indices = torch.argmax(batch_predictions, dim=1)  # Shape: batch_size
+	# 		binary_predictions = (argmax_indices != 0).detach().cpu().int()
+			
+	# 		pseudo_probabilities = F.softmax(batch_predictions, dim=1).detach().cpu().numpy()
+	# 		return binary_predictions, pseudo_probabilities
 
 
 	def expanded_network(self):
@@ -215,20 +264,16 @@ class MTSCiCaRLModel:
 			"""
 			# Soften the probabilities of both teacher and student outputs
 			teacher_probs = F.softmax(teacher_logits / temperature, dim=-1)
-			student_probs = F.softmax(student_logits / temperature, dim=-1)
-			
+			# student_probs = F.softmax(student_logits / temperature, dim=-1)
 			# Calculate the log probabilities of student outputs
 			student_log_probs = F.log_softmax(student_logits / temperature, dim=-1)
-			
 			# Calculate the KL divergence
 			kl_div = F.kl_div(student_log_probs, teacher_probs, reduction='batchmean') * (temperature ** 2)
 			
 			return kl_div
 
-
-		
 		exemplar_dataset = ExemplarDataset(self.exemplar_sets)  # This creates dataset from dictionary exemplar_sets
-		combined_dataset = ConcatDataset([new_dataset, exemplar_dataset]) # Combines the new_dataset and exemplar dataset
+		combined_dataset = ConcatDataset([new_dataset, exemplar_dataset]) 
 
 		combined_dataloader = DataLoader(combined_dataset, batch_size=32, num_workers=2, shuffle=True, pin_memory=True if device == 'cuda' else False)
 		
@@ -284,12 +329,32 @@ class MTSCiCaRLModel:
 				#dist_loss = dist_loss / self.n_known
 				icarl_loss = (1-distil_gamma) * cl_loss + distil_gamma * distil_loss
 
+				#############################################################################################
 				# Get BCE. Logits for 0 is still binary class 0 but logits for other generators are 1
 				binary_labels = (labels != 0).float().unsqueeze(1)
-				dR = g[:,0].unsqueeze(1)
-				dG = g[:,1:].prod(dim=1, keepdim=True)   # log(a*b) = log(a) + log(b)
-				binary_logits = torch.where(binary_labels == 0, dR, dG)
-				bl_loss = bce_loss(binary_logits, binary_labels)
+				log_prob = torch.nn.functional.log_softmax(g, dim=1)
+				mask = binary_labels.expand_as(log_prob)
+
+				log_prob_selected = log_prob * mask
+				dG = log_prob_selected[:,1:].sum(dim=1, keepdim=True) # This calculates dG
+				
+				# Since for binary_labels == 0 we want to consider only log_probs[:, 0]
+				# we need to subtract the summed log probabilities from log_probs[:, 0] when binary_labels == 0
+				binary_labels_complement = 1 - binary_labels  # Inverts 0s and 1s
+				dR = log_prob[:, 0].unsqueeze(1) * binary_labels_complement
+
+				# Combine the two parts to get the final loss tensor. As per the paper
+				bl_loss = -(dR + dG).mean()
+
+				if torch.isnan(bl_loss).any():
+					print("Loss is NaN. Inspecting dG and binary_labels...")
+					print("log_probs:", log_prob)
+					print("Binary Labels:", binary_labels)
+					print("Bl Loss:", bl_loss.item())
+					print("iCaRL Loss:", icarl_loss.item())
+					sys.exit("Stopping training due to NaN loss.")
+				#############################################################################################
+					
 
 				# Loss is combination of icarl and bce loss
 				loss = icarl_loss + lambda_param * bl_loss
@@ -297,9 +362,9 @@ class MTSCiCaRLModel:
 				loss.backward()
 				optimizer.step()
 
-				if (i+1) % 50 == 0:
-					print ('Epoch [%d/%d], Iter [%d/%d] iCaRL Loss: %.4f BCE Loss: %.4f' 
-						   %(epoch+1, num_epochs, i+1, len(combined_dataset)//32, icarl_loss.item(), bl_loss.item()))
+				if (i+1) % 5 == 0:
+					print ('Epoch [%d/%d], Iter [%d/%d], Total Loss: %.4f iCaRL Loss: %.4f BCE Loss: %.4f' 
+						   %(epoch+1, num_epochs, i+1, len(combined_dataset)//32, loss.item(), icarl_loss.item(), bl_loss.item()))
 				
 				
 		# # Transfer classifier  to eval mode

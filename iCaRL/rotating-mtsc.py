@@ -1,15 +1,14 @@
 import torch
 import os
-from CustomDataset import CustomDataset
+from iCaRL.lib.CustomDataset import CustomDataset
 from MTSCiCaRLModel import MTSCiCaRLModel
-
 
 import os
 import csv
 import torch
 
-from HelperFunctions import *
-from FileLists import *
+from iCaRL.lib.HelperFunctions import *
+from lib.FileLists import *
 from datetime import datetime
 
 # Had to add this because I was having 'runtime error: too many open files'
@@ -21,10 +20,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 ############################## HYPERPARAMETERS #####################################
 
-num_epochs = 1
+num_epochs = 150
 lr = 1e-5
 distil_gamma=0.5
-lambda_param = 0.5
+lambda_param = 0.1
 temperature = 2
 
 ####################################################################################
@@ -75,8 +74,10 @@ accuracy_list, roc_auc_list = [], []
 ######################### TEST WITHOUT TRAINING TASK 0 #########################
 accuracy_temp, roc_temp = [], []
 for j in range(len(test_file_paths)):
-	test_data_paths = [test_file_paths_real] +\
-					[test_file_paths[j]] 				#+ back_add
+	if j==0:
+		test_data_paths = [test_file_paths_real, test_file_paths[j]]
+	else:
+		test_data_paths = [test_file_paths_real, '', test_file_paths[j]]
 
 	print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 	
@@ -128,7 +129,7 @@ for i in range(len(generators_file_path)):
 		if j==0:
 			test_data_paths = [test_file_paths_real, test_file_paths[j]]
 		else:
-			test_data_paths = [test_file_paths_real,'', test_file_paths[j]] 
+			test_data_paths = [test_file_paths_real, '', test_file_paths[j]]
 
 		print(f'Testing Real Vs {test_sets[j]} in path: {test_data_paths}')
 		

@@ -1,36 +1,22 @@
-import os
-import numpy as np
 import torch
-from torchvision.io import read_image
-from PIL import Image
 from tqdm import tqdm
-
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-import torchvision.transforms as transforms
-from torchvision.transforms import Compose, Resize, ToTensor
-from torch.utils.data import Dataset, DataLoader, Subset, ConcatDataset
-from pathlib import Path
-from torchvision.models import resnet18,resnet50
-import copy
+from torch.utils.data import DataLoader, ConcatDataset
+from torchvision.models import resnet50
 
 from mislnet import MISLNet
-
-from CustomDataset import CustomDataset, ExemplarDataset
-
+from lib.CustomDataset import ExemplarDataset
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-
 # This implementation deals with domain incremental learning in 2 classes setting
 class iCaRLModel:
-	def __init__(self, model_state_dict, neural_network='resnet50', total_memory=2000 , n_class=2, feature_size=200):
+	def __init__(self, model_state_dict, neural_network='resnet50', total_memory=1000 , n_class=2, feature_size=200):
 		'''
 		memory_per_task:	  Defaults to 1000 per class
 		model_state_dict:	 This is the state dict of pretrained model
@@ -44,6 +30,7 @@ class iCaRLModel:
 		self.compute_exemplar_means = True
 		self.n_class = 2
 		self.total_memory = total_memory
+		self.neural_network = neural_network
 
 		# self.memory_per_task = total_memory/self.n_class
 
@@ -68,7 +55,7 @@ class iCaRLModel:
 			self.feature_extractor.to(device)
 			self.feature_extractor.eval()
 			
-		if neural_network=='mislnet':
+		elif neural_network=='mislnet':
 			self.classifier = MISLNet(num_classes=2)
 			self.classifier.load_state_dict(model_state_dict)
 
@@ -229,10 +216,10 @@ class iCaRLModel:
 		
 		# Create a new layer with out_features increased by 1
 		new_out_features = self.n_class  # Increase the number of output features by 1
-		new_layer = nn.Linear(in_features=200, out_features=new_out_features)
+		new_layer = nn.Linear(in_features=self.feature_size, out_features=new_out_features)
 		
 		# Initialize the new layer weights and bias with existing values and add zeros for the new node
-		new_weights = torch.zeros((new_out_features, 200))
+		new_weights = torch.zeros((new_out_features, self.feature_size))
 		new_bias = torch.zeros((new_out_features))
 		
 		# Copy the existing weights and bias to the new weights and bias
@@ -289,7 +276,10 @@ class iCaRLModel:
 		# First, get ouput logits for all combined dataset. Store them for distillation loss.
 		self.n_class+=new_class
 
-		self.feature_extractor.output = self.expanded_network()
+		if self.neural_network=='mislnet':
+			self.feature_extractor.output = self.expanded_network()
+		else:
+			self.feature_extractor.fc = self.expanded_network()
 		
 
 		# print(self.feature_extractor)
@@ -324,48 +314,47 @@ class iCaRLModel:
 		best_train_loss = 1e5
 		
 		print("Training model with classification and distillation loss")
-		for epoch in range(num_epochs):
-			with tqdm(combined_dataloader, desc=f'Epoch {epoch + 1}/{num_epochs}', unit='batch') as pbar:
-				for i, (indices, images, labels) in enumerate(pbar):
-					images = images.to(device)
-					labels = labels.to(device)
-					optimizer.zero_grad()
-					g = self.feature_extractor(images)
-					
-					# Classification loss
-					cl_loss = classification_loss(g, labels)
+		for epoch in tqdm(range(num_epochs)):
+			# with tqdm(combined_dataloader, desc=f'Epoch {epoch + 1}/{num_epochs}', unit='batch') as pbar:
+			for i, (indices, images, labels) in enumerate(combined_dataloader):
+				images = images.to(device)
+				labels = labels.to(device)
+				optimizer.zero_grad()
+				g = self.feature_extractor(images)
+				
+				# Classification loss
+				cl_loss = classification_loss(g, labels)
 
-					# Distillation loss
-					g = F.sigmoid(g)
-					q_i = q[indices]
-					
-					dist_loss = distillation_loss(g, q_i)
-					# dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
-					
-					loss = cl_loss + dist_loss
-					# loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
+				# Distillation loss
+				g = F.sigmoid(g)
+				q_i = q[indices]
+				
+				# dist_loss = distillation_loss(g, q_i)
+				dist_loss = kl_divergence_with_temperature(q_i, g, temperature=temperature)
+				
+				# loss = cl_loss + dist_loss
+				loss = (1-distil_gamma) * cl_loss + distil_gamma * dist_loss
 
-					loss.backward()
-					optimizer.step()
+				loss.backward()
+				optimizer.step()
 
-					if loss.item()<best_train_loss:
-						best_train_epoch = epoch
-						best_train_loss = loss.item()
-						best_loss_model_dump_name = f'best_feature_extractor_icarl_{learning_rate}.pt'
-						torch.save(self.feature_extractor, best_loss_model_dump_name)
-					
-					pbar.set_postfix(loss=loss.item(), cl_loss=cl_loss.item(), dist_loss=dist_loss.item())
+				if loss.item()<best_train_loss:
+					best_train_epoch = epoch
+					best_train_loss = loss.item()
+					best_loss_model_dump_name = f'best_feature_extractor_icarl_{learning_rate}.pt'
+					torch.save(self.feature_extractor, best_loss_model_dump_name)
+					# pbar.set_postfix(loss=loss.item(), cl_loss=cl_loss.item(), dist_loss=dist_loss.item())
 				
 				
 		
 		########################################################
 		# First, load the saved performing model on training data
-		# print(f'Loading the best performing model: {best_loss_model_dump_name} trained on epoch: {best_train_epoch}')
-		# self.feature_extractor = torch.load(best_loss_model_dump_name)
-		
 		# Now set the classifer back to feature extractor, last layer would be identity
-		original_fc = self.feature_extractor.output
-
+		if self.neural_network=='mislnet':
+			original_fc = self.feature_extractor.output
+		else:
+			original_fc = self.feature_extractor.fc
+		
 		# Storing this last layer for future use
 		self.last_layer = nn.Linear(in_features=original_fc.in_features,
 									out_features=original_fc.out_features,
@@ -379,7 +368,10 @@ class iCaRLModel:
 		#########################################################
 
 		# Convert the final layer to be feature extractor, instead of classifier
-		self.feature_extractor.output = nn.Identity()
+		if self.neural_network=='mislnet':
+			self.feature_extractor.output = nn.Identity()
+		else:
+			self.feature_extractor.fc = nn.Identity()
 
 		# # Transfer feature extractor to eval mode
 		self.feature_extractor.eval()

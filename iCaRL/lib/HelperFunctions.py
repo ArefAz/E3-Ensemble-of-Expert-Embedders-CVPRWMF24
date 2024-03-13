@@ -10,16 +10,17 @@ def classification_report_auroc(dataset_t, model):
 	"""
 	Returns classification report and AUROC
 	"""
-	dataloader_t = DataLoader(dataset_t, batch_size=32, num_workers=4, shuffle=True)
+	dataloader_t = DataLoader(dataset_t, batch_size=32, num_workers=2, shuffle=True)
 	result, prediction_score, truth = [], [], []
 
 	for _, img, label in tqdm(dataloader_t, desc="Evaluating"):
 
 		prediction, softmax = model.classify(img.to(device))
 		truth.extend(label)
+		result.extend(prediction)
 
 		prediction_score.extend(np.sum(softmax[:,1:], axis=1).tolist())
-		result.extend(prediction)
+		
 
 	result = [t.item() for t in result]
 	truth = [t.item() for t in truth]

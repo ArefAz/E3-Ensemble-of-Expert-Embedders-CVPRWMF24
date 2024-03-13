@@ -1,15 +1,13 @@
 import torch
 import os
-from CustomDataset import CustomDataset
+from lib.CustomDataset import CustomDataset
 from MTMCiCaRLModel import MTMCiCaRLModel
-
-
 import os
 import csv
 import torch
 
-from HelperFunctions import *
-from FileLists import *
+from lib.HelperFunctions import *
+from lib.FileLists import *
 from datetime import datetime
 
 # Had to add this because I was having 'runtime error: too many open files'
@@ -22,6 +20,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ############################## HYPERPARAMETERS #####################################
 num_epochs = 150
 lr = 1e-5
+# Specify the filename
+accuracy_csv, aucroc_csv = 'MTMCResultsAccuracy.csv', 'MTMCResultsROCAUC.csv'
 ####################################################################################
 
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
@@ -130,9 +130,6 @@ for i in range(len(generators_file_path)):
 
 	print(final_result)
 print(accuracy_list, roc_auc_list)
-
-# Specify the filename
-accuracy_csv, aucroc_csv = 'MTMCResultsAccuracy.csv', 'MTMCResultsROCAUC.csv'
 
 # Writing to the csv file
 with open(accuracy_csv, mode='w', newline='') as file:

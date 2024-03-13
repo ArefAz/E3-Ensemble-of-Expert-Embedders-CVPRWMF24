@@ -1,6 +1,6 @@
 import torch
 import os
-from CustomDataset import CustomDataset
+from iCaRL.lib.CustomDataset import CustomDataset
 from tqdm import tqdm
 from iCaRLModel import iCaRLModel
 
@@ -9,7 +9,7 @@ import csv
 import torch
 
 from HelperFunctions import *
-from FileLists import *
+from lib.FileLists import *
 from datetime import datetime
 
 

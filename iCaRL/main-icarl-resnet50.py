@@ -1,15 +1,15 @@
 import torch
 import os
 from lib.CustomDataset import CustomDataset
-from tqdm import tqdm
 from iCaRLModel import iCaRLModel
-
 import os
 import csv
 import torch
-
 from lib.HelperFunctions import *
-from lib.FileLists import *
+
+# Change this to FileLists
+from lib.FileListsTemp import *
+
 from datetime import datetime
 
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
@@ -19,43 +19,38 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# Specify the output filenames
+accuracy_csv, aucroc_csv = 'iCaRLResultsAccuracyResNet50.csv', 'iCaRLResultsROCAUCResNet50.csv'
+
 ############################## HYPERPARAMETERS #####################################
 num_epochs = 150
 lr = 1e-5
-####################################################################################
 
-# transform = transforms.Compose([
-# 		transforms.RandomCrop(256),
-# 		transforms.ToTensor(),
-# ])
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 
 # Checkpoint
-checkpoint = torch.load(lightning_checkpoint_path)
+checkpoint = torch.load(resnet50_lightning_checkpoint_path)
 model_state_dict = checkpoint['state_dict']
 model_state_dict = {key.replace('classifier.', '', 1): value for key, value in model_state_dict.items()}
 
 # Instantiate iCaRLModel
-icarl = iCaRLModel(model_state_dict, 'mislnet', total_memory=1000)
+icarl = iCaRLModel(model_state_dict, 'resnet50', total_memory=1000, feature_size=2048)
 
-if os.path.exists(real_exemplars) and os.path.exists(gan_exemplars):
-	# If already computed, you can just load the exemplars and assign it to the icarl class
-	exemplar_real = torch.load(real_exemplars)
-	exemplar_gan = torch.load(gan_exemplars)
-
-else:
+if not (os.path.exists(real_exemplars_resnet50) and os.path.exists(gan_exemplars_resnet50)):
 	# This portion selects exemplar set from the entire training data. Datasize: 117K each real and gan
 	txt_real_file_paths = [train_real_file_paths]
 	train_dataset = CustomDataset(txt_file_paths=txt_real_file_paths)
 	result = icarl.select_exemplars(train_dataset)
-	torch.save(result[0],real_exemplars)
+	torch.save(result[0],real_exemplars_resnet50)
 
 	txt_gan_file_paths = [train_gan_file_paths]
 	train_dataset = CustomDataset(txt_file_paths=txt_gan_file_paths)
 	result = icarl.select_exemplars(train_dataset)
-	torch.save(result[0],gan_exemplars)
+	torch.save(result[0],gan_exemplars_resnet50)
 
-
+# If already computed, you can just load the exemplars and assign it to the icarl class
+exemplar_real = torch.load(real_exemplars_resnet50)
+exemplar_gan = torch.load(gan_exemplars_resnet50)
 icarl.assign_exemplars(exemplar_real,0)
 icarl.assign_exemplars(exemplar_gan,1)
 
@@ -136,9 +131,6 @@ for i in range(len(generators_file_path)):
 
 	print(final_result)
 print(accuracy_list, roc_auc_list)
-
-# Specify the filename
-accuracy_csv, aucroc_csv = 'iCaRLResultsAccuracy.csv', 'iCaRLResultsROCAUC.csv'
 
 # Writing to the csv file
 with open(accuracy_csv, mode='w', newline='') as file:
