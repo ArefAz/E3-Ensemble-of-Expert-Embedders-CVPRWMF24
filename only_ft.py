@@ -5,16 +5,18 @@ from utils.continual_utils import fill_configs_with_datasets
 
 import pickle
 import numpy as np
+from copy import deepcopy
 
 
 if __name__ == "__main__":
+    cl_configs = deepcopy(cl_configs)
     ft_configs["Model"]["expert_ckpt"] = cl_configs["Model"]["ft_ckpt_paths"][0]
     ft_configs["Model"]["src_ckpts"].append(cl_configs["Model"]["ft_ckpt_paths"][0])
     ft_configs["Model"]["classifier"] = cl_configs["Model"]["backbone"]
-    ft_configs["Model"]["expert_n_features"] = 2048 if cl_configs["Model"]["backbone"] == "resnet50" else 200
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
+    ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
     ft_configs["General"]["check_val_every_n_epoch"] = cl_configs["General"][
         "check_val_every_n_epoch"
     ]
@@ -25,20 +27,20 @@ if __name__ == "__main__":
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
-    assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
-    "Number of ckpt paths should be equal to the number of synthetic datasets"
+    ft_configs["Train"]["train_dataset_limit_per_class"] = (
+                cl_configs["Data"]["memory_size"] // 2
+            )
+    ft_configs["Train"]["train_dataset_limit_real"] = (
+                cl_configs["Data"]["memory_size"] // 2
+                )
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         ft_configs["Model"]["fine_tune"] = True
         ft_configs["Model"]["model_type"] = "expert"
-        ft_configs["Train"]["distill"] = (
-            cl_configs["Train"]["distill"] if i > 1 else False
-        )
         acc_matrix.append([])
         auc_matrix.append([])
 
         if i > 0:
-            seen_datasets.append(dataset)
             ft_configs = fill_configs_with_datasets(
                 ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
             )
@@ -55,39 +57,16 @@ if __name__ == "__main__":
                 last_expert_path = model_checkpoint_state_dict["last_model_path"]
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
-            ft_configs["Model"]["model_type"] = cl_configs["Model"]["model_type"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
-            ft_configs["Model"]["fine_tune"] = False
             ft_configs["Model"]["src_ckpts"].append(last_expert_path)
 
             ft_configs = fill_configs_with_datasets(
-                ft_configs, seen_datasets, cl_configs["Data"]["real_dataset_name"]
-            )
-
-            if cl_configs["Data"]["fixed_memory"]:
-                ft_configs["Train"]["train_dataset_limit_per_class"] = (
-                    cl_configs["Data"]["memory_size"] // 2 // (i + 1)
-                )
-                ft_configs["Train"]["train_dataset_limit_real"] = (
-                    cl_configs["Data"]["memory_size"] // 2
-                )
-                print(f"Memory size: {cl_configs['Data']['memory_size']}")
-                print(
-                    f"Train dataset limit per class: {ft_configs['Train']['train_dataset_limit_per_class']}"
-                )
-            else:
-                loss_weights = [float(len(seen_datasets)), 1.0]
-                loss_weights = [l / sum(loss_weights) for l in loss_weights]
-                ft_configs["Train"]["loss_weights"] = loss_weights
-            print(
-                f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
+                ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
             )
 
             model_checkpoint_state_dict = train(ft_configs)
-            print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = None
             ft_configs["Train"]["train_dataset_limit_real"] = None
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
@@ -95,32 +74,15 @@ if __name__ == "__main__":
                 "last_model_path"
             ]
 
-        for dataset in cl_configs["Data"]["synthetic_dataset_names"]:
-            print(f"Testing MOE for dataset: {dataset}...")
-            ft_configs = fill_configs_with_datasets(
-                ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
-            )
-            results = test(ft_configs)
-            num = round(results["acc"], 4)
-            acc_matrix[i].append(round(results["acc"], 4))
-            auc_matrix[i].append(round(results["auc"], 4))
-
-        print("ACC Matrix:")
-        for j, row in enumerate(acc_matrix):
-            print(f"{j}: {row}")
-        print("AUC Matrix:")
-        for j, row in enumerate(auc_matrix):
-            print(f"{j}: {row}")
-        print("ACC Averages:")
-        for j, acc_row in enumerate(acc_matrix):
-            avg = sum(acc_row[: j + 1]) / len(acc_row[: j + 1])
-            print(f"{j}: {round(avg, 4)}")
-        print("AUC Averages:")
-        for j, auc_row in enumerate(auc_matrix):
-            avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
-            print(f"{j}: {round(avg, 4)}")
-
     acc_matrix = np.array(acc_matrix)
     auc_matrix = np.array(auc_matrix)
     np.savetxt(f'acc_matrix.csv', np.round(acc_matrix, 4), delimiter=',')
     np.savetxt(f'auc_matrix.csv', np.round(auc_matrix, 4), delimiter=',')
+
+    print("Expert file paths:")
+    print(ft_configs["Model"]["src_ckpts"])
+    filepath = f"expert_ckpt_{cl_configs['Model']['backbone']}.txt"
+    with open(filepath, "w") as f:
+        for path in ft_configs["Model"]["src_ckpts"]:
+            f.write(f"{path}\n")
+    print(f"Expert file paths saved to {filepath}")

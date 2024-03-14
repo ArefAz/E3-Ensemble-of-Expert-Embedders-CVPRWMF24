@@ -17,17 +17,24 @@ class MixtureTransformer(pl.LightningModule):
         self.train_configs = train_configs
         self.feature_extractors = get_experts(model_configs)
         n_feat_extr = len(self.feature_extractors)
-        n_features = model_configs["expert_n_features"]
+        n_features = 200
         self.classifier_head = ClassifierHead(n_feat_extr * n_features, model_configs, num_outputs=2)
         self.transformer = SpatioTempIncModule(
             input_size=n_feat_extr,
             input_chans=n_features,
             embed_dim=n_features,
             output_chans=n_features,
-            depth=20,
+            depth=5,
             num_heads=8,
         )
-
+        if model_configs["expert_n_features"] != n_features:
+            self.down_size = torch.nn.ModuleList(
+                [torch.nn.Linear(model_configs["expert_n_features"], n_features) for _ in range(n_feat_extr)]
+            )
+        else: 
+            self.down_size = torch.nn.ModuleList( 
+                [torch.nn.Identity() for _ in range(n_feat_extr)]
+            )
         self.loss = torch.nn.BCEWithLogitsLoss(
             weight=torch.tensor(train_configs["loss_weights"])
         )
@@ -43,15 +50,14 @@ class MixtureTransformer(pl.LightningModule):
         self.save_hyperparameters()
 
     def forward(self, x):
-        with torch.no_grad():
-            # gather features from all experts and concatenate them along a new dimension
-            features = torch.cat(
-                [
-                    extractor.eval()(x).unsqueeze(1)
-                    for extractor in self.feature_extractors
-                ],
-                dim=1,
-            )
+        # gather features from all experts and concatenate them along a new dimension
+        features = []
+        for down_size, extractor in zip(self.down_size, self.feature_extractors):
+            with torch.no_grad():
+                feature = extractor.eval()(x)
+            features.append(down_size(feature).unsqueeze(1))
+        features = torch.cat(features, dim=1)
+
         weights = self.transformer(features)
         features = weights * features
         features = features.flatten(1, -1)

@@ -13,13 +13,13 @@ General:
 
 Model:
   model_type: expert # could be either 'analytics' or 'expert' or 'jpeg' or 'moe' or 'fusion'
-  classifier: mislnet # 'mislnet' or 'resnet50'
-  expert_ckpt: logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt
+  classifier: resnet50 # 'mislnet' or 'resnet50'
+  expert_ckpt: logs/expert_resnet50_db-real_db-gan_src_q99/version_10/checkpoints/epoch=25-step=12194-v_loss=0.1221-v_acc=0.9588.ckpt
   analytics_ckpt: logs/ft_analytics_dn-real_du-gan_dn-sd_jpeg_q99/version_0/checkpoints/epoch=19-step=940-v_loss=0.2655-v_acc=0.8892.ckpt
   moe_ckpt: logs/moe_dn-real-500_dn-gan-500_dn-tt_dn-sd-500_dn-eg3d_dn-dalle2_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1274-v_acc=0.9522-last.ckpt
   expert_n_features: 200
   fusion_rule: 'max' # could be either 'avg' or 'max'
-  fine_tune: True # if True, the model is fine-tuned from a checkpoint
+  fine_tune: False # if True, the model is fine-tuned from a checkpoint
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
@@ -41,21 +41,21 @@ Model:
 
 Data:
   datasets: [
-    'dn-joint-real',
-    'dn-joint-synth',
+    'db-real',
+    'db-gan',
   ]
   num_src_classes: 2
   train_txt_paths: [
-    datasets/final_dataset_paths/dn-joint-real/train.txt,
-    datasets/final_dataset_paths/dn-joint-synth/train.txt,
+    datasets/final_dataset_paths/db-real/train.txt,
+    datasets/final_dataset_paths/db-gan/train.txt,
   ]
   val_txt_paths: [
-    datasets/final_dataset_paths/dn-joint-real/val.txt,
-    datasets/final_dataset_paths/dn-joint-synth/val.txt,
+    datasets/final_dataset_paths/db-real/val.txt,
+    datasets/final_dataset_paths/db-gan/val.txt,
   ]
   test_txt_paths: [
-    datasets/final_dataset_paths/dn-joint-real/test.txt,
-    datasets/final_dataset_paths/dn-joint-synth/test.txt,
+    datasets/final_dataset_paths/db-real/test.txt,
+    datasets/final_dataset_paths/db-gan/test.txt,
   ]
   train_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/train.hdf5, "", "", "", "", "", "", ""]
   val_hdf5_paths: [/media/nas2/misl_image_db_70_class/experimental/256/val.hdf5, "", "", "", "", "", "", ""]
@@ -72,13 +72,13 @@ Train:
   early_stopping: False
   loss_weights: [1.0, 1.0] # only used with mixture model loss to deal with class imbalance
   batch_size: 64
-  lr: 5.0e-4
+  lr: 1.0e-4
   src_loss_coeff: 1.0
   manipulation_loss_coeff: 0.0
   accumulate_grad_batches: 1
   scheduler: step # cosine, step
-  lr_decay_rate: 0.9 # only used with step scheduler
-  lr_step_size: 2 # only used with step scheduler
+  lr_decay_rate: 0.75 # only used with step scheduler
+  lr_step_size: 3 # only used with step scheduler
   min_lr: 1.0e-5 # only used with cosine scheduler
   optimizer: AdamW # Adam, AdamW, SGD
   momentum: 0.9 # only used with SGD optimizer

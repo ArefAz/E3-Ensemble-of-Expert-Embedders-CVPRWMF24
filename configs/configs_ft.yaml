@@ -1,6 +1,6 @@
 General:
   seed: 0
-  num_devices: -1
+  num_devices: 1
   check_val_every_n_epoch: 150 # number of epochs between validation check, needs to be empty (None) for using #batches
   val_check_interval: # number of training batches between each validation check
   num_sanity_val_steps: 0
@@ -19,7 +19,7 @@ Model:
   moe_ckpt:
   # moe_ckpt: logs/moe_dn-real-500_dn-gan-500_dn-tt_dn-sd-500_dn-eg3d_dn-dalle2_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1274-v_acc=0.9522-last.ckpt
   transformer_ckpt:
-  expert_n_features: 200
+  expert_n_features: 2048
   fusion_rule: 'max' # could be either 'avg' or 'max'
   fine_tune: True # if True, the model is fine-tuned from a checkpoint
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
@@ -56,7 +56,7 @@ Data:
   jpeg_quality: [99] # only used for training, could be either an int or a list of ints
   test_jpeg_qualities: [99] # only used for testing with different jpeg qualities, should be a list of ints
   randomize_jpeg_quality: False # if True, jpeg_quality is ignored and it's set to list(np.arange(70, 100, 1))
-  num_workers: 10
+  num_workers: 8
   prefetch_factor: 3
 
 Train:

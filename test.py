@@ -29,7 +29,7 @@ def run_test(configs):
         trainer = pl.Trainer(
             logger=logger,
             accelerator="gpu",
-            devices=configs["General"]["num_devices"],
+            devices=1,
             inference_mode=configs["General"]["inference_mode"],
             limit_test_batches=configs["Train"]["test_dataset_limit"],
         )
@@ -41,12 +41,12 @@ def run_test(configs):
             model=model,
             dataloaders=test_dataloader,
         )
-        if configs["Model"]["model_type"] in ["analytics", "expert", "moe"]:
-            pretty_print_mat(
-                model.get_conf_mat(),
-                column_labels=["Real", "Synth"],
-                row_labels=["Real", "Synth"],
-            )
+        # if configs["Model"]["model_type"] in ["analytics", "expert", "moe"]:
+        #     pretty_print_mat(
+        #         model.get_conf_mat(),
+        #         column_labels=["Real", "Synth"],
+        #         row_labels=["Real", "Synth"],
+        #     )
 
     if model_version is None:
         model_version = ""

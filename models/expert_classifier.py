@@ -29,6 +29,10 @@ class ExpertClassifier(pl.LightningModule):
             self.classifier = MISLNet(num_classes=2)
         elif self.model_configs["classifier"] == "resnet50":
             self.classifier = resnet50(num_classes=2)
+            # freeze the initial layers
+            for i, (name, param) in enumerate(self.classifier.named_parameters()):
+                if i < 137:
+                    param.requires_grad = False
         elif self.model_configs["classifier"] == "resnet18":
             self.classifier = resnet18(num_classes=2)
         elif self.model_configs["classifier"] == "densenet":
@@ -60,23 +64,23 @@ class ExpertClassifier(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         loss = self.infer(batch)
         lr = self.optimizers().param_groups[0]["lr"]
-        self.log("lr", lr, on_step=True, on_epoch=False, prog_bar=True)
-        self.log("t_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
-        self.log("t_acc", self.acc, on_step=True, on_epoch=True, prog_bar=True)
+        self.log("lr", lr, on_step=True, on_epoch=False, prog_bar=True, sync_dist=True)
+        self.log("t_loss", loss, on_step=True, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("t_acc", self.acc, on_step=True, on_epoch=True, prog_bar=True, sync_dist=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
         loss = self.infer(batch, is_valid=True)
-        self.log("v_acc", self.v_acc, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("v_loss", loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("v_acc", self.v_acc, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("v_loss", loss, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
 
     def test_step(self, batch, batch_idx, dataloader_idx=0):
         loss = self.infer(batch, is_test=True)
-        self.log("acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("f1", self.f1, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("f1", self.f1, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
 
     def infer(self, batch, is_valid=False, is_test=False):
         img, src_label = batch

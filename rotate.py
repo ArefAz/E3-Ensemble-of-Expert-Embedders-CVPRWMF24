@@ -9,10 +9,11 @@ import numpy as np
 if __name__ == "__main__":
     ft_configs["Model"]["expert_ckpt"] = cl_configs["Model"]["ft_ckpt_paths"][0]
     ft_configs["Model"]["src_ckpts"].append(cl_configs["Model"]["ft_ckpt_paths"][0])
+    ft_configs["Model"]["classifier"] = cl_configs["Model"]["backbone"]
+    ft_configs["Model"]["expert_n_features"] = 2048 if cl_configs["Model"]["backbone"] == "resnet50" else 200
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
-    ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
     ft_configs["General"]["check_val_every_n_epoch"] = cl_configs["General"][
         "check_val_every_n_epoch"
     ]
@@ -23,6 +24,8 @@ if __name__ == "__main__":
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
+    assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
+    "Number of ckpt paths should be equal to the number of synthetic datasets"
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         ft_configs["Model"]["fine_tune"] = True
@@ -55,7 +58,7 @@ if __name__ == "__main__":
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
             ft_configs["Model"]["model_type"] = cl_configs["Model"]["model_type"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"] * 5
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
             ft_configs["Model"]["fine_tune"] = False
             if len(ft_configs["Model"]["src_ckpts"]) == 1:
                 ft_configs["Model"]["src_ckpts"].append(last_expert_path)
@@ -85,7 +88,6 @@ if __name__ == "__main__":
             print(
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
-            ft_configs["Model"]["teacher_ckpt"] = ft_configs["Model"]["moe_ckpt"]
             ft_configs["Train"]["distill"] = (
                 cl_configs["Train"]["distill"] if i > 1 else False
             )
@@ -93,7 +95,7 @@ if __name__ == "__main__":
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = None
             ft_configs["Train"]["train_dataset_limit_real"] = None
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
@@ -129,5 +131,5 @@ if __name__ == "__main__":
 
     acc_matrix = np.array(acc_matrix)
     auc_matrix = np.array(auc_matrix)
-    np.savetxt(f'acc_matrix.csv', np.round(acc_matrix, 4), delimiter=',')
-    np.savetxt(f'auc_matrix.csv', np.round(auc_matrix, 4), delimiter=',')
+    np.savetxt(f'acc_matrix_rotate.csv', np.round(acc_matrix, 4), delimiter=',')
+    np.savetxt(f'auc_matrix_rotate.csv', np.round(auc_matrix, 4), delimiter=',')
