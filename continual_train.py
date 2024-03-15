@@ -32,8 +32,6 @@ if __name__ == "__main__":
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
-    assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
-    "Number of ckpt paths should be equal to the number of synthetic datasets"
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         seen_count = (i + 1) * per_class
@@ -65,7 +63,6 @@ if __name__ == "__main__":
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
             ft_configs["Model"]["model_type"] = cl_configs["Model"]["model_type"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
             ft_configs["Model"]["fine_tune"] = False
             ft_configs["Model"]["src_ckpts"].append(last_expert_path)
 
@@ -93,7 +90,6 @@ if __name__ == "__main__":
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
             ft_configs["Train"]["train_dataset_limit_real"] = cl_configs["Train"]["train_dataset_limit_real"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
