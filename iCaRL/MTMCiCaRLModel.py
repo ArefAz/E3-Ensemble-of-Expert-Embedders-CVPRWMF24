@@ -16,7 +16,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 
-# This implementation deals with domain incremental learning in 2 classes setting
 class MTMCiCaRLModel:
 	def __init__(self, model_state_dict, neural_network='mislnet', total_memory=2000 , n_class=2, feature_size=200):
 		'''
@@ -35,7 +34,6 @@ class MTMCiCaRLModel:
 		self.total_memory = total_memory
 
 		# self.memory_per_task = total_memory/self.n_class
-
 		if neural_network=='mislnet':
 			self.classifier = MISLNet(num_classes=n_class)
 			self.classifier.load_state_dict(model_state_dict)
@@ -99,7 +97,7 @@ class MTMCiCaRLModel:
 			########################################################################################
 
 		else:
-			raise NotImplementedError("Currently only MISLNet and resnet50 are supported.")
+			raise NotImplementedError("Currently only MISLNet and resnet50 are supported on MTMC.")
 
 		
 	def reduce_exemplar_sets(self):
@@ -304,7 +302,6 @@ class MTMCiCaRLModel:
 		
 		self.feature_extractor.to(device)
 		self.feature_extractor.eval()
-		
 
 		q = torch.zeros(len(combined_dataset), self.n_class).cuda()
 

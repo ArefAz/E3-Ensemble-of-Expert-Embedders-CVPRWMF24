@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, ConcatDataset
-
+from torchvision.models import resnet50
 from mislnet import MISLNet
 from lib.CustomDataset import ExemplarDataset
 import sys
@@ -15,7 +15,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class MTSCiCaRLModel:
-	def __init__(self, model_state_dict, neural_network='resnet50', total_memory=2000 , n_class=2, feature_size=200):
+	def __init__(self, model_state_dict, neural_network='mislnet', total_memory=2000 , n_class=2, feature_size=200):
 		'''
 		memory_per_task:      Defaults to 1000 per class
 		model_state_dict:    This is the state dict of pretrained model
@@ -25,20 +25,33 @@ class MTSCiCaRLModel:
 		
 		
 		self.feature_size = feature_size
+		self.neural_network = neural_network
 		self.exemplar_sets = {} # Dictionary to store exemplars for each class
 		self.compute_exemplar_means = True
 		self.n_class = n_class
 		self.total_memory = total_memory
 
 		# self.memory_per_task = total_memory/self.n_class
-			
 		if neural_network=='mislnet':
-			self.classifier = MISLNet(num_classes=2)
+			self.classifier = MISLNet(num_classes=n_class)
 			self.classifier.load_state_dict(model_state_dict)
 			self.classifier.to(device)
 			self.classifier.eval()
+		
+		elif neural_network=='resnet50':
+			self.classifier = resnet50(weights=None)
+			
+			self.classifier.fc = nn.Linear(self.classifier.fc.in_features, self.n_class)
+			self.classifier.load_state_dict(model_state_dict)
+			self.classifier.to(device)
+			self.classifier.eval()
+			############################### FREEZE EARLIER LAYERS #################################
+			for i, (name, param) in enumerate(self.classifier.named_parameters()):
+				# Freezing almost 50% of the parameters. Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
 		else:
-			raise NotImplementedError("Currently MISLNet is supported on MTSC")
+			raise NotImplementedError("Currently only MISLNet and resnet50 are supported on MTSC.")
 
 		
 	def reduce_exemplar_sets(self):
@@ -72,11 +85,22 @@ class MTSCiCaRLModel:
 		'''
 		
 		selected_class = class_dataset[0][2]
-
-		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
-		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
-		# Make the last layer feature extractor
-		feature_extractor.output = nn.Identity()
+		if self.neural_network=='mislnet':
+			feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
+			feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
+			# Make the last layer feature extractor
+			feature_extractor.output = nn.Identity()
+		
+		elif self.neural_network=='resnet50':
+			feature_extractor = resnet50(weights=None)
+			feature_extractor.fc = nn.Linear(self.classifier.fc.in_features, self.n_class)
+			feature_extractor.load_state_dict(self.classifier.state_dict())
+			feature_extractor.fc = nn.Identity()
+			############################### FREEZE EARLIER LAYERS #################################
+			for i, (name, param) in enumerate(feature_extractor.named_parameters()):
+				# Freezing almost 50% of the parameters. Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
 		
 		feature_extractor.to(device) # Transfer feature extractor to cuda
 		feature_extractor.eval()
@@ -139,16 +163,26 @@ class MTSCiCaRLModel:
 			
 
 	def calculate_mean_exemplars(self):
-
-		#####################################################################################
-		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
-		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
-		# Make the last layer feature extractor
-		feature_extractor.output = nn.Identity()
+		if self.neural_network=='mislnet':
+			feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
+			feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
+			# Make the last layer feature extractor
+			feature_extractor.output = nn.Identity()
+		
+		elif self.neural_network=='resnet50':
+			feature_extractor = resnet50(weights=None)
+			feature_extractor.fc = nn.Linear(self.classifier.fc.in_features, self.n_class)
+			feature_extractor.load_state_dict(self.classifier.state_dict())
+			feature_extractor.fc = nn.Identity()
+			############################### FREEZE EARLIER LAYERS #################################
+			for i, (name, param) in enumerate(feature_extractor.named_parameters()):
+				# Freezing almost 50% of the parameters.
+				#  Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
 		
 		feature_extractor.to(device) # Transfer feature extractor to cuda
 		feature_extractor.eval()
-		#####################################################################################
 
 		mean_exemplar_set = []
 		for key, images in self.exemplar_sets.items():
@@ -169,15 +203,28 @@ class MTSCiCaRLModel:
 		self.mean_exemplar_set = torch.cat(mean_exemplar_set, dim=0)
 		self.compute_exemplar_means = False
 
-
+	
 	def classify(self, image_batch):
 		image_batch = image_batch.to(device)
 
 		#####################################################################################
-		feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
-		feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
-		# Make the last layer feature extractor
-		feature_extractor.output = nn.Identity()
+		if self.neural_network=='mislnet':
+			feature_extractor = MISLNet(num_classes=self.n_class)  # Create a new instance of the model
+			feature_extractor.load_state_dict(self.classifier.state_dict())  # Copy parameters and buffers
+			# Make the last layer feature extractor
+			feature_extractor.output = nn.Identity()
+		
+		elif self.neural_network=='resnet50':
+			feature_extractor = resnet50(weights=None)
+			feature_extractor.fc = nn.Linear(self.classifier.fc.in_features, self.n_class)
+			feature_extractor.load_state_dict(self.classifier.state_dict())
+			feature_extractor.fc = nn.Identity()
+			############################### FREEZE EARLIER LAYERS #################################
+			for i, (name, param) in enumerate(feature_extractor.named_parameters()):
+				# Freezing almost 50% of the parameters.
+				#  Upto 137th layer there are 12.4M parameters
+				if i < 137:
+					param.requires_grad = False
 		
 		feature_extractor.to(device) # Transfer feature extractor to cuda
 		feature_extractor.eval()
@@ -220,15 +267,20 @@ class MTSCiCaRLModel:
 		# Keeps weights and biases constant for the previous known classes
 		
 		# Get the existing weights and bias from the last layer
-		existing_weights = self.classifier.output.weight.data
-		existing_bias = self.classifier.output.bias.data
+		if self.neural_network=='mislnet':
+			existing_weights = self.classifier.output.weight.data
+			existing_bias = self.classifier.output.bias.data
+		
+		if self.neural_network=='resnet50':
+			existing_weights = self.classifier.fc.weight.data
+			existing_bias = self.classifier.fc.bias.data
 		
 		# Create a new layer with out_features increased by 1
 		new_out_features = self.n_class  # Increases the number of output features by number of new classes
-		new_layer = nn.Linear(in_features=200, out_features=new_out_features)
+		new_layer = nn.Linear(in_features=self.feature_size, out_features=new_out_features)
 		
 		# Initialize the new layer weights and bias with existing values and add zeros for the new node
-		new_weights = torch.zeros((new_out_features, 200))
+		new_weights = torch.zeros((new_out_features, self.feature_size))
 		new_bias = torch.zeros((new_out_features))
 		
 		# Copy the existing weights and bias to the new weights and bias
@@ -271,6 +323,7 @@ class MTSCiCaRLModel:
 			kl_div = F.kl_div(student_log_probs, teacher_probs, reduction='batchmean') * (temperature ** 2)
 			
 			return kl_div
+		
 
 		exemplar_dataset = ExemplarDataset(self.exemplar_sets)  # This creates dataset from dictionary exemplar_sets
 		combined_dataset = ConcatDataset([new_dataset, exemplar_dataset]) 
@@ -281,12 +334,15 @@ class MTSCiCaRLModel:
 		# First, get ouput logits for all combined dataset. Store them for distillation loss.
 		self.n_class+=new_class
 
-		self.classifier.output = self.expanded_network()
+		if self.neural_network=='mislnet':
+			self.classifier.output = self.expanded_network()
+		else:
+			self.classifier.fc = self.expanded_network()
 		# print(self.feature_extractor)
 		
 		self.classifier.to(device)
 		self.classifier.eval()
-		
+
 		q = torch.zeros(len(combined_dataset), self.n_class).cuda()
 
 		print("Getting logits for teacher model")
@@ -306,7 +362,7 @@ class MTSCiCaRLModel:
 		# Define optimizers and loss functions here
 		optimizer = optim.SGD(self.classifier.parameters(), lr=learning_rate, weight_decay=0.00001)
 		classification_loss = nn.CrossEntropyLoss()
-		bce_loss = nn.BCEWithLogitsLoss()
+		# bce_loss = nn.BCEWithLogitsLoss()
 		
 		self.classifier.train()
 		
@@ -362,7 +418,7 @@ class MTSCiCaRLModel:
 				loss.backward()
 				optimizer.step()
 
-				if (i+1) % 5 == 0:
+				if (i+1) % 20 == 0:
 					print ('Epoch [%d/%d], Iter [%d/%d], Total Loss: %.4f iCaRL Loss: %.4f BCE Loss: %.4f' 
 						   %(epoch+1, num_epochs, i+1, len(combined_dataset)//32, loss.item(), icarl_loss.item(), bl_loss.item()))
 				

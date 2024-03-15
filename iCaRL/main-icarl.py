@@ -12,9 +12,6 @@ import argparse
 
 print("Script Start Time =", datetime.now().strftime("%H:%M:%S"))
 
-############################## HYPERPARAMETERS #####################################
-num_epochs = 150
-lr = 1e-5
 
 # Had to add this because I was having 'runtime error: too many open files'
 torch.multiprocessing.set_sharing_strategy('file_system')
@@ -26,12 +23,19 @@ parser = argparse.ArgumentParser(description="Process command line arguments.")
 parser.add_argument('--model', type=str, help="Model name", required=True)
 parser.add_argument('--checkpoint', type=str, help="Path to the checkpoint file", required=True)
 parser.add_argument('--feature_size', type=int, help="Feature size", required=True)
+parser.add_argument('--epochs', type=int, help="Number of epochs to train", required=False, default=150)
+parser.add_argument('--lr', type=float, help="Learning rate", required=False, default=1e-5)
+
 # Parse the arguments
 args = parser.parse_args()
-print(f"Running main-icarl for Model: {args.model} using checkpoint: {args.checkpoint} and feature size is \
+print(f"Running Script for Model: {args.model} using checkpoint: {args.checkpoint} and feature size is \
 	  {args.feature_size}")
 # Specify the output filenames
-accuracy_csv, aucroc_csv = f'iCaRLResultsAccuracy_{args.model}.csv', f'iCaRLResultsROCAUC_{args.model}.csv'
+accuracy_csv, aucroc_csv = f'iCARLResultsAccuracy_{args.model}.csv', f'iCARLResultsROCAUC_{args.model}.csv'
+
+############################## HYPERPARAMETERS #####################################
+num_epochs = args.epochs
+lr = args.lr
 
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
 # Checkpoint
