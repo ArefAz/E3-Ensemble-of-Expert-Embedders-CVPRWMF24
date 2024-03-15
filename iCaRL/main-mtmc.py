@@ -32,7 +32,7 @@ args = parser.parse_args()
 print(f"Running Script for Model: {args.model} using checkpoint: {args.checkpoint} and feature size is \
 	  {args.feature_size}")
 # Specify the output filenames
-accuracy_csv, aucroc_csv = f'iCaRLResultsAccuracy_{args.model}.csv', f'iCaRLResultsROCAUC_{args.model}.csv'
+accuracy_csv, aucroc_csv = f'MTMCResultsAccuracy_{args.model}.csv', f'MTMCResultsROCAUC_{args.model}.csv'
 ####################################################################################
 
 #############################  LOAD FOUNDATION MODEL AND EXEMPLAR SET #################################
