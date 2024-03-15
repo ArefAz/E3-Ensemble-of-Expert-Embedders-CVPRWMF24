@@ -38,7 +38,7 @@ Data:
 
 Train:
   epochs: 150
-  steps: 2400
+  max_steps: 2400
   batch_size: 64
   cls_lr: 2.5e-4
   ft_lr: 1.0e-4
