@@ -66,7 +66,7 @@ if __name__ == "__main__":
             model_checkpoint_state_dict = train(ft_configs)
             ft_configs["Train"]["train_dataset_limit_per_class"] = None
             ft_configs["Train"]["train_dataset_limit_real"] = None
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
