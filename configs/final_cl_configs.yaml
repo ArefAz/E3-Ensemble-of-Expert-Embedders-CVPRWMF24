@@ -38,10 +38,13 @@ Data:
 
 Train:
   epochs: 150
+  steps: 2400
   batch_size: 64
   cls_lr: 2.5e-4
   ft_lr: 1.0e-4
   distill: False # if True, the distillation loss is used
+  train_dataset_limit_per_class: 25
+  train_dataset_limit_real: 25
 
 General:
   check_val_every_n_epoch: 30

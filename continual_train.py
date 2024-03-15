@@ -15,6 +15,13 @@ if __name__ == "__main__":
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
+    ft_configs["Train"]["max_steps"] = cl_configs["Train"]["max_steps"]
+    ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
+    ft_configs["Train"]["batch_size"] = cl_configs["Train"]["batch_size"]
+    ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
+    per_class = ft_configs["Train"]["train_dataset_limit_per_class"]
+    ft_configs["Train"]["train_dataset_limit_real"] = cl_configs["Train"]["train_dataset_limit_real"]
+
     ft_configs["General"]["check_val_every_n_epoch"] = cl_configs["General"][
         "check_val_every_n_epoch"
     ]
@@ -29,6 +36,7 @@ if __name__ == "__main__":
     "Number of ckpt paths should be equal to the number of synthetic datasets"
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
+        seen_count = (i + 1) * per_class
         ft_configs["Model"]["fine_tune"] = True
         ft_configs["Model"]["model_type"] = "expert"
         ft_configs["Train"]["distill"] = (
@@ -65,12 +73,9 @@ if __name__ == "__main__":
             )
 
             if cl_configs["Data"]["fixed_memory"]:
-                ft_configs["Train"]["train_dataset_limit_per_class"] = (
-                    cl_configs["Data"]["memory_size"] // 2 // (i + 1)
-                )
-                ft_configs["Train"]["train_dataset_limit_real"] = (
-                    cl_configs["Data"]["memory_size"] // 2
-                )
+                limit = min(cl_configs["Data"]["memory_size"] // 2, seen_count)
+                ft_configs["Train"]["train_dataset_limit_per_class"] = limit // (i + 1)
+                ft_configs["Train"]["train_dataset_limit_real"] = limit
                 print(f"Memory size: {cl_configs['Data']['memory_size']}")
                 print(
                     f"Train dataset limit per class: {ft_configs['Train']['train_dataset_limit_per_class']}"
@@ -85,9 +90,9 @@ if __name__ == "__main__":
 
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
-            ft_configs["Train"]["train_dataset_limit_per_class"] = None
-            ft_configs["Train"]["train_dataset_limit_real"] = None
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
+            ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
+            ft_configs["Train"]["train_dataset_limit_real"] = cl_configs["Train"]["train_dataset_limit_real"]
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
