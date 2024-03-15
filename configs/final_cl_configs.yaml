@@ -1,29 +1,29 @@
 Model:
   model_type: transformer # either moe or fusion or transformer
-  load_from_ckpt: True # if True, the ft models are loaded from the checkpoint
+  load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
   ft_ckpt_paths: [ 
-    logs/expert_resnet50_db-real_db-gan_src_q99/version_10/checkpoints/epoch=25-step=12194-v_loss=0.1221-v_acc=0.9588.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-sd14_src_q99/version_25/checkpoints/epoch=149-step=2400-v_loss=0.3378-v_acc=0.8500-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-glide_src_q99/version_8/checkpoints/epoch=149-step=2400-v_loss=0.1350-v_acc=0.9600-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-mj_src_q99/version_6/checkpoints/epoch=149-step=2400-v_loss=0.3947-v_acc=0.8550-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-dallemini_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.4207-v_acc=0.8450-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-tt_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.3927-v_acc=0.8350-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-sd21_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.4361-v_acc=0.8100-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-cips_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.0932-v_acc=0.9650-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-biggan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.3329-v_acc=0.8550-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-vqdiff_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.2425-v_acc=0.9300-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-diffgan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.2260-v_acc=0.9200-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-sg3_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1910-v_acc=0.9250-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-gansformer_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.0803-v_acc=0.9650-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-dalle2_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1553-v_acc=0.9350-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-ld_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.6057-v_acc=0.7750-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-eg3d_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.0051-v_acc=0.9950-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-projgan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.4599-v_acc=0.8350-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-sd1_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.3905-v_acc=0.8350-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-ddg_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.1168-v_acc=0.9650-last.ckpt,
-    logs/ft_expert_resnet50_dn-real_dn-ddpm_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.0888-v_acc=0.9800-last.ckpt,
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt
+    # logs/ft_expert_resnet50_dn-real_dn-sd14_src_q99/version_25/checkpoints/epoch=149-step=2400-v_loss=0.3378-v_acc=0.8500-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-glide_src_q99/version_8/checkpoints/epoch=149-step=2400-v_loss=0.1350-v_acc=0.9600-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-mj_src_q99/version_6/checkpoints/epoch=149-step=2400-v_loss=0.3947-v_acc=0.8550-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-dallemini_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.4207-v_acc=0.8450-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-tt_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.3927-v_acc=0.8350-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-sd21_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.4361-v_acc=0.8100-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-cips_src_q99/version_4/checkpoints/epoch=149-step=2400-v_loss=0.0932-v_acc=0.9650-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-biggan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.3329-v_acc=0.8550-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-vqdiff_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.2425-v_acc=0.9300-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-diffgan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.2260-v_acc=0.9200-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-sg3_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1910-v_acc=0.9250-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-gansformer_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.0803-v_acc=0.9650-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-dalle2_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1553-v_acc=0.9350-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-ld_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.6057-v_acc=0.7750-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-eg3d_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.0051-v_acc=0.9950-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-projgan_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.4599-v_acc=0.8350-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-sd1_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.3905-v_acc=0.8350-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-ddg_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.1168-v_acc=0.9650-last.ckpt,
+    # logs/ft_expert_resnet50_dn-real_dn-ddpm_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.0888-v_acc=0.9800-last.ckpt,
   ]
-  backbone: resnet50 # either resnet50 or mislnet
+  backbone: mislnet # either resnet50 or mislnet
 Data:
   real_dataset_name: dn-real # name of the real dataset
   synthetic_dataset_names: [
@@ -37,14 +37,14 @@ Data:
   fixed_memory: True # if True, the memory size is fixed
 
 Train:
-  epochs: 150
-  max_steps: 2400
-  batch_size: 64
+  epochs: -1
+  max_steps: 4800
+  batch_size: 32
   cls_lr: 2.5e-4
   ft_lr: 5.0e-5
   distill: False # if True, the distillation loss is used
-  train_dataset_limit_per_class: 25
-  train_dataset_limit_real: 25
+  train_dataset_limit_per_class: 50
+  train_dataset_limit_real: 50
 
 General:
-  check_val_every_n_epoch: 30
+  check_val_every_n_epoch: -1

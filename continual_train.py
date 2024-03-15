@@ -32,6 +32,8 @@ if __name__ == "__main__":
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
+    # assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
+    # "Number of ckpt paths should be equal to the number of synthetic datasets"
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         seen_count = (i + 1) * per_class
@@ -124,5 +126,7 @@ if __name__ == "__main__":
 
     acc_matrix = np.array(acc_matrix)
     auc_matrix = np.array(auc_matrix)
-    np.savetxt(f'acc_matrix.csv', np.round(acc_matrix, 4), delimiter=',')
-    np.savetxt(f'auc_matrix.csv', np.round(auc_matrix, 4), delimiter=',')
+
+    new_gen_data_size = ft_configs["Train"]["train_dataset_limit_real"]
+    np.savetxt(f'acc_matrix_generator_datasize_{new_gen_data_size}.csv', np.round(acc_matrix, 4), delimiter=',')
+    np.savetxt(f'auc_matrix.csv_generator_datasize_{new_gen_data_size}.csv', np.round(auc_matrix, 4), delimiter=',')
