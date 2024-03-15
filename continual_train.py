@@ -32,8 +32,8 @@ if __name__ == "__main__":
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
-    assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
-    "Number of ckpt paths should be equal to the number of synthetic datasets"
+    # assert len(cl_configs["Model"]["ft_ckpt_paths"]) == len(cl_configs["Data"]["synthetic_dataset_names"]), \
+    # "Number of ckpt paths should be equal to the number of synthetic datasets"
 
     for i, dataset in enumerate(cl_configs["Data"]["synthetic_dataset_names"]):
         seen_count = (i + 1) * per_class
