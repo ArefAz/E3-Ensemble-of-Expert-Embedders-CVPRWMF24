@@ -1,6 +1,6 @@
 Model:
   model_type: transformer # either moe or fusion or transformer
-  load_from_ckpt: True # if True, the ft models are loaded from the checkpoint
+  load_from_ckpt: False # if True, the ft models are loaded from the checkpoint
   ft_ckpt_paths: [ 
     logs/expert_resnet50_db-real_db-gan_src_q99/version_10/checkpoints/epoch=25-step=12194-v_loss=0.1221-v_acc=0.9588.ckpt,
     logs/ft_expert_resnet50_dn-real_dn-sd14_src_q99/version_25/checkpoints/epoch=149-step=2400-v_loss=0.3378-v_acc=0.8500-last.ckpt,
@@ -23,7 +23,7 @@ Model:
     logs/ft_expert_resnet50_dn-real_dn-ddg_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.1168-v_acc=0.9650-last.ckpt,
     logs/ft_expert_resnet50_dn-real_dn-ddpm_src_q99/version_1/checkpoints/epoch=149-step=2400-v_loss=0.0888-v_acc=0.9800-last.ckpt,
   ]
-  backbone: resnet50 # either resnet50 or mislnet
+  backbone: mislnet # either resnet50 or mislnet
 Data:
   real_dataset_name: dn-real # name of the real dataset
   synthetic_dataset_names: [
@@ -37,14 +37,14 @@ Data:
   fixed_memory: True # if True, the memory size is fixed
 
 Train:
-  epochs: 150
-  max_steps: 2400
-  batch_size: 64
+  epochs: -1
+  max_steps: 4800
+  batch_size: 32
   cls_lr: 2.5e-4
   ft_lr: 5.0e-5
   distill: False # if True, the distillation loss is used
-  train_dataset_limit_per_class: 25
-  train_dataset_limit_real: 25
+  train_dataset_limit_per_class: 400
+  train_dataset_limit_real: 400
 
 General:
   check_val_every_n_epoch: 30
