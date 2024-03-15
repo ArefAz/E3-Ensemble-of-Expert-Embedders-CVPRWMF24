@@ -16,7 +16,7 @@ if __name__ == "__main__":
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
     ft_configs["Train"]["max_steps"] = cl_configs["Train"]["max_steps"]
-    ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
+    ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
     ft_configs["Train"]["batch_size"] = cl_configs["Train"]["batch_size"]
     ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
     per_class = ft_configs["Train"]["train_dataset_limit_per_class"]
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         )
         acc_matrix.append([])
         auc_matrix.append([])
-
+        
         if i > 0:
             seen_datasets.append(dataset)
             ft_configs = fill_configs_with_datasets(
@@ -59,6 +59,7 @@ if __name__ == "__main__":
                 last_expert_path = cl_configs["Model"]["ft_ckpt_paths"][i]
             else:
                 print(f"Fine-tuning for dataset: {dataset}...")
+                ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
                 model_checkpoint_state_dict = train(ft_configs)
                 last_expert_path = model_checkpoint_state_dict["last_model_path"]
                 print(f"Finished fine-tuning for dataset {dataset}")
@@ -87,7 +88,7 @@ if __name__ == "__main__":
             print(
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
-
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
