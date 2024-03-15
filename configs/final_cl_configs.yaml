@@ -30,8 +30,8 @@ Data:
     dn-gan,
     dn-sd14,
     dn-glide,
-    dn-mj,
-    dn-dallemini, dn-tt, dn-sd21, dn-cips, dn-biggan, dn-vqdiff, dn-diffgan, dn-sg3, dn-gansformer, dn-dalle2, dn-ld, dn-eg3d, dn-projgan, dn-sd1, dn-ddg, dn-ddpm,
+    dn-mj
+    , dn-dallemini, dn-tt, dn-sd21, dn-cips, dn-biggan, dn-vqdiff, dn-diffgan, dn-sg3, dn-gansformer, dn-dalle2, dn-ld, dn-eg3d, dn-projgan, dn-sd1, dn-ddg, dn-ddpm,
   ]
   memory_size: 1000 # number of samples to be stored in the memory
   fixed_memory: True # if True, the memory size is fixed
@@ -43,8 +43,8 @@ Train:
   cls_lr: 2.5e-4
   ft_lr: 5.0e-5
   distill: False # if True, the distillation loss is used
-  train_dataset_limit_per_class: 50
-  train_dataset_limit_real: 50
+  train_dataset_limit_per_class: 400
+  train_dataset_limit_real: 400
 
 General:
   check_val_every_n_epoch: -1

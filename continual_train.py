@@ -89,11 +89,12 @@ if __name__ == "__main__":
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
             ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
+            print(ft_configs)
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
             ft_configs["Train"]["train_dataset_limit_real"] = cl_configs["Train"]["train_dataset_limit_real"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
+            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
