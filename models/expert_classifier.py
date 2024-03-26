@@ -4,6 +4,7 @@ from torchmetrics.classification import *
 
 from data_pipes import Pipe
 from .mislnet import MISLNet
+from .srnet import SRNet
 from utils.model_utils import get_optimizer_dict
 from torchvision.models import resnet50, resnet18, densenet121, mobilenet_v3_small
 
@@ -37,6 +38,8 @@ class ExpertClassifier(pl.LightningModule):
             self.classifier = resnet18(num_classes=2)
         elif self.model_configs["classifier"] == "densenet":
             self.classifier = densenet121(num_classes=2)
+        elif self.model_configs["classifier"] == "srnet":
+            self.classifier = SRNet(num_classes=2)
         elif self.model_configs["classifier"] == "mobilenet":
             self.classifier = mobilenet_v3_small(num_classes=2)
         else:
@@ -65,7 +68,8 @@ class ExpertClassifier(pl.LightningModule):
         loss = self.infer(batch)
         lr = self.optimizers().param_groups[0]["lr"]
         self.log("lr", lr, on_step=True, on_epoch=False, prog_bar=True, sync_dist=True)
-        self.log("t_loss", loss, on_step=True, on_epoch=True, prog_bar=True, sync_dist=True)
+        self.log("s_loss", loss, on_step=True, on_epoch=False, prog_bar=True, sync_dist=True)
+        self.log("e_loss", loss, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True)
         self.log("t_acc", self.acc, on_step=True, on_epoch=True, prog_bar=True, sync_dist=True)
         return loss
 

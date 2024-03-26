@@ -2,7 +2,7 @@ General:
   seed: 0
   num_devices: -1
   check_val_every_n_epoch: 1 # number of epochs between validation check, needs to be empty (None) for using #batches
-  val_check_interval: # number of training batches between each validation check
+  val_check_interval: 0.25 # number of training batches between each validation check
   num_sanity_val_steps: 0
   log_every_n_steps: False
   fast_dev_run: False
@@ -23,12 +23,26 @@ Model:
   override_configs: True # if True, the config is overridden with the values in this file, otherwise the config is loaded from the checkpoint
   expert_task: src # could be either 'src' or 'manipulation', 'src_test_with_manipulation'
   src_ckpts: [
-    logs/expert_mislnet_db-real_db-gan_src_q99/version_1/checkpoints/epoch=32-step=120681-v_loss=0.0376-v_acc=0.9874.ckpt,
-    logs/ft_expert_mislnet_dn-real-2k_dn-dalle-mini_src_q99/version_3/checkpoints/epoch=49-step=3150-v_loss=0.0383-v_acc=0.9862-last.ckpt,
-    # logs/ft_expert_mislnet_dn-real-500_dn-tt_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1243-v_acc=0.9560-last.ckpt,
-    # logs/ft_expert_mislnet_dn-real-500_dn-sd-500_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3877-v_acc=0.8630-last.ckpt,
-    # logs/ft_expert_mislnet_dn-real-500_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0127-v_acc=0.9950.ckpt,
-    # logs/ft_expert_mislnet_dn-real-500_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0837-v_acc=0.9740-last.ckpt
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd14_src_q99/version_16/checkpoints/epoch=149-step=2400-v_loss=0.3417-v_acc=0.8800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-glide_src_q99/version_9/checkpoints/epoch=149-step=2400-v_loss=0.0403-v_acc=0.9850-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-mj_src_q99/version_5/checkpoints/epoch=149-step=2400-v_loss=0.6459-v_acc=0.8350-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-dallemini_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.4711-v_acc=0.8700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-tt_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1787-v_acc=0.9600-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd21_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=1.6322-v_acc=0.6300-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-cips_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0516-v_acc=0.9750-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-biggan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=4.5514-v_acc=0.5500-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-vqdiff_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1306-v_acc=0.9700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-diffgan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=4.4042-v_acc=0.5200-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sg3_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1419-v_acc=0.9700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-gansformer_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2388-v_acc=0.9350-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0287-v_acc=0.9900-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ld_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=1.7899-v_acc=0.6800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0053-v_acc=1.0000-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-projgan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3961-v_acc=0.8800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd1_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2472-v_acc=0.9200-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ddg_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.5158-v_acc=0.9300-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ddpm_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.5851-v_acc=0.8500-last.ckpt
   ] # list of paths to source classifier checkpoints to be used for analytics model
   manipulation_ckpts: [
     logs/ft_expert_resnet50_dn-real_dn-sd_src_q99/version_0/checkpoints/epoch=59-step=1920-v_loss=0.2927-v_acc=0.8750.ckpt
@@ -63,7 +77,7 @@ Data:
   jpeg_quality: [99] # only used for training, could be either an int or a list of ints
   test_jpeg_qualities: [99] # only used for testing with different jpeg qualities, should be a list of ints
   randomize_jpeg_quality: False # if True, jpeg_quality is ignored and it's set to list(np.arange(70, 100, 1))
-  num_workers: 16
+  num_workers: 8
   prefetch_factor: 3
 
 Train:

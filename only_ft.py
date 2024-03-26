@@ -16,7 +16,6 @@ if __name__ == "__main__":
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
-    ft_configs["Train"]["lr"] = cl_configs["Train"]["lr"]
     ft_configs["General"]["check_val_every_n_epoch"] = cl_configs["General"][
         "check_val_every_n_epoch"
     ]
@@ -53,8 +52,9 @@ if __name__ == "__main__":
                 last_expert_path = cl_configs["Model"]["ft_ckpt_paths"][i]
             else:
                 print(f"Fine-tuning for dataset: {dataset}...")
+                ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
                 model_checkpoint_state_dict = train(ft_configs)
-                last_expert_path = model_checkpoint_state_dict["last_model_path"]
+                last_expert_path = model_checkpoint_state_dict["best_model_path"]
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
             ft_configs["Model"]["src_ckpts"].append(last_expert_path)
@@ -63,17 +63,6 @@ if __name__ == "__main__":
                 ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
             )
 
-            model_checkpoint_state_dict = train(ft_configs)
-            ft_configs["Train"]["train_dataset_limit_per_class"] = None
-            ft_configs["Train"]["train_dataset_limit_real"] = None
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
-            ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
-                "last_model_path"
-            ]
-            ft_configs["Model"]["transformer_ckpt"] = model_checkpoint_state_dict[
-                "last_model_path"
-            ]
-
     acc_matrix = np.array(acc_matrix)
     auc_matrix = np.array(auc_matrix)
     np.savetxt(f'acc_matrix.csv', np.round(acc_matrix, 4), delimiter=',')
@@ -81,7 +70,7 @@ if __name__ == "__main__":
 
     print("Expert file paths:")
     print(ft_configs["Model"]["src_ckpts"])
-    filepath = f"expert_ckpt_{cl_configs['Model']['backbone']}.txt"
+    filepath = f"expert_ckpt_{cl_configs['Model']['backbone']}_{cl_configs['Train']['ft_lr']}-exp.txt"
     with open(filepath, "w") as f:
         for path in ft_configs["Model"]["src_ckpts"]:
             f.write(f"{path}\n")

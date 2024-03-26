@@ -11,12 +11,21 @@ if __name__ == "__main__":
     ft_configs["Model"]["expert_ckpt"] = cl_configs["Model"]["ft_ckpt_paths"][0]
     ft_configs["Model"]["src_ckpts"].append(cl_configs["Model"]["ft_ckpt_paths"][0])
     ft_configs["Model"]["classifier"] = cl_configs["Model"]["backbone"]
-    ft_configs["Model"]["expert_n_features"] = 2048 if cl_configs["Model"]["backbone"] == "resnet50" else 200
+    if (f := cl_configs["Model"]["backbone"]) == "resnet50":
+        ft_configs["Model"]["expert_n_features"] = 2048
+    elif f == "mislnet":
+        ft_configs["Model"]["expert_n_features"] = 200
+    elif f == "densenet":
+        ft_configs["Model"]["expert_n_features"] = 1024
+    elif f == "srnet":
+        ft_configs["Model"]["expert_n_features"] = 512
+    else:
+        raise ValueError(f"Unknown backbone {f}")
+
     ft_configs["Model"]["fine_tune"] = True
     ft_configs["Model"]["model_type"] = "expert"
     ft_configs["Train"]["epochs"] = cl_configs["Train"]["epochs"]
     ft_configs["Train"]["max_steps"] = cl_configs["Train"]["max_steps"]
-    ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
     ft_configs["Train"]["batch_size"] = cl_configs["Train"]["batch_size"]
     ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
     per_class = ft_configs["Train"]["train_dataset_limit_per_class"]
@@ -25,10 +34,10 @@ if __name__ == "__main__":
     ft_configs["General"]["check_val_every_n_epoch"] = cl_configs["General"][
         "check_val_every_n_epoch"
     ]
-    assert (
-        ft_configs["General"]["check_val_every_n_epoch"]
-        <= ft_configs["Train"]["epochs"]
-    ), "Check val every n epoch should be less than or equal to the number of epochs"
+    # assert (
+    #     ft_configs["General"]["check_val_every_n_epoch"]
+    #     <= ft_configs["Train"]["epochs"] and cl_configs["Train"]["epochs"] != -1
+    # ), "Check val every n epoch should be less than or equal to the number of epochs"
     acc_matrix = []
     auc_matrix = []
     seen_datasets = [cl_configs["Data"]["synthetic_dataset_names"][0]]
@@ -44,7 +53,7 @@ if __name__ == "__main__":
         )
         acc_matrix.append([])
         auc_matrix.append([])
-        
+
         if i > 0:
             seen_datasets.append(dataset)
             ft_configs = fill_configs_with_datasets(
@@ -65,7 +74,6 @@ if __name__ == "__main__":
                 print(f"Finished fine-tuning for dataset {dataset}")
             print(f"Last expert path: {last_expert_path}")
             ft_configs["Model"]["model_type"] = cl_configs["Model"]["model_type"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
             ft_configs["Model"]["fine_tune"] = False
             ft_configs["Model"]["src_ckpts"].append(last_expert_path)
 
@@ -89,12 +97,10 @@ if __name__ == "__main__":
                 f"Training MOE for dataset: {dataset}... with loss weights: {ft_configs['Train']['loss_weights']}"
             )
             ft_configs["Train"]["lr"] = cl_configs["Train"]["cls_lr"]
-            print(ft_configs)
             model_checkpoint_state_dict = train(ft_configs)
             print(f"Finished training MOE for dataset {dataset}")
             ft_configs["Train"]["train_dataset_limit_per_class"] = cl_configs["Train"]["train_dataset_limit_per_class"]
             ft_configs["Train"]["train_dataset_limit_real"] = cl_configs["Train"]["train_dataset_limit_real"]
-            ft_configs["Train"]["lr"] = cl_configs["Train"]["ft_lr"]
             ft_configs["Model"]["moe_ckpt"] = model_checkpoint_state_dict[
                 "last_model_path"
             ]
@@ -107,29 +113,27 @@ if __name__ == "__main__":
             ft_configs = fill_configs_with_datasets(
                 ft_configs, [dataset], cl_configs["Data"]["real_dataset_name"]
             )
-            results = test(ft_configs)
-            num = round(results["acc"], 4)
-            acc_matrix[i].append(round(results["acc"], 4))
-            auc_matrix[i].append(round(results["auc"], 4))
+            # results = test(ft_configs)
+            # num = round(results["acc"], 4)
+            # acc_matrix[i].append(round(results["acc"], 4))
+            # auc_matrix[i].append(round(results["auc"], 4))
 
-        print("ACC Matrix:")
-        for j, row in enumerate(acc_matrix):
-            print(f"{j}: {row}")
-        print("AUC Matrix:")
-        for j, row in enumerate(auc_matrix):
-            print(f"{j}: {row}")
-        print("ACC Averages:")
-        for j, acc_row in enumerate(acc_matrix):
-            avg = sum(acc_row[: j + 1]) / len(acc_row[: j + 1])
-            print(f"{j}: {round(avg, 4)}")
-        print("AUC Averages:")
-        for j, auc_row in enumerate(auc_matrix):
-            avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
-            print(f"{j}: {round(avg, 4)}")
+    #     print("ACC Matrix:")
+    #     for j, row in enumerate(acc_matrix):
+    #         print(f"{j}: {row}")
+    #     print("AUC Matrix:")
+    #     for j, row in enumerate(auc_matrix):
+    #         print(f"{j}: {row}")
+    #     print("ACC Averages:")
+    #     for j, acc_row in enumerate(acc_matrix):
+    #         avg = sum(acc_row[: j + 1]) / len(acc_row[: j + 1])
+    #         print(f"{j}: {round(avg, 4)}")
+    #     print("AUC Averages:")
+    #     for j, auc_row in enumerate(auc_matrix):
+    #         avg = sum(auc_row[: j + 1]) / len(auc_row[: j + 1])
+    #         print(f"{j}: {round(avg, 4)}")
 
-    acc_matrix = np.array(acc_matrix)
-    auc_matrix = np.array(auc_matrix)
-
-    new_gen_data_size = ft_configs["Train"]["train_dataset_limit_real"]
-    np.savetxt(f'acc_matrix_generator_datasize_{new_gen_data_size}.csv', np.round(acc_matrix, 4), delimiter=',')
-    np.savetxt(f'auc_matrix.csv_generator_datasize_{new_gen_data_size}.csv', np.round(auc_matrix, 4), delimiter=',')
+    # acc_matrix = np.array(acc_matrix)
+    # auc_matrix = np.array(auc_matrix)
+    # np.savetxt(f'acc_matrix-{cl_configs["Model"]["backbone"]}.csv', np.round(acc_matrix, 4), delimiter=',')
+    # np.savetxt(f'auc_matrix-{cl_configs["Model"]["backbone"]}.csv', np.round(auc_matrix, 4), delimiter=',')

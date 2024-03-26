@@ -23,7 +23,7 @@ def run_test(configs):
     results_jpeg = {}
 
     for quality in configs["Data"]["test_jpeg_qualities"]:
-        model, model_version = get_model(configs, is_test=True)
+        model, model_version = get_model(configs, is_test=True))
         configs["Data"]["jpeg_quality"] = quality
         logger = TensorBoardLogger("logs", name=exp_name, version=model_version)
         trainer = pl.Trainer(

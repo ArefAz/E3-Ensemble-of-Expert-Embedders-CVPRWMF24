@@ -26,11 +26,19 @@ class FusionClassifier(pl.LightningModule):
         self.save_hyperparameters()
 
     def forward(self, x):
-        logits = [classifier.eval()(x) for classifier in self.classifiers]
+        logits = torch.stack([classifier.eval()(x) for classifier in self.classifiers])
+        # if self.model_configs["fusion_rule"] == "max":
+        #     logits = torch.maximum(logits[0], logits[5])
+        # elif self.model_configs["fusion_rule"] == "avg":
+        #     logits = (logits[0] + logits[5]) / 2
         if self.model_configs["fusion_rule"] == "max":
-            logits = torch.maximum(logits[0], logits[1])
+            max_l = torch.ones_like(logits[0]) * -10000
+            for l in logits:
+                max_l = torch.maximum(max_l, l)
+            logits = max_l
         elif self.model_configs["fusion_rule"] == "avg":
-            logits = (logits[0] + logits[1]) / 2
+            sum_l = logits.sigmoid().sum(0)
+            logits = sum_l
         else:
             raise ValueError(f"Unknown fusion rule: {self.model_configs['fusion_rule']}")
         return logits

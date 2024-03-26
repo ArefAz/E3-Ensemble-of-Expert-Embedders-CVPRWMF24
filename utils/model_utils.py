@@ -1,8 +1,7 @@
 import torch
 from typing import Tuple
 from data_pipes import Pipe
-from torchvision.models import ResNet
-
+from torchvision.models import ResNet, DenseNet
 
 
 
@@ -21,7 +20,8 @@ def get_pipes(data_configs: dict) -> torch.nn.ModuleList:
     
 
 def get_experts(model_configs: dict, trim=True) -> torch.nn.ModuleList:
-    from models import ExpertClassifier
+    from models import ExpertClassifier, MISLNet
+    from models.srnet import SRNet
     expert_detectors = torch.nn.ModuleList(
         [
             ExpertClassifier.load_from_checkpoint(
@@ -34,8 +34,14 @@ def get_experts(model_configs: dict, trim=True) -> torch.nn.ModuleList:
         for detector in expert_detectors:
             if isinstance(detector.classifier, ResNet):
                 detector.classifier.fc = torch.nn.Identity()
-            else:
+                print(detector)
+                exit()
+            elif isinstance(detector.classifier, MISLNet) or isinstance(detector.classifier, SRNet):
                 detector.classifier.output = torch.nn.Identity()
+            elif isinstance(detector.classifier, DenseNet):
+                detector.classifier.classifier = torch.nn.Identity()
+            else:
+                raise NotImplementedError(f"{type(detector.classifier)} not implemented")
             detector.freeze()
     else:
         for detector in expert_detectors:

@@ -27,6 +27,7 @@ class MixtureTransformer(pl.LightningModule):
             depth=5,
             num_heads=8,
         )
+        # model_configs["expert_n_features"] = 1024
         if model_configs["expert_n_features"] != n_features:
             self.down_size = torch.nn.ModuleList(
                 [torch.nn.Linear(model_configs["expert_n_features"], n_features) for _ in range(n_feat_extr)]
