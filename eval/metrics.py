@@ -1,4 +1,3 @@
-import torch
 import numpy as np
 
 def forward_transfer(results, random_results):
@@ -16,3 +15,17 @@ def backward_transfer(results):
         li.append(results[-1][i] - results[i][i])
 
     return np.mean(li)
+
+def forgetting(results):
+    n_tasks = len(results)
+    li = []
+    np_res = np.array(results)
+    maxx = np.max(np_res, axis=0)
+    for i in range(n_tasks - 1):
+        li.append(maxx[i] - results[-1][i])
+
+    return np.mean(li)
+
+def average_i(results, i):
+    assert(i < len(results[0]))
+    return np.mean(results[i][:i+1])
