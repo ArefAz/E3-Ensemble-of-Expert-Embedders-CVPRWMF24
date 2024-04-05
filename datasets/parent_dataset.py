@@ -42,11 +42,11 @@ class ParentDataset(Dataset):
         return len(self.file_paths)
 
     def __getitem__(self, index):
-        try:
-            img = io.read_image(self.file_paths[index])
-        except:
-            print(f"Error loading {self.file_paths[index]}")
-            return self.__getitem__(random.randint(0, len(self.file_paths) - 1))
+        # try:
+        img = io.read_image(self.file_paths[index])
+        # except:
+        #     print(f"Error loading {self.file_paths[index]}")
+        #     return self.__getitem__(random.randint(0, len(self.file_paths) - 1))
         if img.shape[1] < self.patch_size or img.shape[2] < self.patch_size:
             # print("Image too small:", self.file_paths[index], img.shape, "skipping...")
             # return self.__getitem__(random.randint(0, len(self.file_paths) - 1))

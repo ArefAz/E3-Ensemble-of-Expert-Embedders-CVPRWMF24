@@ -32,9 +32,6 @@ def train(configs):
     train_dataloader, val_dataloader, _ = get_dataloaders(
         configs["Model"], configs["Data"], configs["Train"]
     )
-    # key = input("Press Enter to continue or 'q' to quit: ")
-    # if key == "q":
-    #     return
     trainer.fit(
         model=model,
         train_dataloaders=train_dataloader,
