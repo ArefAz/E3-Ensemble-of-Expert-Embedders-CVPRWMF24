@@ -4,7 +4,7 @@ cl_setup:
 
 parameters:
   model: mislnet # Option: mislnet, resnet50
-  checkpoint: # Path to checkpoint of your trained model
+  checkpoint:   # Path to checkpoint of yourtrained model
   feature_size: 200 # mislnet has 200, resnet50 has 2048
   epochs: 1
   lr: 1e-5
