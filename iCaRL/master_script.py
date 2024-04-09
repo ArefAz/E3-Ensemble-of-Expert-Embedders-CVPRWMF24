@@ -3,7 +3,7 @@ import subprocess
 
 def run_script(script_name, **kwargs):
     # Build the command with script name and parameters
-    command = ['python', script_name] + [item for pair in [[f'--{key}', str(value)] for key, value in kwargs.items()] for item in pair]
+    command = ['python3.9', script_name] + [item for pair in [[f'--{key}', str(value)] for key, value in kwargs.items()] for item in pair]
     # Run the command
     subprocess.run(command)
 
@@ -33,9 +33,9 @@ def main(config_path='master_config.yaml'):
     
     if script_to_run:
         # Run the script with the extracted parameters
-        # run_script(script_to_run, **parameters)
-
         print(script_to_run, parameters)
+        run_script(script_to_run, **parameters)
+
     else:
         raise NotImplementedError("The provided configuration does not fall under permissible values.")
 
