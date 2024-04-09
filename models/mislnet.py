@@ -104,7 +104,7 @@ class MISLNet(torch.nn.Module):
         self.features = None
         self.dense = None
 
-        self.weights_cstr = torch.nn.Parameter(torch.randn(num_filters, 3, 5, 5))
+        self.weights_cstr = torch.nn.Parameter(torch.nn.init.xavier_normal_(torch.empty(num_filters, 3, 5, 5)))
 
         self.conv_blocks = torch.nn.Sequential(
             *[

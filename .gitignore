@@ -5,8 +5,3 @@ notebooks/
 logs/
 *.pyc
 **__pycache__**
-*.csv
-*.out
-*.pt
-backup
-iCaRL/master_config.yaml

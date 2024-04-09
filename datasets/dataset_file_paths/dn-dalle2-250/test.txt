@@ -1,0 +1,500 @@
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.09.07 - A white bed topped with lots of pillows and a wooden headboard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.40.30 - A grey and silver fire hydrant between two barriers..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.12.56 -  two cows outside one laying down and the other standing near a building.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.32.38 - A spire over a beautiful brick building behind red tiled roofs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.18.01 - A fire hydrant sits on a sidewalk next to a fence_102460.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.44.15 - A cat laying down on a blue comforter with pink sheets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.41.14 - Microwave and other appliance sitting outdoors on pavement against a fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.25.50 - One cow standing and one laying down within a fence_42590.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.11.55 - A red stop sign sitting on top of a green planter.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.23 - The entrance and exit to a snowy parking garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.27.02 - A few pizza slices next to a couple of bread slices.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.21.36 - There is a zebra in his habitat at the zoo.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.35.37 - A bird is sitting on a bowl of birdseed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.24.59 - An adult giraffe standing next to a small elephant.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.19.45 - A fridge with a lot of magnets in a kitchen.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.15.56 - Four giraffes look around a rock corner in their enclosure.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.39.23 - Orange cat looking in the mirror at his reflection.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.05.56 - A long haired cat sitting on a refrigerator.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.31.50 - Two brown cows on a pasture of green grass.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.13.39 - a sunset at the beach during a cloudy day.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.07.49 - A bear standing on rocks and his ears are up.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.22.42 - a nice neighborhood with some green grass in it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.03.16 - The image has a large cubed clock on a post.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.50.42 - A doughnut hanging from a Christmas tree as a decoration..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.02.31 - A display of clocks inside a shop window.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.04.32 - A lap top sits on a small desk with jars and candles around it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.37.56 - Piles of apples lemons limes and oranges are available today.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.34.11 - Two black cows facing each other with woods behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.52.42 - A plate of food with some eggs potatoes bread and some other items on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 15.59.41 - A black and yellow bird with a colorful beak.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.08.24 - A white plate topped with a banana and pudding.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.35.23 - a new kitchen cabinet with a sink being installed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.27.31 - a large bear landing a large polar bear is in the background preparing to drink from the water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.46.31 - Two large jets facing each other at an airport..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.24.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.24.56 - An adult giraffe standing next to a small elephant.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.17.20 - An orange BNSE train riding on the tracks near a forest.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.18.03 - A statue of a boy is holding a kite in his hand and standing next to a girl statue_181385.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.01.24 - a cat is laying on a white shoe.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.22.56 - A kitchen is shown with cabinets and appliances.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.21 - The entrance and exit to a snowy parking garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.10.14 - An large ornate wooden clock with golden accents.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.10.31 - A couple of storm troopers standing next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.07.10 - A hotel room bed with folded towels on the corner.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.08.53 - there is a black bird sitting in a berry tree.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.05.43 - a yellow truck and a white truck and a road and trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.11.54 - A red stop sign sitting on top of a green planter.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.07.01 - A hotel room bed with folded towels on the corner.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.49.12 - A clock in a large lobby area of a station..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.07.06 - A hotel room bed with folded towels on the corner.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.18.04 - Many birds fly around above an empty beach.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.59.19 - A train chugs along parallel to a lush forest.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.06.01 - A long haired cat sitting on a refrigerator.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.57.18 - A person performing on the stage and a man sitting on the bike.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.17.13 - An orange BNSE train riding on the tracks near a forest.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.37.35 - a woman sitting on the bed of a dark room with the laptop screen lighting on her face.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.15 - The entrance and exit to a snowy parking garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.22.05 - A room with an empty and open refrigerator and a shelf of bottles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.26.06 - A small dog is laying on a couch with a shoe..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.13.23 - A parade of motorcycles is going through a group of tall trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.42.26 - An elephant draped with a colorful blanket wearing a decorative head piece.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.26.59 - A few pizza slices next to a couple of bread slices.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.16.09 - Four giraffes look around a rock corner in their enclosure.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.16.18 - Two giraffes walking in an open wooded area.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.23.50 - Oranges and two jars of an orange substance on a wooden table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.27.03 - A few pizza slices next to a couple of bread slices.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.40.36 - A lone stop sign in a row of crypts.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.11.07 - An airplane is flying in the sky below the moon.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.36.13 - A plate of prepared food has pasta_394545.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.04.26 - A dark  colored poodle is tied to a post on a sidewalk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.43 - A silver cup is holding scissors and tongs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.25 - The waffle has banana slices and a strawberry in the middle.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.08 - A sandwich on a plate cutin half next to pasta.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.32.54 - A black and white motorcycle parked on the sidewalk outside a store.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.10.36 - A couple of storm troopers standing next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.17.21 - Small sailboats are lit up on the water_605108.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.33.08 - a plate with a slice of orange with a piece of cake.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.11.29 - A cat sitting on a window sill in a room_372518.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.19.09 - A very big country style living room with a wagon wheel.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.45.24 - A cat wearing a tie on some cloths.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.09.37 - A purple flower is in a watering can on the window sill_358629.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.41.24 - A pizza is shown with various toppings on it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.25.30 - A large white bowl sits on a slide out shelf under a microwave.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.37.23 - A soda cell phone and pen sit on a desk near a computer keyboard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.43.17 - The small room has a couch a television and a table with two stools.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.52.30 - A small bird sitting on a chair by a table..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.44.21 - The window showing a traffic signal is covered in droplets of rainwater.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.24.43 - A cow standing on the beach by a body of water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.42.23 - An elephant draped with a colorful blanket wearing a decorative head piece.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.05.19 - Tube of orange and pears surrounded by boxes of grass and one pineapple.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.52.44 - A plate of food with some eggs potatoes bread and some other items on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.40.19 - A plate of food laying on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.12.58 - Cattle are grazing in a bright green pasture along a river and mountains.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.43.47 - A cat peeking it's head out of the blankets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.09.22 - An office cubicle with four different types of computers.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.34 - a row of parking meters line a street in front of a stop sign.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.34.17 - Two black cows facing each other with woods behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.17.43 - A plate with a slice of pizza sits on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.03.59 - A barge floating down a river with the skyline in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.32.17 - A trio of teddy bears bundled up on a bed..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.31.05 - A living room with windows chairs table lamps and a person sitting in a chair with a walker beside it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.13.50 -  Three stuffed animals lay in a bed cuddled together.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.11.42 - A brightly colored flower vase sits in front of a wall map.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.26.19 - A large elephant scratching it's back on the side of a pole.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.16.58 -  A white pitcher holding flowers in a window sill.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.14.28 - A table with a plate of dinner and something to drink.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.05.52 - Three round plates filled with artistically presented food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.38.20 - A blue pot of tomato sauce with a wooden ladle..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.16.08 - Two cow figures are standing in a yard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.16.21 - A banana and a nearly empty bowl of food resting on top of a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.33.59 - Three hand formed clay pots with dripping paint.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.26.21 - A clock tower has a white pole on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.17.52 - The decor in this house is out of date.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.19.02 - Sparta street sign hanging on a lamp in a street..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.17.21 - The two street name signs are protruding from a street pole.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.26.13 - A large elephant scratching it's back on the side of a pole.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.29.45 - A car is driving through a flooded street.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.31.03 - A clock tower stands near a road trees and houses.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.22.18 - A few horses stand on the street next to a silver car.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.29.14 - Opened up umbrellas in different colors and patterns..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.22.03 - A room with an empty and open refrigerator and a shelf of bottles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.54.08 - A keyboard and mouse sitting on a desk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.34.05 - A black fluffy cat sitting on top of a computer keyboard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.00 - A grey dog with a black collar sits outside in the sun.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.34.47 - An elephant standing in the middle of a rocky environment_237001.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.06.51 - A black Honda motorcycle parked in front of a garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.37.54 - Piles of apples lemons limes and oranges are available today.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.42.28 - some onions in a silver bowl and some meat in another and a spoon.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.42.19 - A leaning stop sign has a street sign on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.29.44 - The kitchen is lit with overhead lights shining on the cupboard and sink.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.26.41 - a green tent and a parked motorcycle and some trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.39.11 - A plane is parked in an airport field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.39.21 - Orange cat looking in the mirror at his reflection.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.46 - A living room with fireplace table and piano.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.36.13 - This is a display of various types of collectibles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.26.40 - White horse carrying a man in a black buggy..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.38.53 - A prop plane is flying through the sky.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.34.52 - An old blender is sitting next to a printer.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.10.39 - A couple of storm troopers standing next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.30 - A slice of pizza with a swirl of sauce on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.10.16 - An large ornate wooden clock with golden accents.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.16.57 - Small sailboats are lit up on the water_605108.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.14.31 - a pretty bird sitting on a branch among some leaves.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.04.04 - Two stuffed animals posed together in black and white.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.01.06 - The two sheep are standing next to each other in the field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.06 - There are two cows in this grassy field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.12.19 - A notebook computer is set on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.40.29 - a laptop on the top of a wood desk with a bookcase.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.32.53 - A gray cat is walking next to a truck.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.36.41 - A couple of horses by a fence on a field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.11.49 - this is a bed with a blanket on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.19 - A living room with fireplace table and piano.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.46 - A silver cup is holding scissors and tongs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.20.57 - A line of skiers waiting for the ski lift..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.27.01 - A fireplace sitting below a picture mounted to a wall.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.34.56 - a new kitchen cabinet with a sink being installed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.25.44 - The extremely small car is parked behind the bus.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.59.30 - A train chugs along parallel to a lush forest.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.08.01 - A Frisbee golf net in a park with several Frisbee in it (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.02.13 - a colorful bird holding on to a tree branch.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.12.53 - A couple of cats laying next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.23.03 - A group of bananas that are hanging from string.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.12.48 - A couple of cats laying next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.24.14 - The photo is a collection of brightly painted fire hydrants.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.30.21 - A pizza with french fries on it on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.39.42 - a black and white cat on some grass.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.33.30 - A cat looking forward while laying down on a green cushion.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.19.14 - A box contains a breakfast with an omelet tomato slices a sausage and some toast_532637.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.32.03 - A historical clock tower next to a modern glass window skyscraper.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.56.22 - A kitchen with a stove sink and coffee maker..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.33.36 - A cat looking forward while laying down on a green cushion.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.15.27 - A dog sitting between its masters feet on a footstool watching tv.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.21.40 - There is a pizza with many toppings on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.55.01 - Firefighters and three firetrucks are parked on a street..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.26.01 - A double decker bus parked near a curb by trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.35.43 - parked cars motorcycles and buses on a cobblestone parking lot next to a street..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.31.22 - A large brown dog standing on the side of a white wood fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.37.23 - A goup of elephants in an enclosed area with a lot of trees behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.03.50 - The top half of a clock tower against a cloudy sky.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.48.38 - three different pictures of bean salad on a plate.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.13.33 - a room showing a cooker and an oven.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.14 - A living room with fireplace table and piano.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.18.48 -  Several bottles are displayed in a commercial refrigerator.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.30.51 - A living room with windows chairs table lamps and a person sitting in a chair with a walker beside it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.17.50 - A run down waiting room at a transit station.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.28.06 - a cute doll writing a leteyr.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.20.15 - A blurred picture of a clock tower and a lamp post.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.53.32 - A couple of large beds in a small room.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.19.47 - Variety of doughnuts displayed in white cardboard box..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.08.03 - A Frisbee golf net in a park with several Frisbee in it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.31.25 - A baby brown bear standing on top of a rock.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.21.59 - A room with an empty and open refrigerator and a shelf of bottles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.40.38 - A lone stop sign in a row of crypts.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.28.21 - A simple room with minimal decor and furniture__175837.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.05.45 - a yellow truck and a white truck and a road and trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.41.31 - An extremely plain and outdated white colored kitchen.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.13.49 -  Three stuffed animals lay in a bed cuddled together.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.39.55 - a cell phone screwdriver a pair of scissors and a black thing on a desk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.20.40 - A small area containing a refrigerator and a microwave positioned on a shelf.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.33.30 - A pizza on a plate on a table with wine.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.01.29 - a cat is laying on a white shoe.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.06.08 - Three stuffed animals are sitting on a bed (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.56.21 - A herd of zebra stand on a plain in the wild.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.07.28 - 00579494Pair of small planes flying near each other on stormy day.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.19.20 - Two mini figurines sitting beside a plate with food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.35.41 - A street light with a mountain view in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.45 - A doughnut with a bite taken from it next to a cup.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.18.47 - A couple of zebras in a dirt field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.11 - A red stop sign with paper with writing on top of it (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.08.21 - A white plate topped with a banana and pudding.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.30.55.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.06.25 - many woolly sheep standing together in the field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.56.09 - A herd of zebra stand on a plain in the wild.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.12.55 - Cattle are grazing in a bright green pasture along a river and mountains.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.30.42 - The cat is perched on the edge of the bed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.22.49 - A kitchen is shown with cabinets and appliances.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.10.06 - An open door of a blue passenger rail line.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.08.47 - Two brown ponies in grassy field next to a fence_343006.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.10.08 - An open door of a blue passenger rail line.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.23.11 - A suitcase that is next to shoes on a floor.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.51.35 - An older woman riding a train while sitting under it's window..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.24.46 - A cow standing on the beach by a body of water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.04.00 - A barge floating down a river with the skyline in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.40.41 - A lone stop sign in a row of crypts.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.02.34 - A display of clocks inside a shop window.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.06 - A sandwich on a plate cutin half next to pasta.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.02.48 - A group of animals grazing on a lush green field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.25.47 - The extremely small car is parked behind the bus.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.34.07 - Three hand formed clay pots with dripping paint.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.54.38 - Arrows show what to do with the bowls of food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.26.00 - A small dog is laying on a couch with a shoe..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.32 - A slice of pizza with a swirl of sauce on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.36.58 - two birds flying by in front of a mountain.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.24.08 - The photo is a collection of brightly painted fire hydrants.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.48.43 - three different pictures of bean salad on a plate.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.39.58 - A plate of stir fry vegetables on white rice.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.04 - A grey dog with a black collar sits outside in the sun.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.36.16 - This is a display of various types of collectibles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.42.07 - A bus parked by a curb on the street.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.43.52 - A man is snowboarding past blue markers on a mountain..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.31 - A train covered in graffiti on top of train tracks.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.19.24 - A box contains a breakfast with an omelet tomato slices a sausage and some toast_532637.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.41.16 - Microwave and other appliance sitting outdoors on pavement against a fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.51.28 - An older woman riding a train while sitting under it's window..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.08.25 - A white plate topped with a banana and pudding.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.05.21 - AN IMAGE OF A FIRED HYDRANT ON THE STREET.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.08.56 - Two brown ponies in grassy field next to a fence_343006.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.21.53 - A train is traveling quickly as a group of people look on..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.05.58 - Three round plates filled with artistically presented food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.43.08 - The small room has a couch a television and a table with two stools.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.08.01 - A PERSON IS STIING ON A COUCH WATCHING TV.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.11.02 - An airplane is flying in the sky below the moon.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.23.12 - Advertising photograph of a surf-themed birthday cake from a bakery.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.06.40 - many woolly sheep standing together in the field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.18.41 - A cat staring at the screensaver on a laptop.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.17.47 - The decor in this house is out of date.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.18.39 - A couple of zebras in a dirt field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.17 - The entrance and exit to a snowy parking garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.37.02 - A sandwich with a pile a olives and an apple on a tablecloth.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.09.01 - Many electronic devises and a tangle of wires are on and around the desk..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.26.23 - Two green lit traffic lights with a blue sky behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.20.18 - A blurred picture of a clock tower and a lamp post.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.02.29 - A display of clocks inside a shop window.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.06.05 - Three stuffed animals are sitting on a bed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.31.18 - A large brown dog standing on the side of a white wood fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.06.42 - A show floor with a shiny blue motorcycle surrounded by bars.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.50.37 - A doughnut hanging from a Christmas tree as a decoration..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.36.11 - This is a display of various types of collectibles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.22.36 - A modest plate with grains and broccoli and almonds.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.17.30 - A statue of a boy is holding a kite in his hand and standing next to a girl statue_181385.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.30.02 - A very tall clock tower sitting next to other tall buildings.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.34.35 - Teddy bear next to monkey in foreground of picture.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.27.38 - a close up of two bananas with bottles in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.17 - A living room with fireplace table and piano.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.24 - The waffle has banana slices and a strawberry in the middle.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.24.44 - Bedroom scene of bed with laptop computer on the side.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.26.31 - Two green lit traffic lights with a blue sky behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.06.09 - Three stuffed animals are sitting on a bed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.33.16 - a plate with a slice of orange with a piece of cake.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.37.21 - A soda, cell phone and pen sit on a desk near a computer keyboard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.10.20 - A large clock tower towering over a city glowing brightly at night.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.40.17 - Two birds are in flight in front of some mountains.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.37.00 - two birds flying by in front of a mountain.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.30.10 - A view of a oven with the food flipped over in it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.32.10 - A trio of teddy bears bundled up on a bed..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.21.55 - A collection of boats behind a fence by a body of water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.23.18 - There is a statue of a body in the room.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.07 - There are two cows in this grassy field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.09.19 - A purple flower is in a watering can on the window sill_358629.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.54.31 - Arrows show what to do with the bowls of food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.07.52 - some luggage and a back back sitting on teh ground next to a lap top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.17.03 -  A white pitcher holding flowers in a window sill.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.45.11 - Wood paneled walls with electronic type games nearby.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.01.09 - The two sheep are standing next to each other in the field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.40.14 - A plate of food laying on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.08 - There are two cows in this grassy field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.16.55 - A green coat flipped upside down on top of a beach.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.35.20 - A plate of food at the table with meat.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.28.01 - Three teddy bears each a different color snuggling together.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.27.08 - A fireplace sitting below a picture mounted to a wall.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.31.07 - A clock tower stands near a road, trees, and houses.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.57.17 - three different pictures of bean salad on a plate.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.40.47 - A giraffe is coming up close to people.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.55.22 - An airplane in route with a cloudy sky behind it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.52.35 - A small bird sitting on a chair by a table..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.50.57 - A doughnut hanging from a Christmas tree as a decoration..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.26.32 - A clock tower has a white pole on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.02.43 - A group of animals grazing on a lush green field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.32.53 - A black and white motorcycle parked on the sidewalk outside a store.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.22.15 - A black and white photo of a computer keyboard flash drive and mouse on a marble tabletop.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.53.34 - A couple of large beds in a small room.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.18 - A living room with fireplace table and piano.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.36.32 - A plate of prepared food has pasta_394545.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.08.20 - Cars are parked on the street next to an old fire hydrant_820316.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.14.12 - A logged on laptop sitting on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.09.02 - A white bed topped with lots of pillows and a wooden headboard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.17.48 - A fire hydrant sits on a sidewalk next to a fence_102460.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.17.20 - The two street name signs are protruding from a street pole.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.17.27 - A black and white photo of a dog sleeping on a plaid bedspread.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.14.23 - A table with a plate of dinner and something to drink.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.19.21 - A chair and luggage sitting at a railing on the water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.27.30 - a large bear landing a large polar bear is in the background preparing to drink from the water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.29.41 - A car is driving through a flooded street.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.45.52 - A mother elephant and her baby are standing alongside a dry water pool..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.44.18 - A cat laying down on a blue comforter with pink sheets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.36.38 - A couple of horses by a fence on a field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.42.22 - A leaning stop sign has a street sign on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.14.11 - A logged on laptop sitting on a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.06.28 - Two cooked hot dogs on a plate with parsley.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.11.46 - this is a bed with a blanket on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.18.44 - A dog catches a frisbee outside in the grass.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.32.34 - A spire over a beautiful brick building behind red tiled roofs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.25 - The waffle has banana slices and a strawberry in the middle (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.56.50 - A black clock with the word Kerttui showing 12_44.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.39.18 - Orange cat looking in the mirror at his reflection.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.15.08 - Steer in the woods with rope on its face.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.35.41 - A bird is sitting on a bowl of birdseed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.11.19 - A couple of small birds standing on top of a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.20.36 - A wedge of chocolate cake leftover on a platter.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.07 - A sandwich on a plate cutin half next to pasta.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.19.18 - A chair and luggage sitting at a railing on the water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.41.36 - two gray white and brown birds a knife and a red table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.10.24 - A frying pan filled with vegetables and apples.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.43.50 - A cat peeking it's head out of the blankets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.46.37 - Two large jets facing each other at an airport..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.16.51 - A green coat flipped upside down on top of a beach.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.30.45 - A living room with windows chairs table lamps and a person sitting in a chair with a walker beside it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.10.17 - A large clock tower towering over a city glowing brightly at night.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.11.18 - A couple of small birds standing on top of a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.11.40 - A couple of birds that are walking in a field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.08 - A red stop sign with paper with writing on top of it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.25.22 - A view of a room that has two windows and a blue couch.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.44.34 - Several pieces of pottery in the process of being painted.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.39.40 - a cell phone screwdriver a pair of scissors and a black thing on a desk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.12.01 - A statue next to a vase of flowers on a shelf..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.10.56 - The bird is standing on the rim of the bird feeder.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.20.13 - A blurred picture of a clock tower and a lamp post.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.48.10 - Tabby cat rests head on magenta pillow and looks at camera..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.36.02 - A plate of prepared food has pasta_394545.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.45 - an elephant is standing in a dirt field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.31.29 - A baby brown bear standing on top of a rock.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.17.35 - A fire hydrant sits on a sidewalk next to a fence_102460.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.56.55 - A black clock with the word Kerttui showing 12_44.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.04.31 - A dark  colored poodle is tied to a post on a sidewalk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.08.05 - A PERSON IS STIING ON A COUCH WATCHING TV.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.07.58 - Cars are parked on the street next to an old fire hydrant_820316.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.23.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.14.04 - A bed with lots of pillows and blankets under a canopy.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.26.26 - Two green lit traffic lights with a blue sky behind them.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.15.48 - A dog sitting between its masters feet on a footstool watching tv.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.33.24 - A pizza on a plate on a table with wine.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.33.34 - A cat looking forward while laying down on a green cushion.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.21.30 - a kitchen with a sink on a counter top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.04.23 - Three zebra in the middle of a field with a body of water in the distance.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.56.10 - A herd of zebra stand on a plain in the wild.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.08.55 - A large white multi layered cake sitting on top of a table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.37.19 - a woman sitting on the bed of a dark room with the laptop screen lighting on her face.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.12.57 - A dock that is separating the harbor from the ocean..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.31.28 - A street at night is lit up by streetlights_39861.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.18.01 - Many birds fly around above an empty beach.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.02.15 - a colorful bird holding on to a tree branch.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.33.28 - A traffic light over a street with a sign that reads K.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.15.15 - A dog sitting between its masters feet on a footstool watching tv.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.41.32 - two gray white and brown birds a knife and a red table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.05.03 - A smart phone sitting on top sitting on top of a wooden table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.11.55 - A statue next to a vase of flowers on a shelf..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.27.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.24.56 - The back of a Volvo bus approaching a hotel.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.23.22 - a pizza on a pan cut into squares.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.23.47 - A living room with fireplace table and piano (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.40.07 - Slices of food are arranged around food piled on a plate.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.16.11 - Two giraffes walking in an open wooded area (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.49.50 - A group of people in blue jackets boarding a long white bus..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.26.45 - White horse carrying a man in a black buggy..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.09.44 - a close up of three hot dogs with mustard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.17.17 - The two street name signs are protruding from a street pole.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.28.34 - A train covered in graffiti on top of train tracks.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.11.44 - A brightly colored flower vase sits in front of a wall map.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.43.35 - An open laptop computer sitting on top of a wooden desk.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.37.00 - A sandwich with a pile a olives and an apple on a tablecloth.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.13.54 - A bed with lots of pillows and blankets under a canopy.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.02 - A grey dog with a black collar sits outside in the sun.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.35.21 - a new kitchen cabinet with a sink being installed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.43.48 - A cat peeking it's head out of the blankets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.09.56 - An inlaid vase sitting in front of a map.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.20.34 - A wedge of chocolate cake leftover on a platter.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.42.18 - A leaning stop sign has a street sign on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.38.14 - A blue pot of tomato sauce with a wooden ladle..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.32.31 - A spire over a beautiful brick building behind red tiled roofs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.49 - a black blue and red fire hydrant and some leaves and trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.09.10 - An office cubicle with four different types of computers.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.51.46 - An older woman riding a train while sitting under it's window..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.08.07 - A Frisbee golf net in a park with several Frisbee in it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 15.58.53 - A red stop sign that reads _ Eating Animals _ below it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.12.30 - A beautiful dessert waiting to be shared by two people.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.08.52 - an elephant is standing in a dirt field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.22.00 -  a cow in a field standing in the shade of a tree.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.04.19 - Three zebra in the middle of a field with a body of water in the distance.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.26.43 - a green tent and a parked motorcycle and some trees.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 20.26.00 - One cow standing and one laying down within a fence_42590.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.34.59 - a new kitchen cabinet with a sink being installed (1).png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.19.22 - Two mini figurines sitting beside a plate with food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.07.34 - A black and white dog examines something on the ground.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.39.55 - A plate of stir fry vegetables on white rice.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.29.54 - A car is driving through a flooded street.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.34.34 - A pair of sneakers lined up on a bed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.11.50 - A red stop sign sitting on top of a green planter.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.34.43 - A motorcycle sitting in front of a classic Ford Mustang Car..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.02.38 - a black and white cow is standing in a field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.30.38 - The cat is perched on the edge of the bed.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 08.58.24 - A black Honda motorcycle parked in front of a garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.59.26 - A train chugs along parallel to a lush forest.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.13.47 -  Three stuffed animals lay in a bed cuddled together.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.24.12 - The photo is a collection of brightly painted fire hydrants.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.34.32 - Teddy bear next to monkey in foreground of picture.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.52.47 - A small bird sitting on a chair by a table..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 10.46.33 - a stuffed bear with others wearing crowns.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.15.34 -   a cow that has a small white bird on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.44.25 - The window showing a traffic signal is covered in droplets of rainwater.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.06.30 - Two cooked hot dogs on a plate with parsley.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.41.11 - Microwave and other appliance sitting outdoors on pavement against a fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.29.15 - Several pictures containing several different types of pizza.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.03.09 - A brown bear is standing on the rocks facing forward.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.37.05 - A sandwich with a pile a olives and an apple on a tablecloth.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.35.40 - A street light with a mountain view in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.23.50 - A yak walking through a field going towards a tree.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.42.15 - some onions in a silver bowl and some meat in another and a spoon.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.16.11 - Two cow figures are standing in a yard.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.36.34 - a small bird sitting perched on a chain link fence.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.32.51 - A gray cat is walking next to a truck.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 11.13.22 - The image has a large cubed clock on a post.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.23.17 - There is a statue of a body in the room.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.10.13 - A cat sitting on a window sill in a room_372518.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.43.12 - Traffic at a street corner with a lamp post clock.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.52.30 - A red. white, and blue fire hydrant on the side of the road.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.31.33 - A dog with a leash on is sitting near a park bench.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.43.14 - two flatbread pieces covered with different ingredients in between a flight of beers.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.24.52 - The back of a Volvo bus approaching a hotel.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.51 - A cat that is laying in a piece of luggage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.23.26 - a pizza on a pan cut into squares.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.41.04 - A close up of a black and white cat in the grass.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-08-13 09.02.36 - A black Honda motorcycle parked in front of a garage.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.06.00 - A long haired cat sitting on a refrigerator.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.20.37 - A water hydrant is that frozen with nothing on it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.10.31 - A large clock tower towering over a city glowing brightly at night.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.44.17 - A cat laying down on a blue comforter with pink sheets.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.09.00 - there is a black bird sitting in a berry tree.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.31.46 - A small bird resting and eating from a bird feeder.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.10.46 - The bird is standing on the rim of the bird feeder.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.52.40 - A red. white and blue fire hydrant on the side of the road.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.49 - A doughnut with a bite taken from it next to a cup.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.29.22 - Plate of food with broccoli on glass plate with table cloth.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.02.43 - a black and white cow is standing in a field.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.10.18 - An large ornate wooden clock with golden accents.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.13.07 - Three rectangular bowls with food.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.19.19 - A chair and luggage sitting at a railing on the water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.04.28 - A lap top sits on a small desk with jars and candles around it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.01.56 - The pizza is beginning to melt in the oven.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.25.35 - A white plate topped with orange peel slices.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.27.34 - a close up of two bananas with bottles in the background.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 18.41.13 - A pizza is shown with various toppings on it..png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.47 - A doughnut with a bite taken from it next to a cup.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.04.31 - A lap top sits on a small desk with jars and candles around it.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 15.59.44 - A black and yellow bird with a colorful beak.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 16.17.25 - A black and white photo of a dog sleeping on a plaid bedspread.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.12.45 - A couple of cats laying next to each other.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.32.49 - A gray cat is walking next to a truck.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.45.13 - Wood paneled walls with electronic type games nearby.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.22.29 - A modest plate with grains and broccoli and almonds.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.43.27 - A slice of pizza with a swirl of sauce on top.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.12.43 - A doughnut with a bite taken from it next to a cup.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 23.58.45 - A yellow rose in a clear vase filled with water.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.30.26 - A silver cup is holding scissors and tongs.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.30.53.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.00.40 - A very cozy looking living room with an oval table.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-24 00.23.14 - A suitcase that is next to shoes on a floor.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.22.01 - A room with an empty and open refrigerator and a shelf of bottles.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.13.33 - a row of parking meters line a street in front of a stop sign.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 17.18.46 - A cat staring at the screensaver on a laptop.png
+/media/nas2/Datasets/DMimageDetection_Data/TestSet/dalle_2/DALL·E 2022-10-23 19.34.19 - Two black cows facing each other with woods behind them.png

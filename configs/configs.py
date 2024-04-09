@@ -16,4 +16,11 @@ args = arg_parser.parse_args()
 with open(args.config, "r") as f:
     config = yaml.safe_load(f)
 
+with open("configs/configs_ft.yaml", "r") as f:
+    ft_configs = yaml.safe_load(f)
+
+with open("configs/cl_configs.yaml", "r") as f:
+    continual_configs = yaml.safe_load(f)
+
 configs_dict = initalize_configs(config)
+ft_configs = initalize_configs(ft_configs)

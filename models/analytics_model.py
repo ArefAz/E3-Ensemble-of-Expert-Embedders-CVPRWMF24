@@ -4,11 +4,16 @@ from .classifier_head import ClassifierHead
 
 from utils.model_utils import get_optimizer_dict, get_detectors, get_pipes
 from torchmetrics.classification import *
+from torchvision.models import ResNet
 
 
 def get_detector_dense(model, x):
-    model.eval()(x)
-    return model.classifier.get_dense()
+    if not isinstance(model.classifier, ResNet):
+        model.eval()(x)
+        return model.classifier.get_dense()
+    else:
+        return model.classifier.eval()(x)
+
 
 
 class AnalyticsModel(pl.LightningModule):
@@ -27,14 +32,16 @@ class AnalyticsModel(pl.LightningModule):
         self.classifier_head = ClassifierHead(n_features, model_configs)
         self.src_loss = torch.nn.BCEWithLogitsLoss()
         self.manipulation_loss = torch.nn.BCEWithLogitsLoss()
-        if num_classes := len(model_configs["src_ckpts"]) < 2:
-            self.src_acc = Accuracy("binary")
-            self.vsrc_acc = Accuracy("binary")
-        else:
-            self.src_acc = Accuracy("multiclass", num_classes=num_classes)
+        # if num_classes := len(model_configs["src_ckpts"]) < 2:
+        #     self.src_acc = Accuracy("binary")
+        #     self.vsrc_acc = Accuracy("binary")
+        # else:
+        #     self.src_acc = Accuracy("multiclass", num_classes=num_classes)
+        self.vsrc_acc = Accuracy("binary")
+        self.src_acc = Accuracy("binary")
         self.conf_mat = ConfusionMatrix("binary")
         self.conf_mat_accumalator = torch.zeros(2, 2).int()
-        self.f1 = F1Score("binary")
+        self.auc = MulticlassAUROC(num_classes=2)
         self.prec = Precision("binary")
         self.recall = Recall("binary")
         self.manip_acc_list = torch.nn.ModuleList(
@@ -119,16 +126,17 @@ class AnalyticsModel(pl.LightningModule):
         if is_test:
             if self.conf_mat_accumalator.device != self.device:
                 self.conf_mat_accumalator = self.conf_mat_accumalator.to(self.device)
-                self.f1 = self.f1.to(self.device)
+                self.auc = self.auc.to(self.device)
                 self.prec = self.prec.to(self.device)
                 self.recall = self.recall.to(self.device)
 
             preds = src_logits.argmax(dim=1)
+            probs = torch.nn.functional.softmax(src_logits, dim=1)
             src_label = src_label.argmax(dim=1)
             self.conf_mat_accumalator += self.conf_mat(
                 preds, src_label
             ).int()
-            self.f1.update(preds, src_label)
+            self.auc.update(probs, src_label)
             self.prec.update(preds, src_label)
             self.recall.update(preds, src_label)
             return src_loss, manipulation_loss, manipulation_accs
@@ -214,7 +222,7 @@ class AnalyticsModel(pl.LightningModule):
         # )
         self.log("prec", self.prec, on_step=False, on_epoch=True, prog_bar=True)
         self.log("recall", self.recall, on_step=False, on_epoch=True, prog_bar=True)
-        self.log("f1", self.f1, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("auc", self.auc, on_step=False, on_epoch=True, prog_bar=True)
 
     def configure_optimizers(self):
         return get_optimizer_dict(self.train_configs, self.classifier_head.parameters())

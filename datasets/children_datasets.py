@@ -21,7 +21,8 @@ class ImageDatasetFromTxt(ParentDataset):
         )
         with open(txt_file_path, "r") as f:
             self.file_paths = [line.strip() for line in f]
-        random.shuffle(self.file_paths)
+        # random.shuffle(self.file_paths)
+        # self.file_paths = self.file_paths[:2000]
 
 
 class JpegDatasetFromTxt(ParentDataset):

@@ -1,0 +1,51 @@
+Model:
+  model_type: transformer # either moe or fusion or transformer
+  load_from_ckpt: True # if True, the ft models are loaded from the checkpoint
+  ft_ckpt_paths: [ 
+    logs/expert_mislnet_db-real_db-gan_src_q99/version_4/checkpoints/epoch=97-step=183750-v_loss=0.0654-v_acc=0.9763.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd14_src_q99/version_16/checkpoints/epoch=149-step=2400-v_loss=0.3417-v_acc=0.8800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-glide_src_q99/version_9/checkpoints/epoch=149-step=2400-v_loss=0.0403-v_acc=0.9850-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-mj_src_q99/version_5/checkpoints/epoch=149-step=2400-v_loss=0.6459-v_acc=0.8350-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-dallemini_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.4711-v_acc=0.8700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-tt_src_q99/version_2/checkpoints/epoch=149-step=2400-v_loss=0.1787-v_acc=0.9600-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd21_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=1.6322-v_acc=0.6300-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-cips_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0516-v_acc=0.9750-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-biggan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=4.5514-v_acc=0.5500-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-vqdiff_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1306-v_acc=0.9700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-diffgan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=4.4042-v_acc=0.5200-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sg3_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.1419-v_acc=0.9700-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-gansformer_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2388-v_acc=0.9350-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-dalle2_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0287-v_acc=0.9900-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ld_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=1.7899-v_acc=0.6800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-eg3d_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.0053-v_acc=1.0000-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-projgan_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.3961-v_acc=0.8800-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-sd1_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.2472-v_acc=0.9200-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ddg_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.5158-v_acc=0.9300-last.ckpt,
+    logs/ft_expert_mislnet_dn-real_dn-ddpm_src_q99/version_0/checkpoints/epoch=149-step=2400-v_loss=0.5851-v_acc=0.8500-last.ckpt
+
+  ]
+  backbone: mislnet # either resnet50 or mislnet
+Data:
+  real_dataset_name: dn-real # name of the real dataset
+  synthetic_dataset_names: [
+    dn-gan,
+    dn-sd14,
+    dn-glide,
+    dn-mj,
+    dn-dallemini, dn-tt, dn-sd21, dn-cips, dn-biggan, dn-vqdiff, dn-diffgan, dn-sg3, dn-gansformer, dn-dalle2, dn-ld, dn-eg3d, dn-projgan, dn-sd1, dn-ddg, dn-ddpm,
+  ]
+  memory_size: 1000 # number of samples to be stored in the memory
+  fixed_memory: True # if True, the memory size is fixed
+
+Train:
+  epochs: 1
+  max_steps: -1
+  batch_size: 64
+  cls_lr: 2.5e-4
+  ft_lr: 5.0e-5
+  distill: False # if True, the distillation loss is used
+  train_dataset_limit_per_class: 500
+  train_dataset_limit_real: 500
+
+General:
+  check_val_every_n_epoch: 30
