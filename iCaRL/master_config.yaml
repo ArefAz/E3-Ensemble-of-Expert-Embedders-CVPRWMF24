@@ -1,0 +1,10 @@
+cl_setup:
+  cl_framework: icarl # Option: icarl, mtsc, mtmc
+  experiment_setup: adapt_one_new_generator # Options: adapt_one_new_generator (Experiment 1), adapt_multiple_new_generators (Experiment 2)
+
+parameters:
+  model: mislnet # Option: mislnet, resnet50
+  checkpoint: # Path to your checkpoint of trained model
+  feature_size: 200 # mislnet has 200, resnet50 has 2048
+  epochs: 150
+  lr: 1e-5
