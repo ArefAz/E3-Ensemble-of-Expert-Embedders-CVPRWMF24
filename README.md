@@ -2,6 +2,8 @@
 
 This is the official implementation of the CVPRWMF24 paper titled: **E3: Ensemble of Expert Embedders for Adapting Synthetic Image Detectors to New Generators Using Limited Data**.
 
+** Work is still in progress to imporve the interface for easy proto-typing.**
+
 This codebase (expect for iCaRL, MT-MC, and MT-SC) is based on [Pytorch Lightning](https://lightning.ai/docs/pytorch/.stable/). 
 Other continual learning methods are benchmarked using the implementations
  provided by [UDIL](https://github.com/Wang-ML-Lab/unified-continual-learning).
