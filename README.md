@@ -1,6 +1,6 @@
 # E3: Ensemble of Expert Embedders for Adapting Synthetic Image Detectors to New Generators Using Limited Data
 
-This is the official implementation of the CVPRWMF24 paper titled: **E3: Ensemble of Expert Embedders for Adapting Synthetic Image Detectors to New Generators Using Limited Data**.
+This is the official implementation of the CVPRWMF24 paper titled: **[E3: Ensemble of Expert Embedders for Adapting Synthetic Image Detectors to New Generators Using Limited Data]([url](https://arxiv.org/abs/2404.08814))**.
 
 **Work is still in progress to imporve the interface for easy proto-typing.**
 
