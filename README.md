@@ -37,4 +37,11 @@ a complete fine-tuning dataset for each generator. After all the experts are cre
  2. You can find the file names of all the images used in our experiments in `datasets/dataset_file_paths`. Since all of our data is 
  publicly available, we do not provide the data.
 
- If you use our code, please consider citing us, thank you!
+ If you use our code, please consider citing us as below, thank you!
+ ```@inproceedings{azizpour2024e3,
+  title     = {E3: Ensemble of Expert Embedders for Adapting Synthetic Image Detectors to New Generators Using Limited Data},
+  author    = {Azizpour, Aref and Nguyen, Tai D and Shrestha, Manil and Xu, Kaidi and Kim, Edward and Stamm, Matthew C},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops},
+  year      = {2024},
+  pages     = {pages},
+}
